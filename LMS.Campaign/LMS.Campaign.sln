@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Campaign", "Campaign\Campaign.csproj", "{B8AC8C40-478D-4229-B431-A0C1232EAA57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campaign", "Campaign\Campaign.csproj", "{B8AC8C40-478D-4229-B431-A0C1232EAA57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Campaing.Interface", "Campaing.Interface\Campaing.Interface.csproj", "{30D9E70E-B5B2-4302-9ADE-693637AD97AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campaign.Interface", "Campaing.Interface\Campaign.Interface.csproj", "{30D9E70E-B5B2-4302-9ADE-693637AD97AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Campaign.UnitTests", "Campaign.UnitTests\Campaign.UnitTests.csproj", "{AB914C25-2937-40E5-B690-E9D7F43E8C40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campaign.UnitTests", "Campaign.UnitTests\Campaign.UnitTests.csproj", "{78662577-F125-49F3-B62C-8266A5979404}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validator", "Validator\Validator.csproj", "{BD25C16A-01A2-4B14-81F1-7B165AD97AE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +25,14 @@ Global
 		{30D9E70E-B5B2-4302-9ADE-693637AD97AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30D9E70E-B5B2-4302-9ADE-693637AD97AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30D9E70E-B5B2-4302-9ADE-693637AD97AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB914C25-2937-40E5-B690-E9D7F43E8C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB914C25-2937-40E5-B690-E9D7F43E8C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB914C25-2937-40E5-B690-E9D7F43E8C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB914C25-2937-40E5-B690-E9D7F43E8C40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78662577-F125-49F3-B62C-8266A5979404}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78662577-F125-49F3-B62C-8266A5979404}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78662577-F125-49F3-B62C-8266A5979404}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78662577-F125-49F3-B62C-8266A5979404}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD25C16A-01A2-4B14-81F1-7B165AD97AE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD25C16A-01A2-4B14-81F1-7B165AD97AE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD25C16A-01A2-4B14-81F1-7B165AD97AE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD25C16A-01A2-4B14-81F1-7B165AD97AE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
