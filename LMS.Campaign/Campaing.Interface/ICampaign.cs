@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-
-namespace Campaign.Interface
+﻿namespace Campaign.Interface
 {
+    using System.IO;
+
     public interface ICampaign
     {
+        //  Accept Lead and Process
         void ProcessLead(Stream lead);
 
-        bool ValidLead(Stream lead);
+
     }
 }

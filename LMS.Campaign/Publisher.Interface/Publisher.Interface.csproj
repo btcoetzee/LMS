@@ -4,8 +4,4 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Validator.Interface\Validator.Interface.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -16,6 +16,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Campaing.Interface\Campaign.Interface.csproj" />
+    <ProjectReference Include="..\Decorator.Interface\Decorator.Interface.csproj" />
+    <ProjectReference Include="..\Publisher.Interface\Publisher.Interface.csproj" />
+    <ProjectReference Include="..\Validator.Interface\Validator.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>
