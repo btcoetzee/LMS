@@ -1,9 +1,11 @@
-﻿namespace Campaign.Interface
+﻿namespace Rule.Interface
 {
+    using System;
     using System.IO;
 
-    public interface ICampaign
+    public interface IRule
     {
+
         //  Accept Lead and Process
         void ProcessLead(Stream lead);
     }

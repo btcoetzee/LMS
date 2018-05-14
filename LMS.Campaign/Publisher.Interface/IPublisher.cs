@@ -1,6 +1,5 @@
 ﻿namespace Publisher.Interface
 {
-    using System;
     using System.IO;
 
     public interface IPublisher
