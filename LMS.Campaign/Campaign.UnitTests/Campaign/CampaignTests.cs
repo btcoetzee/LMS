@@ -29,13 +29,13 @@
         [TestInitialize]
         public void Initialize()
         {
-            // Mock the Campaign and Validator
+            // Mock the Campaign, Validator, Publisher and Decorator
             _campaign = new Mock<ICampaign>();
             _validator = new Mock<IValidator>();
             _publisher = new Mock<IPublisher>();
             _decorator = new Mock<IDecorator>();
 
-            // Create Service Providers for Campaign and Validator
+            // Create Service Providers 
             _campaignServiceProvider = new ServiceCollection()
                 .AddSingleton(typeof(ICampaign), _campaign.Object)
                 .AddSingleton(typeof(IValidator), _validator.Object)

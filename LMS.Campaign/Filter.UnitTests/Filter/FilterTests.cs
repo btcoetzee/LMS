@@ -79,7 +79,7 @@
             Assert.AreEqual(expectedMessage, actualMessage);
         }
         /// <summary>
-        /// Tests the Filter lead validation with leads.
+        /// Tests the Filter lead Validation with leads.
         /// </summary>
         [TestMethod]
         public void TestLeadValidationForAFilter()
