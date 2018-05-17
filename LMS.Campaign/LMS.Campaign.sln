@@ -15,15 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Publisher.Interface", "Publ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Decorator.Interface", "Decorator.Interface\Decorator.Interface.csproj", "{1C96932D-27D8-4F82-BFB1-7FECEB70FA3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filter.Interface", "Filter.Interface\Filter.Interface.csproj", "{4A8EC63B-B54A-40F9-8096-DE56184E0C9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.Interface", "Filter.Interface\Filter.Interface.csproj", "{4A8EC63B-B54A-40F9-8096-DE56184E0C9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filter.UnitTests", "Filter.UnitTests\Filter.UnitTests.csproj", "{B75FE47B-6B29-4928-9F48-897281A61CC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.UnitTests", "Filter.UnitTests\Filter.UnitTests.csproj", "{B75FE47B-6B29-4928-9F48-897281A61CC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rule.Interface", "Rule.Interface\Rule.Interface.csproj", "{905A9E2D-ACA3-490B-ACC4-50911A6B123E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rule.Interface", "Rule.Interface\Rule.Interface.csproj", "{905A9E2D-ACA3-490B-ACC4-50911A6B123E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rules.UnitTests", "Rules.UnitTests\Rules.UnitTests.csproj", "{612AADCB-58D6-491E-9983-6D7D2C2325F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rule.UnitTests", "Rules.UnitTests\Rule.UnitTests.csproj", "{612AADCB-58D6-491E-9983-6D7D2C2325F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decorator.UnitTests", "Decorator.UnitTests\Decorator.UnitTests.csproj", "{F0F4F28F-C012-49A6-A097-C1990D49E0F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Decorator.UnitTests", "Decorator.UnitTests\Decorator.UnitTests.csproj", "{F0F4F28F-C012-49A6-A097-C1990D49E0F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

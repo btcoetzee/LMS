@@ -135,7 +135,7 @@
             // the publisher
             var publisher = _FilterServiceProvider.GetService<IPublisher>();
 
-            // Set up the messages for Filter to return
+            // Set up the messages for Publisher to return
             const string expectedPublishedLeadMessage = "Published Lead";
             string actualMessage = string.Empty;
 
