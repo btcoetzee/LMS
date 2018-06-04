@@ -15,10 +15,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Campaing.Interface\Campaign.Interface.csproj" />
-    <ProjectReference Include="..\Decorator.Interface\Decorator.Interface.csproj" />
-    <ProjectReference Include="..\Publisher.Interface\Publisher.Interface.csproj" />
-    <ProjectReference Include="..\Validator.Interface\Validator.Interface.csproj" />
+    <ProjectReference Include="..\Campaign.Interface\Campaign.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Decorator.Interface">
+      <HintPath>..\..\lib\Decorator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Publisher.Interface">
+      <HintPath>..\..\lib\Publisher.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Validator.Interface">
+      <HintPath>..\..\lib\Validator.Interface.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

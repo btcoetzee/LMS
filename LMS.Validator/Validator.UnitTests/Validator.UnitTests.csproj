@@ -15,7 +15,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Validator.Interface\Validator.Interface.csproj" />
+    <Reference Include="LeadEntity">
+      <HintPath>..\..\lib\LeadEntity.dll</HintPath>
+    </Reference>
+    <Reference Include="LeadEntity.Interface">
+      <HintPath>..\..\lib\LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Validator.Interface">
+      <HintPath>..\..\lib\Validator.Interface.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -4,10 +4,4 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Decorator.Interface\Decorator.Interface.csproj" />
-    <ProjectReference Include="..\Publisher.Interface\Publisher.Interface.csproj" />
-    <ProjectReference Include="..\Validator.Interface\Validator.Interface.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Campaing.Interface\Campaign.Interface.csproj" />
-    <ProjectReference Include="..\Validator.Interface\Validator.Interface.csproj" />
+    <ProjectReference Include="..\Campaign.Interface\Campaign.Interface.csproj" />
   </ItemGroup>
 
 </Project>

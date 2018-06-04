@@ -2,15 +2,18 @@
 {
     using System;
     using System.IO;
-    using global::Validator.Interface;
+    using LeadEntity.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Validator.Interface;
+    using LeadEntity;
+
     /// <summary>
     /// 
     /// </summary>
     [TestClass]
-    public class CampaignValidatorTests
+    public class ValidatorTests
     {
         /// <summary> 
         /// The container 
@@ -18,22 +21,22 @@
         private static IServiceProvider _validatorServiceProvider;
         //private static IServiceCollection _validatorService;
 
-        private Mock<IValidator> _campaignValidator;
+        private Mock<IValidator> _validator;
 
         [TestInitialize]
         public void Initialize()
         {
-            _campaignValidator = new Mock<IValidator>();
+            _validator = new Mock<IValidator>();
             _validatorServiceProvider = new ServiceCollection()
-                .AddSingleton(typeof(IValidator), _campaignValidator.Object)
+                .AddSingleton(typeof(IValidator), _validator.Object)
                 .BuildServiceProvider();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _campaignValidator.VerifyAll();
-            _campaignValidator = null;
+            _validator.VerifyAll();
+            _validator = null;
             _validatorServiceProvider = null;
         }
         /// <summary>
@@ -46,10 +49,11 @@
             bool expectedValue = true;
 
             // Mock the ValidLead Function to return true
-            _campaignValidator.Setup(c => c.ValidLead(It.IsAny<Stream>())).Returns(expectedValue);
+            _validator.Setup(c => c.ValidLead(It.IsAny<ILeadEntity>())).Returns(expectedValue);
 
+            var lead =  new LeadEntity();
             // Invoke the ValidLead function
-            var actualValue = validator.ValidLead(new MemoryStream());
+            var actualValue = validator.ValidLead(lead);
 
             Assert.AreEqual(expectedValue, actualValue);
 

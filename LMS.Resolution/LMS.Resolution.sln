@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResolutionValidator", "ResolutionValidator\ResolutionValidator.csproj", "{158D48A1-75CF-45A1-94C5-F106719CE13B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResolutionPublisher", "ResolutionPublisher\ResolutionPublisher.csproj", "{2ADB7ED2-3DCB-42E3-92C8-DABDCA330CDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{158D48A1-75CF-45A1-94C5-F106719CE13B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{158D48A1-75CF-45A1-94C5-F106719CE13B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{158D48A1-75CF-45A1-94C5-F106719CE13B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{158D48A1-75CF-45A1-94C5-F106719CE13B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ADB7ED2-3DCB-42E3-92C8-DABDCA330CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ADB7ED2-3DCB-42E3-92C8-DABDCA330CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ADB7ED2-3DCB-42E3-92C8-DABDCA330CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ADB7ED2-3DCB-42E3-92C8-DABDCA330CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {96EA2F21-093F-48E6-8F6A-AA601089605F}
+	EndGlobalSection
+EndGlobal

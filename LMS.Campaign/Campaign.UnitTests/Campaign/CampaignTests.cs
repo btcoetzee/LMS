@@ -5,11 +5,12 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using global::Campaign.Interface;
+
     using Publisher.Interface;
     using Validator.Interface;
     using Decorator.Interface;
     using System.Text;
+    using global::Campaign.Interface;
 
     /// <summary>
     /// Campaign Unit Tests

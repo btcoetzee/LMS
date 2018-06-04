@@ -1,11 +1,11 @@
 ﻿namespace Publisher.Interface
 {
-    using System.IO;
+    using LeadEntity.Interface;
 
     public interface IPublisher
     {
         // Publish the lead for further processing
-        void PublishLead(Stream lead);
+        void PublishLead(ILeadEntity lead);
 
     }
 }
