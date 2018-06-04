@@ -6,7 +6,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using global::Filter.Interface;
-    using Publisher.Interface;
     using Validator.Interface;
     using Decorator.Interface;
     using System.Text;
@@ -20,7 +19,6 @@
         private static IServiceProvider _FilterServiceProvider;
         private Mock<IFilter> _Filter;
         private Mock<IValidator> _validator;
-        private Mock<IPublisher> _publisher;
         private Mock<IDecorator> _decorator;
 
         /// <summary>
@@ -32,14 +30,12 @@
             // Mock the Filter and Validator
             _Filter = new Mock<IFilter>();
             _validator = new Mock<IValidator>();
-            _publisher = new Mock<IPublisher>();
             _decorator = new Mock<IDecorator>();
 
             // Create Service Providers for Filter and Validator
             _FilterServiceProvider = new ServiceCollection()
                 .AddSingleton(typeof(IFilter), _Filter.Object)
                 .AddSingleton(typeof(IValidator), _validator.Object)
-                .AddSingleton(typeof(IPublisher), _publisher.Object)
                 .AddSingleton(typeof(IDecorator), _decorator.Object)
                 .BuildServiceProvider(); 
         }
@@ -53,8 +49,6 @@
             _Filter = null;
             _validator.VerifyAll();
             _validator = null;
-            _publisher.VerifyAll();
-            _publisher = null;
             _decorator.VerifyAll();
             _decorator = null;
             _FilterServiceProvider = null;
@@ -79,7 +73,7 @@
             Assert.AreEqual(expectedMessage, actualMessage);
         }
         /// <summary>
-        /// Tests the Filter lead validation with leads.
+        /// Tests the Filter lead Validation with leads.
         /// </summary>
         [TestMethod]
         public void TestLeadValidationForAFilter()
@@ -121,45 +115,6 @@
         }
 
         /// <summary>
-        /// Tests the Filter lead publisher.
-        /// </summary>
-        [TestMethod]
-        public void TestLeadPublisherForAFilter()
-        {
-            // A Filter
-            var Filter = _FilterServiceProvider.GetService<IFilter>();
-
-            // the validator
-            var validator = _FilterServiceProvider.GetService<IValidator>();
-
-            // the publisher
-            var publisher = _FilterServiceProvider.GetService<IPublisher>();
-
-            // Set up the messages for Filter to return
-            const string expectedPublishedLeadMessage = "Published Lead";
-            string actualMessage = string.Empty;
-
-            // Set up validator to return valid
-            _validator.Setup(v => v.ValidLead(It.IsAny<Stream>())).Returns<Stream>(s => { return true; });
-
-            // Mock the publish lead function to update the message
-            _publisher.Setup(c => c.PublishLead(It.IsAny<Stream>())).Callback(() => {
-                actualMessage = expectedPublishedLeadMessage;
-            });
-
-            // Tie the Filter to call out to the validator and if valid, publish lead
-            _Filter.Setup(c => c.ProcessLead(It.IsAny<Stream>())).Callback<Stream>(s => {
-                if (validator.ValidLead(s))
-                    publisher.PublishLead(s);
-                
-            });
-
-            // Send a valid stream parameter
-            Filter.ProcessLead(new MemoryStream());
-            Assert.AreEqual(expectedPublishedLeadMessage, actualMessage);
-        }
-
-        /// <summary>
         /// Tests the Filter lead decorator.
         /// </summary>
         [TestMethod]
@@ -170,9 +125,6 @@
 
             // the validator
             var validator = _FilterServiceProvider.GetService<IValidator>();
-
-            // the publisher
-            var publisher = _FilterServiceProvider.GetService<IPublisher>();
 
             // the decorator
             var decorator = _FilterServiceProvider.GetService<IDecorator>();
@@ -185,10 +137,6 @@
             // Set up validator to return valid
             _validator.Setup(v => v.ValidLead(It.IsAny<Stream>())).Returns<Stream>(s => { return true; });
 
-            // Mock the publish lead function to publish - do nothing really
-            _publisher.Setup(c => c.PublishLead(It.IsAny<Stream>())).Callback(() => { // publish 
-            });
-
             // Mock the decorator lead function to decorate the lead - The text is copied to the input parameter
             _decorator.Setup(c => c.DecorateLead(It.IsAny<Stream>())).Callback(() => {
                 lead = new MemoryStream(decoratedLeadMessageByteArray);
@@ -200,7 +148,6 @@
                 {
                     if (validator.ValidLead(s))
                     {
-                        publisher.PublishLead(s);
                         decorator.DecorateLead(s);
                     }
                 });
