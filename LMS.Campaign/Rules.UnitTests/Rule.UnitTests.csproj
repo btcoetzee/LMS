@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Decorator.Interface\Decorator.Interface.csproj" />
     <ProjectReference Include="..\Rule.Interface\Rule.Interface.csproj" />
-    <ProjectReference Include="..\Validator.Interface\Validator.Interface.csproj" />
   </ItemGroup>
 
 </Project>

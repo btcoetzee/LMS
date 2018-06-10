@@ -1,4 +1,4 @@
-﻿namespace Validator.UnitTests.Campaign
+﻿namespace Validator.UnitTests
 {
     using System;
     using System.IO;
@@ -7,7 +7,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Validator.Interface;
-    using LeadEntity;
 
     /// <summary>
     /// 
@@ -22,11 +21,13 @@
         //private static IServiceCollection _validatorService;
 
         private Mock<IValidator> _validator;
+        private Mock<ILeadEntity> _leadEntity;
 
         [TestInitialize]
         public void Initialize()
         {
             _validator = new Mock<IValidator>();
+            _leadEntity = new Mock<ILeadEntity>();
             _validatorServiceProvider = new ServiceCollection()
                 .AddSingleton(typeof(IValidator), _validator.Object)
                 .BuildServiceProvider();
@@ -51,9 +52,9 @@
             // Mock the ValidLead Function to return true
             _validator.Setup(c => c.ValidLead(It.IsAny<ILeadEntity>())).Returns(expectedValue);
 
-            var lead =  new LeadEntity();
+            
             // Invoke the ValidLead function
-            var actualValue = validator.ValidLead(lead);
+            var actualValue = validator.ValidLead(_leadEntity.Object);
 
             Assert.AreEqual(expectedValue, actualValue);
 

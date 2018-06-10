@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <Reference Include="LeadEntity.Interface">
-      <HintPath>..\..\lib\LeadEntity.Interface.dll</HintPath>
+      <HintPath>..\..\LMS.LeadEntity\LeadEntity.Interface\bin\Debug\netcoreapp2.0\LeadEntity.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

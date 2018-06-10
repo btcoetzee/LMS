@@ -4,14 +4,20 @@
 
     public interface ILeadEntity
     {
+        IContext[] Context { get; set; }
+
+        IProperty[] Properties { get; set; }
+
+        ISegment[] Segments { get; set; }
+
         // Is Lead Entity Valid
         bool isValid();
 
-        // Add elements for observers to see
-        void AddObserverableAspects();
+        //// Add elements for observers to see
+        //void AddObserverableAspects();
 
-        // Remove elements not required for observers
-        void RemoveObserverableAspects();
+        //// Remove elements not required for observers
+        //void RemoveObserverableAspects();
 
     }
 }

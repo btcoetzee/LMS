@@ -11,6 +11,7 @@
     using Decorator.Interface;
     using System.Text;
     using global::Campaign.Interface;
+    using LeadEntity.Interface;
 
     /// <summary>
     /// Campaign Unit Tests
@@ -72,11 +73,11 @@
             string actualMessage = "";
 
             // Mock the ProcessLead function to update the message
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<Stream>())).Callback(() => {
+            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback(() => {
                 actualMessage = expectedMessage;
             });
 
-            campaign.ProcessLead(new MemoryStream());
+            campaign.ProcessLead(new ILeadEntity());
             Assert.AreEqual(expectedMessage, actualMessage);
         }
         /// <summary>
@@ -97,7 +98,7 @@
             string actualMessage = string.Empty;
 
             // Set up return values when the validator is invoked
-            _validator.Setup(v => v.ValidLead(It.IsAny<Stream>())).Returns<Stream>(s => {
+            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<Stream>(s => {
                 if (s == null)
                     return false;
                 else
@@ -105,7 +106,7 @@
              });
 
             // Tie the campaign to call out to the validator
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<Stream>())).Callback<Stream>(s => {
+            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s => {
                 if(validator.ValidLead(s))
                     actualMessage = expectedValidLeadMessage;
                 else

@@ -5,11 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LeadDecorator\LeadDecorator.csproj" />
+    <ProjectReference Include="..\LeadPublisher\LeadPublisher.csproj" />
+    <ProjectReference Include="..\LeadValidator\LeadValidator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="LeadEntity.Interface">
       <HintPath>..\..\LMS.LeadEntity\LeadEntity.Interface\bin\Debug\netcoreapp2.0\LeadEntity.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="Publisher.Interface">
-      <HintPath>..\..\lib\Publisher.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

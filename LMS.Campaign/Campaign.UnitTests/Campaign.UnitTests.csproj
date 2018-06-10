@@ -20,13 +20,16 @@
 
   <ItemGroup>
     <Reference Include="Decorator.Interface">
-      <HintPath>..\..\lib\Decorator.Interface.dll</HintPath>
+      <HintPath>..\..\LMS.Decorator\Decorator.Interface\bin\Debug\netcoreapp2.0\Decorator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LeadEntity.Interface">
+      <HintPath>..\..\LMS.LeadEntity\LeadEntity.Interface\bin\Debug\netcoreapp2.0\LeadEntity.Interface.dll</HintPath>
     </Reference>
     <Reference Include="Publisher.Interface">
-      <HintPath>..\..\lib\Publisher.Interface.dll</HintPath>
+      <HintPath>..\..\LMS.Publisher\Publisher.Interface\bin\Debug\netcoreapp2.0\Publisher.Interface.dll</HintPath>
     </Reference>
     <Reference Include="Validator.Interface">
-      <HintPath>..\..\lib\Validator.Interface.dll</HintPath>
+      <HintPath>..\..\LMS.Validator\Validator.Interface\bin\Debug\netcoreapp2.0\Validator.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 
