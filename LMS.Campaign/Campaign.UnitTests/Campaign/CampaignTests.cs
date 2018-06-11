@@ -24,6 +24,8 @@
         private Mock<IValidator> _validator;
         private Mock<IPublisher> _publisher;
         private Mock<IDecorator> _decorator;
+        private Mock<ILeadEntity> _leadEntity;
+
 
         /// <summary>
         /// Initializes this instance.
@@ -36,6 +38,7 @@
             _validator = new Mock<IValidator>();
             _publisher = new Mock<IPublisher>();
             _decorator = new Mock<IDecorator>();
+            _leadEntity = new Mock<ILeadEntity>();
 
             // Create Service Providers 
             _campaignServiceProvider = new ServiceCollection()
@@ -77,7 +80,7 @@
                 actualMessage = expectedMessage;
             });
 
-            campaign.ProcessLead(new ILeadEntity());
+            campaign.ProcessLead(_leadEntity.Object);
             Assert.AreEqual(expectedMessage, actualMessage);
         }
         /// <summary>
@@ -98,7 +101,7 @@
             string actualMessage = string.Empty;
 
             // Set up return values when the validator is invoked
-            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<Stream>(s => {
+            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => {
                 if (s == null)
                     return false;
                 else
@@ -114,13 +117,65 @@
             });
 
             // Send a valid stream parameter
-            campaign.ProcessLead(new MemoryStream());
+            campaign.ProcessLead(_leadEntity.Object);
             Assert.AreEqual(expectedValidLeadMessage, actualMessage);
 
             // Send a null value parameter
             campaign.ProcessLead(null);
             Assert.AreEqual(expectedInvalidLeadMessage, actualMessage);
         }
+
+ 
+        /// <summary>
+        /// Tests the campaign lead decorator.
+        /// </summary>
+        [TestMethod]
+        public void TestLeadDecoratorForACampaign()
+        {
+            // A campaign
+            var campaign = _campaignServiceProvider.GetService<ICampaign>();
+
+            // the validator
+            var validator = _campaignServiceProvider.GetService<IValidator>();
+
+            // the decorator
+            var decorator = _campaignServiceProvider.GetService<IDecorator>();
+
+            // Set up the messages for campaign to return
+            const string expectedDecoratedLeadMessage = "Decorated Lead";
+            byte[] decoratedLeadMessageByteArray = Encoding.UTF8.GetBytes(expectedDecoratedLeadMessage);
+            var lead = new MemoryStream();
+ 
+            // Set up validator to return valid
+            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => { return true; });
+
+            // Mock the decorator lead function to decorate the lead - The text is copied to the input parameter
+            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>())).Callback(() => {
+                lead = new MemoryStream(decoratedLeadMessageByteArray);
+            });
+  
+            // Tie the campaign to call out to the validator and if valid, decorate and then publish lead
+            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>()))
+                .Callback<ILeadEntity>(s => 
+                {
+                    if (validator.ValidLead(s))
+                    {
+                        decorator.DecorateLead(s);
+                    }
+                });
+
+            // Send a valid stream parameter and check that lead is decorated
+            campaign.ProcessLead(_leadEntity.Object);
+
+            // Read the stream returned
+            StreamReader reader = new StreamReader(lead);
+            string decoratedLead = reader.ReadToEnd();
+
+            // Verify that the lead carries the decorated string
+            Assert.IsTrue(decoratedLead.Contains(expectedDecoratedLeadMessage));
+            
+        }
+
 
         /// <summary>
         /// Tests the campaign lead publisher.
@@ -134,6 +189,9 @@
             // the validator
             var validator = _campaignServiceProvider.GetService<IValidator>();
 
+            // the decorator
+            var decorator = _campaignServiceProvider.GetService<IDecorator>();
+
             // the publisher
             var publisher = _campaignServiceProvider.GetService<IPublisher>();
 
@@ -142,81 +200,31 @@
             string actualMessage = string.Empty;
 
             // Set up validator to return valid
-            _validator.Setup(v => v.ValidLead(It.IsAny<Stream>())).Returns<Stream>(s => { return true; });
+            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => { return true; });
 
+            // Mock the decorator lead function - doesn't have to do anything here
+            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>())).Callback(() => {
+                //Do Nothing
+                          });
             // Mock the publish lead function to update the message
-            _publisher.Setup(c => c.PublishLead(It.IsAny<Stream>())).Callback(() => {
+            _publisher.Setup(c => c.PublishLead(It.IsAny<ILeadEntity>())).Callback(() => {
                 actualMessage = expectedPublishedLeadMessage;
             });
 
             // Tie the campaign to call out to the validator and if valid, publish lead
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<Stream>())).Callback<Stream>(s => {
+            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s => {
                 if (validator.ValidLead(s))
+                {
+                    decorator.DecorateLead(s);
                     publisher.PublishLead(s);
-                
+                }
+
             });
 
             // Send a valid stream parameter
-            campaign.ProcessLead(new MemoryStream());
+            campaign.ProcessLead(_leadEntity.Object);
             Assert.AreEqual(expectedPublishedLeadMessage, actualMessage);
         }
 
-        /// <summary>
-        /// Tests the campaign lead decorator.
-        /// </summary>
-        [TestMethod]
-        public void TestLeadDecoratorForACampaign()
-        {
-            // A campaign
-            var campaign = _campaignServiceProvider.GetService<ICampaign>();
-
-            // the validator
-            var validator = _campaignServiceProvider.GetService<IValidator>();
-
-            // the publisher
-            var publisher = _campaignServiceProvider.GetService<IPublisher>();
-
-            // the decorator
-            var decorator = _campaignServiceProvider.GetService<IDecorator>();
-
-            // Set up the messages for campaign to return
-            const string expectedDecoratedLeadMessage = "Decorated Lead";
-            byte[] decoratedLeadMessageByteArray = Encoding.UTF8.GetBytes(expectedDecoratedLeadMessage);
-            var lead = new MemoryStream();
- 
-            // Set up validator to return valid
-            _validator.Setup(v => v.ValidLead(It.IsAny<Stream>())).Returns<Stream>(s => { return true; });
-
-            // Mock the publish lead function to publish - do nothing really
-            _publisher.Setup(c => c.PublishLead(It.IsAny<Stream>())).Callback(() => { // publish 
-            });
-
-            // Mock the decorator lead function to decorate the lead - The text is copied to the input parameter
-            _decorator.Setup(c => c.DecorateLead(It.IsAny<Stream>())).Callback(() => {
-                lead = new MemoryStream(decoratedLeadMessageByteArray);
-            });
-
-            // Tie the campaign to call out to the validator and if valid, publish and then decorate lead
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<Stream>()))
-                .Callback<Stream>(s => 
-                {
-                    if (validator.ValidLead(s))
-                    {
-                        publisher.PublishLead(s);
-                        decorator.DecorateLead(s);
-                    }
-                });
-
-            // Send a valid stream parameter and check that lead is decorated
-            campaign.ProcessLead(lead);
-
-            // Read the stream returned
-            StreamReader reader = new StreamReader(lead);
-            string decoratedLead = reader.ReadToEnd();
-
-            // Verify that the lead carries the decorated string
-            Assert.IsTrue(decoratedLead.Contains(expectedDecoratedLeadMessage));
-            
-        }
     }
 }
