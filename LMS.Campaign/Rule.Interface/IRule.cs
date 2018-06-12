@@ -1,12 +1,12 @@
 ﻿namespace Rule.Interface
 {
+    using LeadEntity.Interface;
     using System;
-    using System.IO;
 
     public interface IRule
     {
 
         //  Accept Lead and Process
-        void ProcessLead(Stream lead);
+        void ProcessLead(ILeadEntity lead);
     }
 }

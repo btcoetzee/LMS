@@ -18,4 +18,19 @@
     <ProjectReference Include="..\Rule.Interface\Rule.Interface.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Decorator.Interface">
+      <HintPath>..\..\LMS.Decorator\Decorator.Interface\bin\Debug\netcoreapp2.0\Decorator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LeadEntity.Interface">
+      <HintPath>..\..\LMS.LeadEntity\LeadEntity.Interface\bin\Debug\netcoreapp2.0\LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Publisher.Interface">
+      <HintPath>..\..\LMS.Publisher\Publisher.Interface\bin\Debug\netcoreapp2.0\Publisher.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Validator.Interface">
+      <HintPath>..\..\LMS.Validator\Validator.Interface\bin\Debug\netcoreapp2.0\Validator.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

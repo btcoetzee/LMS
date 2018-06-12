@@ -2,13 +2,16 @@ namespace Rules.UnitTests
 {
     using System;
     using System.IO;
+    using System.Text;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Decorator.Interface;
     using Validator.Interface;
     using Rule.Interface;
-    using System.Text;
+
+    using Publisher.Interface;
+    using LeadEntity.Interface;
 
     [TestClass]
     public class RuleTests
@@ -17,6 +20,8 @@ namespace Rules.UnitTests
         private Mock<IRule> _rule;
         private Mock<IValidator> _validator;
         private Mock<IDecorator> _decorator;
+        private Mock<IPublisher> _publisher;
+        private Mock<ILeadEntity> _leadEntity;
 
         /// <summary>
         /// Initializes this instance.
@@ -26,14 +31,17 @@ namespace Rules.UnitTests
         {
             // Mock the Rule and Validator
             _rule = new Mock<IRule>();
+            _leadEntity = new Mock<ILeadEntity>();
             _validator = new Mock<IValidator>();
-             _decorator = new Mock<IDecorator>();
+            _decorator = new Mock<IDecorator>();
+            _publisher = new Mock<IPublisher>();
 
             // Create Service Providers for Rule and Validator
             _ruleServiceProvider = new ServiceCollection()
                 .AddSingleton(typeof(IRule), _rule.Object)
                 .AddSingleton(typeof(IValidator), _validator.Object)
                 .AddSingleton(typeof(IDecorator), _decorator.Object)
+                .AddSingleton(typeof(IPublisher), _publisher.Object)
                 .BuildServiceProvider();
         }
         /// <summary>
@@ -48,6 +56,8 @@ namespace Rules.UnitTests
             _validator = null;
             _decorator.VerifyAll();
             _decorator = null;
+            _publisher.VerifyAll();
+            _publisher = null;
             _ruleServiceProvider = null;
         }
 
@@ -62,11 +72,11 @@ namespace Rules.UnitTests
             string actualMessage = "";
 
             // Mock the ProcessLead function to update the message
-            _rule.Setup(c => c.ProcessLead(It.IsAny<Stream>())).Callback(() => {
+            _rule.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback(() => {
                 actualMessage = expectedMessage;
             });
 
-            Rule.ProcessLead(new MemoryStream());
+            Rule.ProcessLead(_leadEntity.Object);
             Assert.AreEqual(expectedMessage, actualMessage);
         }
         /// <summary>
@@ -87,7 +97,7 @@ namespace Rules.UnitTests
             string actualMessage = string.Empty;
 
             // Set up return values when the validator is invoked
-            _validator.Setup(v => v.ValidLead(It.IsAny<Stream>())).Returns<Stream>(s => {
+            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => {
                 if (s == null)
                     return false;
                 else
@@ -95,7 +105,7 @@ namespace Rules.UnitTests
             });
 
             // Tie the Rule to call out to the validator
-            _rule.Setup(c => c.ProcessLead(It.IsAny<Stream>())).Callback<Stream>(s => {
+            _rule.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s => {
                 if (validator.ValidLead(s))
                     actualMessage = expectedValidLeadMessage;
                 else
@@ -103,7 +113,7 @@ namespace Rules.UnitTests
             });
 
             // Send a valid stream parameter
-            Rule.ProcessLead(new MemoryStream());
+            Rule.ProcessLead(_leadEntity.Object);
             Assert.AreEqual(expectedValidLeadMessage, actualMessage);
 
             // Send a null value parameter
@@ -133,17 +143,17 @@ namespace Rules.UnitTests
             var lead = new MemoryStream();
 
             // Set up validator to return valid
-            _validator.Setup(v => v.ValidLead(It.IsAny<Stream>())).Returns<Stream>(s => { return true; });
+            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => { return true; });
 
 
             // Mock the decorator lead function to decorate the lead - The text is copied to the input parameter
-            _decorator.Setup(c => c.DecorateLead(It.IsAny<Stream>())).Callback(() => {
+            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>())).Callback(() => {
                 lead = new MemoryStream(decoratedLeadMessageByteArray);
             });
 
             // Tie the Rule to call out to the validator and if valid, publish and then decorate lead
-            _rule.Setup(c => c.ProcessLead(It.IsAny<Stream>()))
-                .Callback<Stream>(s =>
+            _rule.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>()))
+                .Callback<ILeadEntity>(s =>
                 {
                     if (validator.ValidLead(s))
                     {
@@ -152,7 +162,7 @@ namespace Rules.UnitTests
                 });
 
             // Send a valid stream parameter and check that lead is decorated
-            Rule.ProcessLead(lead);
+            Rule.ProcessLead(_leadEntity.Object);
 
             // Read the stream returned
             StreamReader reader = new StreamReader(lead);
