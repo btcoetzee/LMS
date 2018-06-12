@@ -12,4 +12,10 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="LeadEntity.Interface">
+      <HintPath>..\..\LMS.LeadEntity\LeadEntity.Interface\bin\Debug\netcoreapp2.0\LeadEntity.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

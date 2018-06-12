@@ -1,13 +1,15 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace LeadCollector.UnitTests
 {
+    using LeadEntity.Interface;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
-    public class UnitTest1
+    public class LeadCollectorUnitTests
     {
         [TestMethod]
         public void TestMethod1()
         {
+
         }
     }
 }
