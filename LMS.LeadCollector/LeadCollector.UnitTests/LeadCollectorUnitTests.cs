@@ -124,5 +124,24 @@ namespace LeadCollector.UnitTests
             // Invoke the Publish function
             publisher.PublishLead(_leadEntity.Object);
         }
+
+        [TestMethod]
+        public void TestLeadFalseToLeadCollector()
+        {
+            var validator = _serviceProvider.GetService<IValidator>();
+            bool expectedValue = false;
+
+            // Mock the ValidateLead Function and verify that it was called as expected.
+            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(expectedValue);
+
+            _decorator.Verify(v => v.DecorateLead(It.IsAny<ILeadEntity>()), Times.Never());
+
+            _publisher.Verify(v => v.PublishLead(It.IsAny<ILeadEntity>()), Times.Never());
+
+            // Invoke the ValidLead function
+            var actualValue = validator.ValidLead(_leadEntity.Object);
+
+            Assert.AreEqual(expectedValue, actualValue);
+        }
     }
 }
