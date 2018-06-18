@@ -2,7 +2,7 @@
 {
 
     using System;
-    public interface ILoggerClient
+    public interface ILoggerClient 
     {
         void Log(ILoggerClientObject loggerObject);
 

@@ -8,101 +8,41 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Admiral.Components.Instrumentation.Contract;
-    using Compare.Components.Notification.Channels.InProc;
     using Compare.Components.Notification.Contract;
     using Compare.Components.Notification.Publishers;
-    using Compare.Components.Notification.Subscribers;
-    
+    using LMS.LoggerClient.Interface;
+    using Moq;
+
     public class LeadPublisher : IPublisher
     {
-        LeadPublisher(ILogger logger);
+        ILoggerClient  _loggerClient;
+        ILeadEntity _leadEntity;
+     
+        private static IPublisher<string> _notificationPublisher;
 
-        public void PublishLead(ILeadEntity lead)
+        LeadPublisher(IPublisher<string> notificationPublisher, ILoggerClient loggerClient)
         {
-            RunTasks().Wait();
+            _loggerClient = loggerClient;
+            _notificationPublisher = notificationPublisher;
         }
 
-        private static async Task RunTasks()
+        public void PublishLead(ILeadEntity leadEntity)
         {
-            var logger = new Mock<ILogger>().Object;
+            _leadEntity = leadEntity;
+   
+            _notificationPublisher.BroadcastMessage("Start Campaigns");
 
-            var channel = new InProcNotificationChannel<string>("taskChannel", logger);
-
-            var publisher = new Publisher<string>(new INotificationChannel<string>[] { channel }, true);
-
-            var random = new Random();
-
-            var taskQueue = new Queue<IdTask>();
-
-            const int taskCount = 5;
-            const int baseWait = 500;
-
-            for (var i = 1; i <= taskCount; i++)
-            {
-                var closure = i;
-
-                var task = new IdTask(closure, () =>
-                {
-                    var id = closure;
-
-                    var timing = baseWait + random.Next(1000);
-
-                    var subscriber = new Subscriber<string>(channel, true);
-
-                    if (id % 2 == 0)
-                    {
-                        Console.WriteLine($"Task {id} is bailing...");
-                        //subscriber.DisconnectChannel(); //Don't need to do this with in-proc messages.
-                        return;
-                    }
-
-                    var running = false;
-
-                    subscriber.AddOnReceiveActionToChannel(message =>
-                    {
-                        Console.WriteLine($"{id}: Received message: {message} Starting execution...");
-                        running = true;
-                    });
-
-                    while (!running)
-                    { }
-
-                    Console.WriteLine($"Task ID {id} is waiting for {timing} milliseconds...");
-
-                    Thread.Sleep(timing);
-
-                    Console.WriteLine($"Task ID {id} complete!");
-                });
-
-                taskQueue.Enqueue(task);
-                task.Start();
-            }
-
-            Console.WriteLine("\nPushing start signal... \n");
-
-            publisher.BroadcastMessage("Let's get this party started!");
-
-            while (taskQueue.Any())
-            {
-                var executingTask = taskQueue.Dequeue();
-                Console.WriteLine($"Waiting for task {executingTask.TaskId} to complete...");
-                await executingTask;
-            }
-
-            Console.WriteLine("\nAll threads complete!");
-
-            Console.ReadKey();
         }
 
-        private class IdTask : Task
-        {
-            public int TaskId { get; }
 
-            public IdTask(int id, Action behavior) : base(behavior)
-            {
-                TaskId = id;
-            }
-        }
+
+
+ 
+
+ 
     }
 }
+
+
+
 
