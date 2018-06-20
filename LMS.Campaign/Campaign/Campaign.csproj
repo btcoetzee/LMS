@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Campaign.Interface\Campaign.Interface.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
+  </Target>
+
 </Project>

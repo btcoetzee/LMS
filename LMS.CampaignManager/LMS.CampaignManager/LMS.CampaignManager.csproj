@@ -4,4 +4,23 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
+    <PackageReference Include="Compare.Components.Notification.NotificationChannels" Version="1.0.0" />
+    <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Campaign">
+      <HintPath>..\..\LMS.Campaign\Campaign\bin\Debug\netcoreapp2.0\Campaign.dll</HintPath>
+    </Reference>
+    <Reference Include="Campaign.Interface">
+      <HintPath>..\..\LMS.Campaign\Campaign.Interface\bin\Debug\netcoreapp2.0\Campaign.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
+  </Target>
+
 </Project>

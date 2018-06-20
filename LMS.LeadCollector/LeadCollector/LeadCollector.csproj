@@ -5,14 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Admiral.Components.Instrumentation.Contract" Version="2.0.0" />
-    <PackageReference Include="Compare.Components.Notification.Channels" Version="1.1.2" />
-    <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
-    <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.2" />
-    <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Campaign.Interface">
       <HintPath>..\..\LMS.Campaign\Campaign.Interface\bin\Debug\netcoreapp2.0\Campaign.Interface.dll</HintPath>
     </Reference>

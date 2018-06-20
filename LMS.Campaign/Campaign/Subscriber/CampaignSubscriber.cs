@@ -5,16 +5,21 @@
     using System.Text;
     using System.Threading;
     using Campaign.Interface;
-    class Subscriber : ICampaignSubscriber
+    public class CampaignSubscriber : ICampaignSubscriber
     {
 
         private readonly int _id;
         private static readonly Random _random = new Random();
 
-        public Subscriber(int id)
+        public CampaignSubscriber(int id)
         {
             _id = id;
         }
+        /// <summary>
+        /// Receive the lead from the Channel Subscibed to and let the Campaign process it.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public string ReceiveLead(string message)
         {
             var result = $"ID: {_id} -> Thread completed.";
@@ -28,7 +33,7 @@
 
             return result;
 
-            /// THIS IS WHERE THE CAMPAIGN.PROCESSLEAD WILL BE CALLED.
+            // THIS IS WHERE THE CAMPAIGN.PROCESSLEAD WILL BE CALLED.
         }
     }
 }
