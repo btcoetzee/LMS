@@ -37,6 +37,12 @@ msbuild ..\LMS.Resolution\LMS.Resolution.sln >%OUTPUTFILE%
 type %OUTPUTFILE%  |  findstr /I /B /R  "Build" |findstr "succeeded." 
 if %ERRORLEVEL% NEQ 0 TYPE %OUTPUTFILE%  & ECHO "BUILD FAILED." & pause
 REM -------------------------------------------------
+REM LMS.LoggerClient
+REM -------------------------------------------------
+msbuild ..\LMS.Resolution\LMS.LoggerClient.sln >%OUTPUTFILE%  
+type %OUTPUTFILE%  |  findstr /I /B /R  "Build" |findstr "succeeded." 
+if %ERRORLEVEL% NEQ 0 TYPE %OUTPUTFILE%  & ECHO "BUILD FAILED." & pause
+REM -------------------------------------------------
 REM LMS.Campaign
 REM -------------------------------------------------
 msbuild ..\LMS.Campaign\LMS.Campaign.sln >%OUTPUTFILE%  
