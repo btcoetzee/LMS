@@ -5,8 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Admiral.Components.Instrumentation.Contract" Version="2.0.0" />
+    <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
+    <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.2" />
+    <PackageReference Include="Moq" Version="4.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="LeadEntity.Interface">
       <HintPath>..\..\LMS.LeadEntity\LeadEntity.Interface\bin\Debug\netcoreapp2.0\LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClient.Interface">
+      <HintPath>..\..\LMS.LoggerClient\LMS.LoggerClient.Interface\bin\Debug\netcoreapp2.0\LMS.LoggerClient.Interface.dll</HintPath>
     </Reference>
     <Reference Include="Publisher.Interface">
       <HintPath>..\..\LMS.Publisher\Publisher.Interface\bin\Debug\netcoreapp2.0\Publisher.Interface.dll</HintPath>
