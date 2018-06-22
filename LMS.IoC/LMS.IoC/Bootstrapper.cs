@@ -4,10 +4,13 @@ using System.Text;
 
 namespace LMS.IoC
 {
+    using System.Linq;
     using Admiral.Components.Instrumentation.Contract;
     using Admiral.Components.Instrumentation.Logging;
     using Compare.Components.Notification.Channels.InProc;
     using Compare.Components.Notification.Contract;
+    using Compare.Components.Notification.Publishers;
+    using Compare.Components.Notification.Subscribers;
     using LeadEntity.Interface;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -43,6 +46,25 @@ namespace LMS.IoC
             return container;
         }
 
-        public static IServiceCollection
+        public static IServiceCollection AddNotificationSubscriber(this IServiceCollection container)
+        {
+            container.AddSingleton<ISubscriber<string>>(provider =>
+                new Subscriber<string>(provider.GetService<INotificationChannel<string>>(), true));
+
+            return container;
+        }
+
+        public static IServiceCollection AddNotificationPublisher(this IServiceCollection container)
+        {
+            container.AddSingleton<IPublisher<string>>(provider =>
+                new Publisher<string>(provider.GetServices<INotificationChannel<string>>().ToArray(), true));
+
+            return container;
+        }
+
+        public static IServiceCollection AddLeadCollector(this IServiceCollection container)
+        {
+            return container;
+        }
     }
 }
