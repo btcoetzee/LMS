@@ -28,7 +28,10 @@ namespace LeadValidator
                 if (guid.ToString() == null || guid == Guid.Empty.ToString())
                 {
                     return false;
+
+
                 }
+                // try tryParse on guid to see if valid guid.
             }
             return true;
 

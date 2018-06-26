@@ -11,11 +11,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CampaignManager.Interface\CampaignManager.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Campaign">
       <HintPath>..\..\LMS.Campaign\Campaign\bin\Debug\netcoreapp2.0\Campaign.dll</HintPath>
     </Reference>
     <Reference Include="Campaign.Interface">
       <HintPath>..\..\LMS.Campaign\Campaign.Interface\bin\Debug\netcoreapp2.0\Campaign.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClient.Interface">
+      <HintPath>..\..\LMS.LoggerClient\LMS.LoggerClient.Interface\bin\Debug\netcoreapp2.0\LMS.LoggerClient.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

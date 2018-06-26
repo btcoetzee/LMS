@@ -8,7 +8,8 @@
     {
         public void DecorateLead(ILeadEntity lead)
         {
-            throw new NotImplementedException();
+            // Let's decorate here
+            //throw new NotImplementedException();
         }
     }
 }

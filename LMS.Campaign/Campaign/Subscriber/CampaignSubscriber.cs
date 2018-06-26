@@ -7,14 +7,13 @@
     using Campaign.Interface;
     public class CampaignSubscriber : ICampaignSubscriber
     {
+        private readonly ICampaign _campaign;
 
-        private readonly int _id;
-        private static readonly Random _random = new Random();
-
-        public CampaignSubscriber(int id)
+        public CampaignSubscriber(ICampaign campaign)
         {
-            _id = id;
+            _campaign = campaign;
         }
+
         /// <summary>
         /// Receive the lead from the Channel Subscibed to and let the Campaign process it.
         /// </summary>
@@ -22,18 +21,10 @@
         /// <returns></returns>
         public string ReceiveLead(string message)
         {
-            var result = $"ID: {_id} -> Thread completed.";
-
-            var delay = _random.Next(1000, 5000);
-
-            Thread.Sleep(delay);
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Hello from message ID {_id}! I slept for {delay}ms and received: {message}");
+            var result = _campaign.ProcessLead(message);
 
             return result;
-
-            // THIS IS WHERE THE CAMPAIGN.PROCESSLEAD WILL BE CALLED.
+  
         }
     }
 }

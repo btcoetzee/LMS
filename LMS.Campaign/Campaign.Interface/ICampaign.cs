@@ -5,7 +5,11 @@
 
     public interface ICampaign
     {
+   
+        string CampaignName { get; set; }
+
         //  Accept Lead and Process
-        void ProcessLead(ILeadEntity lead);
+        string ProcessLead(string message);
+        //string ProcessLead(ILeadEntity lead);  // Eventually will be processing lead
     }
 }

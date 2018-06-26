@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>CampaignManagerSubscriber</AssemblyName>
+    <RootNamespace>CampaignManagerSubscriber</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CampaignManager.Interface\CampaignManager.Interface.csproj" />
+  </ItemGroup>
+
+</Project>

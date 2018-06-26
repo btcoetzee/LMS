@@ -7,16 +7,7 @@
     using Validator.Interface;
     using Campaign.Interface;
     using Resolution.Interface;
-    using System.Collections.Generic;
-    using System.ComponentModel.Design;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Admiral.Components.Instrumentation.Contract;
-    using Compare.Components.Notification.Channels.InProc;
-    using Compare.Components.Notification.Contract;
-    using Compare.Components.Notification.Publishers;
-    using Compare.Components.Notification.Subscribers;
+
 
     public class LeadCollector
     {
@@ -24,7 +15,6 @@
         /// Defining the Members
         /// </summary>
         private readonly IValidator _leadValidator;
-
         private readonly IDecorator _leadDecorator;
         private readonly IPublisher _leadPublisher;
         private readonly IResolution _leadResolver;
