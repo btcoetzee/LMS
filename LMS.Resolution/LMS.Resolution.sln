@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResolutionValidator", "ResolutionValidator\ResolutionValidator.csproj", "{158D48A1-75CF-45A1-94C5-F106719CE13B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.ResolutionValidator", "ResolutionValidator\LMS.ResolutionValidator.csproj", "{158D48A1-75CF-45A1-94C5-F106719CE13B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResolutionPublisher", "ResolutionPublisher\ResolutionPublisher.csproj", "{2ADB7ED2-3DCB-42E3-92C8-DABDCA330CDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.ResolutionPublisher", "ResolutionPublisher\LMS.ResolutionPublisher.csproj", "{2ADB7ED2-3DCB-42E3-92C8-DABDCA330CDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resolution.Interface", "Resolution.Interface\Resolution.Interface.csproj", "{BBDB592B-BCE9-44A4-B5A0-55468E003609}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Resolution.Interface", "Resolution.Interface\LMS.Resolution.Interface.csproj", "{BBDB592B-BCE9-44A4-B5A0-55468E003609}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

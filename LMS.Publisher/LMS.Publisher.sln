@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Publisher.Interface", "Publisher.Interface\Publisher.Interface.csproj", "{40A4A725-ABAD-4DCC-9381-F0C519871413}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Publisher.Interface", "Publisher.Interface\LMS.Publisher.Interface.csproj", "{40A4A725-ABAD-4DCC-9381-F0C519871413}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publisher.UnitTests", "Publisher.UnitTests\Publisher.UnitTests.csproj", "{6FD8D6B1-53E2-4E02-A95C-E817FC2B46A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Publisher.UnitTests", "Publisher.UnitTests\LMS.Publisher.UnitTests.csproj", "{6FD8D6B1-53E2-4E02-A95C-E817FC2B46A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

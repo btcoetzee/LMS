@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampaignManager", "CampaignManager\CampaignManager.csproj", "{A63D4567-D601-4617-BD0A-25EE1D6E1ABB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.CampaignManager.Implementation", "CampaignManager\LMS.CampaignManager.Implementation.csproj", "{A63D4567-D601-4617-BD0A-25EE1D6E1ABB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampaignManager.Interface", "CampaignManager.Interface\CampaignManager.Interface.csproj", "{9F19C963-6D67-4CDA-A3A1-CE187A8AAF60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.CampaignManager.Interface", "CampaignManager.Interface\LMS.CampaignManager.Interface.csproj", "{9F19C963-6D67-4CDA-A3A1-CE187A8AAF60}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampaignManagerSubscriber", "CampaignManagerSubscriber\CampaignManagerSubscriber.csproj", "{6B863128-0C03-499D-A618-FB63A8B9201C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.CampaignManagerSubscriber.Implementation", "CampaignManagerSubscriber\LMS.CampaignManagerSubscriber.Implementation.csproj", "{6B863128-0C03-499D-A618-FB63A8B9201C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CampaignManager.UnitTests", "CampaignManager.UnitTests\CampaignManager.UnitTests.csproj", "{0420118E-48D7-4319-9681-E9B66266D0EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.CampaignManager.UnitTests", "CampaignManager.UnitTests\LMS.CampaignManager.UnitTests.csproj", "{0420118E-48D7-4319-9681-E9B66266D0EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

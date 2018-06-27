@@ -1,4 +1,4 @@
-namespace CampaignManager.UnitTests
+namespace LMS.CampaignManager.UnitTests
 {
     using System;
     using Microsoft.Extensions.DependencyInjection;
@@ -7,8 +7,8 @@ namespace CampaignManager.UnitTests
     using System.Collections.Generic;
     using Compare.Components.Notification.Contract;
     using Compare.Components.Notification.Subscribers;
+    using LMS.Campaign.Interface;
     using LMS.LoggerClient.Interface;
-    using Campaign.Interface;
 
     [TestClass]
     public class CampaignManagerTests
@@ -16,8 +16,9 @@ namespace CampaignManager.UnitTests
 
         private static IServiceProvider _campaignManagerServiceProvider;
         private Mock<ISubscriber<string>> _notificationSubscriber;
-        private Mock<IList<ICampaignSubscriber>> _campaingSubscriberList;
+        private Mock<List<ICampaignSubscriber>> _campaingSubscriberList;
         private Mock<ILoggerClient> _loggerClient;
+        private static readonly string[] EmptyResultArray = new string[] { };
 
         /// <summary>
         /// Initializes this instance.
@@ -27,9 +28,10 @@ namespace CampaignManager.UnitTests
         {
             // Mock the Campaign, Validator, Publisher and Decorator
             _notificationSubscriber = new Mock<ISubscriber<string>>();
-            _campaingSubscriberList = new Mock<IList<ICampaignSubscriber>>();
+            _campaingSubscriberList = new Mock<List<ICampaignSubscriber>>();
             _loggerClient = new Mock<ILoggerClient>();
           
+            var campaingSubscriber = new Mock<ICampaignSubscriber>();
 
             // Create Service Providers 
             _campaignManagerServiceProvider = new ServiceCollection()
@@ -59,7 +61,7 @@ namespace CampaignManager.UnitTests
         [TestMethod]
         public void CampaignConstructorTest()
         {
-            var campaignManager = new LMS.CampaignManager.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object,  _loggerClient.Object);
+            var campaignManager = new Implementation.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object,  _loggerClient.Object);
         }
 
         /// <summary>
@@ -71,7 +73,7 @@ namespace CampaignManager.UnitTests
         {
             try
             {
-                var campaignManager = new LMS.CampaignManager.CampaignManager(null, _campaingSubscriberList.Object, _loggerClient.Object);
+                var campaignManager = new Implementation.CampaignManager(null, _campaingSubscriberList.Object, _loggerClient.Object);
                 Assert.Fail("An Argument Null Exception is expected when the NotificationSubscriber is null");
             }
             catch (Exception exception)
@@ -90,7 +92,7 @@ namespace CampaignManager.UnitTests
 
             try
             {
-                var campaignManager = new LMS.CampaignManager.CampaignManager(_notificationSubscriber.Object, null, _loggerClient.Object);
+                var campaignManager = new Implementation.CampaignManager(_notificationSubscriber.Object, null, _loggerClient.Object);
                 Assert.Fail("An Argument Null Exception is expected when the CampaignSubscriberList is null");
             }
             catch (Exception exception)
@@ -99,24 +101,48 @@ namespace CampaignManager.UnitTests
                 Assert.AreEqual("Value cannot be null. Parameter name: campaignSubscriberList", exception.Message.Replace(Environment.NewLine, " "));
             }
          }
-
         /// <summary>
-        /// Campaing Constructor Test with a Null CampaignSubscriberList.
+        /// Campaing Constructor Test with a Null LoggerClient.
         /// </summary>
         [TestMethod]
-        public void CampainConstructorNullCampaignSubscriberListTest()
+        public void CampaignConstructorNullLoggerClientTest()
         {
 
             try
             {
-                var campaignManager = new LMS.CampaignManager.CampaignManager(_notificationSubscriber.Object, null, _loggerClient.Object);
-                Assert.Fail("An Argument Null Exception is expected when the CampaignSubscriberList is null");
+                var campaignManager = new Implementation.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object, null);
+                Assert.Fail("An Argument Null Exception is expected when the LoggerClient is null");
             }
             catch (Exception exception)
             {
                 Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
-                Assert.AreEqual("Value cannot be null. Parameter name: campaignSubscriberList", exception.Message.Replace(Environment.NewLine, " "));
+                Assert.AreEqual("Value cannot be null. Parameter name: loggerClient", exception.Message.Replace(Environment.NewLine, " "));
             }
         }
+
+        /// <summary>
+        /// Campaing Constructor Test with a No Campaigns.
+        /// </summary>
+        [TestMethod]
+        public void CampaignProcessEmptyCampaignTest()
+        {
+            // No Campaigns set up, so result list should be empty
+            var campaignManager = new Implementation.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object, _loggerClient.Object);
+            var resultList = campaignManager.ProcessCampaigns("This is the lead");
+            Assert.AreEqual(resultList.Length, 0);
+        }
+
+        /// <summary>
+        /// Campaing Constructor Test with a Null CampaignSubscriberList.
+        /// </summary>
+        //[TestMethod]
+        //  TBD public void CampaignProcessMultipleCampaignTest()
+        //{
+        //    // Setup some Campaigns 
+        //    var campaignSubscriber = new ICampaignSubscriber()
+        //    var campaignManager = new Implementation.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object, _loggerClient.Object);
+        //    var resultList = campaignManager.ProcessCampaigns("This is the lead");
+        //    Assert.AreEqual(resultList.Length, 0);
+        //}
     }
 }

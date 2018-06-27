@@ -1,7 +1,7 @@
-﻿namespace ResolutionPublisher
+﻿namespace LMS.ResolutionPublisher
 {
-    using LeadEntity.Interface;
-    using Publisher.Interface;
+    using LMS.LeadEntity.Interface;
+    using LMS.Publisher.Interface;
     using System;
     public class ResolutionPublisher : IPublisher
     {

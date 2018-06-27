@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadValidator", "LeadValidator\LeadValidator.csproj", "{51CCA1FF-D6E5-4CDF-A9AB-5B10A05028D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LeadValidator.Implementation", "LeadValidator\LMS.LeadValidator.Implementation.csproj", "{51CCA1FF-D6E5-4CDF-A9AB-5B10A05028D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadPublisher", "LeadPublisher\LeadPublisher.csproj", "{7A68C4C1-A388-4122-804F-F0E41C45722F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LeadPublisher.Implementation", "LeadPublisher\LMS.LeadPublisher.Implementation.csproj", "{7A68C4C1-A388-4122-804F-F0E41C45722F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadDecorator", "LeadDecorator\LeadDecorator.csproj", "{613110EC-64AB-4A9F-88FB-EAF5FBE36A8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LeadDecorator.Implementation", "LeadDecorator\LMS.LeadDecorator.Implementation.csproj", "{613110EC-64AB-4A9F-88FB-EAF5FBE36A8F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadDecorator.UnitTests", "LeadDecorator.UnitTests\LeadDecorator.UnitTests.csproj", "{F4AF70F1-42C1-4A15-A9EA-32699159329A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LeadDecorator.UnitTests", "LeadDecorator.UnitTests\LMS.LeadDecorator.UnitTests.csproj", "{F4AF70F1-42C1-4A15-A9EA-32699159329A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadPublisher.UnitTests", "LeadPublisher.UnitTests\LeadPublisher.UnitTests.csproj", "{B2982395-CCCA-4EAD-80C6-1B04EE45C825}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LeadPublisher.UnitTests", "LeadPublisher.UnitTests\LMS.LeadPublisher.UnitTests.csproj", "{B2982395-CCCA-4EAD-80C6-1B04EE45C825}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadValidator.UnitTests", "LeadValidator.UnitTests\LeadValidator.UnitTests.csproj", "{B197CAFD-73F3-4689-88DD-D71BEE96DAB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LeadValidator.UnitTests", "LeadValidator.UnitTests\LMS.LeadValidator.UnitTests.csproj", "{B197CAFD-73F3-4689-88DD-D71BEE96DAB3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadCollector", "LeadCollector\LeadCollector.csproj", "{CC0AC587-D333-4B2B-965B-64CA52C21433}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LeadCollector.Implementation", "LeadCollector\LMS.LeadCollector.Implementation.csproj", "{CC0AC587-D333-4B2B-965B-64CA52C21433}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadCollector.UnitTests", "LeadCollector.UnitTests\LeadCollector.UnitTests.csproj", "{7FAE97E1-FD2C-424E-B7A8-EE2325D5F527}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LeadCollector.UnitTests", "LeadCollector.UnitTests\LMS.LeadCollector.UnitTests.csproj", "{7FAE97E1-FD2C-424E-B7A8-EE2325D5F527}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LeadCollector.Interface", "LeadCollector.Interface\LMS.LeadCollector.Interface.csproj", "{52E5FA23-6F6E-4BF0-8921-50607CF1214F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{7FAE97E1-FD2C-424E-B7A8-EE2325D5F527}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FAE97E1-FD2C-424E-B7A8-EE2325D5F527}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FAE97E1-FD2C-424E-B7A8-EE2325D5F527}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E5FA23-6F6E-4BF0-8921-50607CF1214F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E5FA23-6F6E-4BF0-8921-50607CF1214F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E5FA23-6F6E-4BF0-8921-50607CF1214F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E5FA23-6F6E-4BF0-8921-50607CF1214F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

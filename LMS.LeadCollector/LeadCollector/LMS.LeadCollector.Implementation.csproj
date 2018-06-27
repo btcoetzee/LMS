@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Admiral.Components.Instrumentation.Contract" Version="2.0.0" />
+    <PackageReference Include="Compare.Components.Notification.Channels" Version="1.1.2" />
+    <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
+    <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.2" />
+    <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LeadCollector.Interface\LMS.LeadCollector.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LMS.Decorator.Interface">
+      <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadEntity.Interface">
+      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.Publisher.Interface">
+      <HintPath>..\..\lib\LMS.Publisher.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.Resolution.Interface">
+      <HintPath>..\..\lib\LMS.Resolution.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.Validator.Interface">
+      <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
+  </Target>
+
+</Project>

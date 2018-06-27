@@ -1,4 +1,4 @@
-namespace LeadValidator.UnitTests
+namespace LMS.LeadValidator.UnitTests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     [TestClass]

@@ -1,4 +1,4 @@
-﻿namespace LeadEntity
+﻿namespace LMS.LeadEntity.JSON   
 {
     using Interface;
     using System;

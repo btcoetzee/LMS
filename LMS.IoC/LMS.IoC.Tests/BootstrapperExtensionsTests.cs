@@ -1,4 +1,6 @@
-﻿namespace LMS.IoC.Tests
+﻿using LeadCollector.Interface;
+
+namespace LMS.IoC.Tests
 {
     using System;
     using Admiral.Components.Instrumentation.Contract;
@@ -105,6 +107,14 @@
             publisher = provider.GetService<IPublisher<string>>();
             Assert.IsNotNull(publisher);
             Assert.AreEqual(1, publisher.ChannelCount);
+        }
+
+        [TestMethod]
+        public void AddLeadCollectorTest()
+        {
+            var provider = _container.AddLeadValidator().AddLeadCollector().BuildServiceProvider();
+
+            provider.GetService<ILeadCollector>();
         }
     }
 }

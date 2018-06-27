@@ -1,8 +1,8 @@
-﻿namespace CampaignManager.Interface
+﻿namespace LMS.CampaignManager.Interface
 {
     public interface ICampaignManager
     {
 
-        void ProcessCampaigns(string message);
+        string[] ProcessCampaigns(string message);
     }
 }

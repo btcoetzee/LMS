@@ -1,16 +1,16 @@
-﻿namespace Filter.UnitTests.Filter
+﻿namespace LMS.Filter.UnitTests.Filter
 {
     using System;
     using System.IO;
     using System.Text;
+    using LMS.Validator.Interface;
+    using LMS.Decorator.Interface;
+    using LMS.Filter.Interface;
+    using LMS.LeadEntity.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Validator.Interface;
-    using Decorator.Interface;
-    using LeadEntity.Interface;
-    using global::Filter.Interface;
-
+   
     /// <summary>
     /// Filter Unit Tests
     /// </summary>

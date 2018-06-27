@@ -1,6 +1,6 @@
-﻿namespace Filter.Interface
+﻿namespace LMS.Filter.Interface
 {
-    using LeadEntity.Interface;
+    using LMS.LeadEntity.Interface;
     using System;
     public interface IFilter
     {

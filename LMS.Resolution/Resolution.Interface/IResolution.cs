@@ -1,7 +1,8 @@
-﻿namespace Resolution.Interface
+﻿namespace LMS.Resolution.Interface
 {
+    using LMS.LeadEntity.Interface;
     using System;
-    using LeadEntity.Interface;
+
 
     public interface IResolution
     {

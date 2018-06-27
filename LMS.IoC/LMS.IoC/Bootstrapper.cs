@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using LMS.LeadEntity.Interface;
+using LMS.Validator.Interface;
+using Moq;
+
 
 namespace LMS.IoC
 {
@@ -11,7 +15,7 @@ namespace LMS.IoC
     using Compare.Components.Notification.Contract;
     using Compare.Components.Notification.Publishers;
     using Compare.Components.Notification.Subscribers;
-    using LeadEntity.Interface;
+    using LMS.LeadCollector.Interface;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class Bootstrapper
@@ -20,7 +24,8 @@ namespace LMS.IoC
         {
             container
                 .AddLogger()
-                .AddNotificationChannel();
+                .AddNotificationChannel()
+                .AddLeadCollector();
 
             return container;
         }
@@ -62,8 +67,23 @@ namespace LMS.IoC
             return container;
         }
 
+        public static IServiceCollection AddLeadValidator(this IServiceCollection container)
+        {
+            var validatorMock = new Mock<IValidator>();
+            validatorMock.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
+
+            var validator = validatorMock.Object;
+
+            container.AddSingleton<IValidator>(validator);
+
+            return container;
+        }
+
         public static IServiceCollection AddLeadCollector(this IServiceCollection container)
         {
+            container.AddSingleton<ILeadCollector>(provider =>
+                new LeadCollector.Implementation.LeadCollector(provider.GetService<IValidator>(), null, null));
+
             return container;
         }
     }

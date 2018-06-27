@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>LMS.CampaignManager.Implementation</AssemblyName>
+    <RootNamespace>LMS.CampaignManager.Implementation</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
+    <PackageReference Include="Compare.Components.Notification.NotificationChannels" Version="1.0.0" />
+    <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CampaignManager.Interface\LMS.CampaignManager.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LMS.Campaign.Interface">
+      <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClient.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
+  </Target>
+
+</Project>

@@ -1,17 +1,16 @@
-﻿using System.ComponentModel;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-
-namespace LeadValidator
+﻿namespace LMS.LeadValidator.Implementation
 {
-    using LeadEntity.Interface;
+    using System.ComponentModel;
+    using System.Linq;
     using System;
     using System.IO;
-    using Validator.Interface;
+    using LMS.Validator.Interface;
+    using LMS.LeadEntity.Interface;
 
     public class LeadValidator : IValidator
     {
-        public bool ValidLead(ILeadEntity lead)
+        //public bool ValidLead(LMS.LeadEntity.Interface.ILeadEntity lead)
+        public bool ValidLead(LMS.LeadEntity.Interface.ILeadEntity lead)
         {
             if (lead.Context.Length < 0)
                 return false;
@@ -73,7 +72,7 @@ namespace LeadValidator
             }
             return true;
 
-
         }
+    
     }
 }

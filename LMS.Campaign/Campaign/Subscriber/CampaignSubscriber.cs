@@ -1,10 +1,11 @@
-﻿namespace Campaign.Subscriber
+﻿namespace LMS.Campaign.Implementation
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Threading;
-    using Campaign.Interface;
+    using LMS.Campaign.Interface;
+
     public class CampaignSubscriber : ICampaignSubscriber
     {
         private readonly ICampaign _campaign;

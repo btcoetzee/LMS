@@ -1,6 +1,6 @@
-﻿namespace Campaign.Interface
+﻿namespace LMS.Campaign.Interface
 {
-    using LeadEntity.Interface;
+  
     using System.IO;
 
     public interface ICampaign

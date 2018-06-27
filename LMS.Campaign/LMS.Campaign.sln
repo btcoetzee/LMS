@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campaign", "Campaign\Campaign.csproj", "{B8AC8C40-478D-4229-B431-A0C1232EAA57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Campaign.UnitTests", "Campaign.UnitTests\LMS.Campaign.UnitTests.csproj", "{78662577-F125-49F3-B62C-8266A5979404}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campaign.UnitTests", "Campaign.UnitTests\Campaign.UnitTests.csproj", "{78662577-F125-49F3-B62C-8266A5979404}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Filter.Interface", "Filter.Interface\LMS.Filter.Interface.csproj", "{4A8EC63B-B54A-40F9-8096-DE56184E0C9D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.Interface", "Filter.Interface\Filter.Interface.csproj", "{4A8EC63B-B54A-40F9-8096-DE56184E0C9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Filter.UnitTests", "Filter.UnitTests\LMS.Filter.UnitTests.csproj", "{B75FE47B-6B29-4928-9F48-897281A61CC0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.UnitTests", "Filter.UnitTests\Filter.UnitTests.csproj", "{B75FE47B-6B29-4928-9F48-897281A61CC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Rule.Interface", "Rule.Interface\LMS.Rule.Interface.csproj", "{905A9E2D-ACA3-490B-ACC4-50911A6B123E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rule.Interface", "Rule.Interface\Rule.Interface.csproj", "{905A9E2D-ACA3-490B-ACC4-50911A6B123E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Campaign.Interface", "Campaign.Interface\LMS.Campaign.Interface.csproj", "{C06693B8-331F-4980-9B20-15C6A1D9F4E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campaign.Interface", "Campaign.Interface\Campaign.Interface.csproj", "{C06693B8-331F-4980-9B20-15C6A1D9F4E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Rule.UnitTests", "Rules.UnitTests\LMS.Rule.UnitTests.csproj", "{8937E1D0-5FAF-43B7-929A-4596D080EFB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rule.UnitTests", "Rules.UnitTests\Rule.UnitTests.csproj", "{8937E1D0-5FAF-43B7-929A-4596D080EFB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Campaign.Implementation", "Campaign\LMS.Campaign.Implementation.csproj", "{FDE69B3B-10DA-481A-AE54-79754A99944A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B8AC8C40-478D-4229-B431-A0C1232EAA57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8AC8C40-478D-4229-B431-A0C1232EAA57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8AC8C40-478D-4229-B431-A0C1232EAA57}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8AC8C40-478D-4229-B431-A0C1232EAA57}.Release|Any CPU.Build.0 = Release|Any CPU
 		{78662577-F125-49F3-B62C-8266A5979404}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78662577-F125-49F3-B62C-8266A5979404}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78662577-F125-49F3-B62C-8266A5979404}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +47,10 @@ Global
 		{8937E1D0-5FAF-43B7-929A-4596D080EFB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8937E1D0-5FAF-43B7-929A-4596D080EFB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8937E1D0-5FAF-43B7-929A-4596D080EFB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDE69B3B-10DA-481A-AE54-79754A99944A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDE69B3B-10DA-481A-AE54-79754A99944A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDE69B3B-10DA-481A-AE54-79754A99944A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDE69B3B-10DA-481A-AE54-79754A99944A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

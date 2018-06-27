@@ -1,4 +1,4 @@
-﻿namespace LeadEntity.Interface.Constants
+﻿namespace LMS.LeadEntity.Interface.Constants
 {
     using System;
     using System.Collections.Generic;

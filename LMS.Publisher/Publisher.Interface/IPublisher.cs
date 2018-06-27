@@ -1,6 +1,6 @@
-﻿namespace Publisher.Interface
+﻿namespace LMS.Publisher.Interface
 {
-    using LeadEntity.Interface;
+    using LMS.LeadEntity.Interface;
 
     public interface IPublisher
     {

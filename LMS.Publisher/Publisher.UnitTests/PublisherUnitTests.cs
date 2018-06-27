@@ -1,12 +1,12 @@
-namespace Publisher.UnitTests
+namespace LMS.Publisher.UnitTests
 {
     using System;
     using System.IO;
-    using LeadEntity.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Publisher.Interface;
+    using LMS.Publisher.Interface;
+    using LMS.LeadEntity.Interface;
 
     [TestClass]
     public class PublisherUnitTests

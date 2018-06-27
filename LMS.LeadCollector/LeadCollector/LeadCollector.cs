@@ -1,15 +1,15 @@
-﻿namespace LeadCollector
+﻿namespace LMS.LeadCollector.Implementation
 {
+    using LMS.LeadCollector.Interface;
+    using LMS.Decorator.Interface;
+    using LMS.LeadEntity.Interface;
+    using LMS.Validator.Interface;
+    using LMS.Publisher.Interface;
+    using LMS.Resolution.Interface;
     using System;
-    using Decorator.Interface;
-    using LeadEntity.Interface;
-    using Publisher.Interface;
-    using Validator.Interface;
-    using Campaign.Interface;
-    using Resolution.Interface;
+  
 
-
-    public class LeadCollector
+    public class LeadCollector : ILeadCollector
     {
         /// <summary>
         /// Defining the Members
@@ -26,21 +26,19 @@
         /// <param name="leadDecorator"></param>
         /// <param name="leadPublisher"></param>
         /// <param name="leadResolver"></param>
-        public LeadCollector(IValidator leadValidator, IDecorator leadDecorator, IPublisher leadPublisher,
-            IResolution leadResolver)
+        public LeadCollector(IValidator leadValidator, IDecorator leadDecorator, IPublisher leadPublisher)
         {
 
             _leadValidator = leadValidator ?? throw new ArgumentNullException(nameof(leadValidator));
             _leadDecorator = leadDecorator ?? throw new ArgumentNullException(nameof(leadDecorator));
             _leadPublisher = leadPublisher ?? throw new ArgumentNullException(nameof(leadPublisher));
-            _leadResolver = leadResolver ?? throw new ArgumentNullException(nameof(leadResolver));
         }
 
         /// <summary>
         /// Process the Lead Collected
         /// </summary>
         /// <param name="lead"></param>
-        void CollectLead(ILeadEntity lead)
+        public void CollectLead(ILeadEntity lead)
         {
             //If the lead is valid, decorate and publish 
             if (_leadValidator.ValidLead(lead).Equals(true))
@@ -50,10 +48,6 @@
 
                 // Broadcast to the Campaigns
                 _leadPublisher.PublishLead(lead);
-
-                // Apply Lead Resolution - will need to pass taskQueue
-                _leadResolver.ResolveLead(lead);
-
             }
         }
 

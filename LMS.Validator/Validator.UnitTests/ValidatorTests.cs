@@ -1,12 +1,12 @@
-﻿namespace Validator.UnitTests
+﻿namespace LMS.Validator.UnitTests
 {
     using System;
     using System.IO;
-    using LeadEntity.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Validator.Interface;
+    using LMS.Validator.Interface;
+    using LMS.LeadEntity.Interface;
 
     /// <summary>
     /// 

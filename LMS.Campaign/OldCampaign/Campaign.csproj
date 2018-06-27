@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>LMS.Campaign.Implementation</AssemblyName>
+    <RootNamespace>LMS.Campaign.Implementation</RootNamespace>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Campaign.Interface\LMS.Campaign.Interface.csproj" />
+  </ItemGroup>
+
+</Project>

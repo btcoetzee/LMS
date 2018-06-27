@@ -1,4 +1,4 @@
-﻿namespace Campaign.Interface
+﻿namespace LMS.Campaign.Interface
 {
     using System;
     public interface ICampaignSubscriber

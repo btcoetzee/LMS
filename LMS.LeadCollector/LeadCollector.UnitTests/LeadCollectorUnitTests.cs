@@ -1,14 +1,15 @@
-namespace LeadCollector.UnitTests
+namespace LMS.LeadCollector.UnitTests
 {
-    using Decorator.Interface;
-    using LeadEntity.Interface;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Publisher.Interface;
+
     using System;
-    using Validator.Interface;
     using System.IO;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
+    using LMS.Decorator.Interface;
+    using LMS.LeadEntity.Interface;
+    using LMS.Validator.Interface;
+    using LMS.Publisher.Interface;
 
 
     [TestClass]
@@ -142,6 +143,19 @@ namespace LeadCollector.UnitTests
             var actualValue = validator.ValidLead(_leadEntity.Object);
 
             Assert.AreEqual(expectedValue, actualValue);
+        }
+
+        [TestMethod]
+        public void AllNullParamLeadCollectorConstructorTest()
+        {
+            new Implementation.LeadCollector(null, null, null);
+        }
+
+        [TestMethod]
+        public void MockedParamParamLeadCollectorConstructorTest()
+        {
+            new Implementation.LeadCollector(_serviceProvider.GetService<IValidator>(), _serviceProvider.GetService<IDecorator>(),
+                _serviceProvider.GetService<IPublisher>());
         }
     }
 }

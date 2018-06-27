@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Admiral.Components.Instrumentation" Version="2.0.0" />
+    <PackageReference Include="Admiral.Components.Instrumentation.Contract" Version="2.0.0" />
+    <PackageReference Include="Compare.Components.Notification.Channels" Version="1.1.2" />
+    <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
+    <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.2" />
+    <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Campaign">
+      <HintPath>..\..\lib\Campaign.dll</HintPath>
+    </Reference>
+    <Reference Include="Campaign.Interface">
+      <HintPath>..\..\lib\Campaign.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="CampaignManager">
+      <HintPath>..\..\lib\CampaignManager.dll</HintPath>
+    </Reference>
+    <Reference Include="CampaignManagerSubscriber.Interface">
+      <HintPath>..\..\lib\CampaignManagerSubscriber.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Decorator.Interface">
+      <HintPath>..\..\lib\Decorator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LeadCollector">
+      <HintPath>..\..\lib\LeadCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="LeadCollector.Interface">
+      <HintPath>..\..\lib\LeadCollector.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LeadEntity.Interface">
+      <HintPath>..\..\lib\LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LeadEntity.JSON">
+      <HintPath>..\..\lib\LeadEntity.JSON.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager">
+      <HintPath>..\..\lib\LMS.CampaignManager.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.IoC">
+      <HintPath>..\..\lib\LMS.IoC.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClient.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Publisher.Interface">
+      <HintPath>..\..\lib\Publisher.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Resolution.Interface">
+      <HintPath>..\..\lib\Resolution.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Validator.Interface">
+      <HintPath>..\..\lib\Validator.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

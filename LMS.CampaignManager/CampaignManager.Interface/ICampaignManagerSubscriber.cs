@@ -1,4 +1,4 @@
-﻿namespace CampaignManager.Interface
+﻿namespace LMS.CampaignManager.Interface
 {
     public interface ICampaignManagerSubscriber
     {

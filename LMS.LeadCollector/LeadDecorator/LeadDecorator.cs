@@ -1,7 +1,8 @@
-﻿namespace LeadDecorator
+﻿using LMS.LeadEntity.Interface;
+
+namespace LMS.LeadDecorator.Implementation
 {
-    using Decorator.Interface;
-    using LeadEntity.Interface;
+    using LMS.Decorator.Interface;
     using System;
 
     public class LeadDecorator : IDecorator

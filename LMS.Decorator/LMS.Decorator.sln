@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Decorator.Interface", "Decorator.Interface\Decorator.Interface.csproj", "{3434C5BC-46E6-4457-BEDF-1D88C368EA56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Decorator.Interface", "Decorator.Interface\LMS.Decorator.Interface.csproj", "{3434C5BC-46E6-4457-BEDF-1D88C368EA56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decorator.UnitTests", "Decorator.UnitTests\Decorator.UnitTests.csproj", "{5BD60F1D-6BC0-412C-ADB4-1ADB55708B5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Decorator.UnitTests", "Decorator.UnitTests\LMS.Decorator.UnitTests.csproj", "{5BD60F1D-6BC0-412C-ADB4-1ADB55708B5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,6 @@
-﻿namespace Rule.Interface
+﻿namespace LMS.Rule.Interface
 {
-    using LeadEntity.Interface;
+    using LMS.LeadEntity.Interface;
     using System;
 
     public interface IRule

@@ -1,4 +1,4 @@
-﻿namespace Decorator.Interface
+﻿namespace LMS.Decorator.Interface
 {
     using LeadEntity.Interface;
 

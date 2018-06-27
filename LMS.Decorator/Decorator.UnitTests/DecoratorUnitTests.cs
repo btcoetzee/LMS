@@ -1,13 +1,13 @@
-namespace Decorator.UnitTests
+namespace LMS.Decorator.UnitTests
 {
-
     using System;
     using System.IO;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Decorator.Interface;
-    using LeadEntity.Interface;
+    using LMS.LeadEntity.Interface;
+    using LMS.Decorator.Interface;
+
 
     [TestClass]
     public class DecoratorUnitTests

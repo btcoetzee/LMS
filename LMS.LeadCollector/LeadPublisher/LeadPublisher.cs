@@ -1,7 +1,8 @@
-﻿namespace LeadPublisher
+﻿
+
+namespace LMS.LeadPublisher.Implementation
 {
-    using LeadEntity.Interface;
-    using Publisher.Interface;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -10,7 +11,8 @@
     using Admiral.Components.Instrumentation.Contract;
     using Compare.Components.Notification.Contract;
     using LMS.LoggerClient.Interface;
-    using Campaign.Interface;
+    using LMS.LeadEntity.Interface;
+    using LMS.Publisher.Interface;
 
     public class LeadPublisher : IPublisher
     {

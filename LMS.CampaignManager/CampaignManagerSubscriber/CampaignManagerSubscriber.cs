@@ -1,8 +1,9 @@
-﻿namespace CampaignManagerSubscriber
+﻿namespace LMS.CampaignManagerSubscriber.Implementation
 {
+    using LMS.CampaignManager.Interface;
     using System;
     using System.Threading;
-    using CampaignManager.Interface;
+
 
     public class CampaignManagerSubscriber : ICampaignManagerSubscriber
     {

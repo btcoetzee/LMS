@@ -1,19 +1,22 @@
-﻿namespace LMS.CampaignManager
+﻿
+
+namespace LMS.CampaignManager.Implementation
 {
-    using System.Diagnostics;
-    using System.Threading.Tasks;
     using System;
-    using Campaign.Interface;
-    using Compare.Components.Notification.Contract;
     using System.Collections.Generic;
-    using global::CampaignManager.Interface;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Compare.Components.Notification.Contract;
     using LMS.LoggerClient.Interface;
+    using LMS.Campaign.Interface;
+    using LMS.CampaignManager.Interface;
 
     public class CampaignManager: ICampaignManager
     {
         private readonly IList<ICampaignSubscriber> _campaignSubscriberList;
         private readonly ISubscriber<string> _notificationSubscriber;
         private readonly ILoggerClient _loggerClient;
+        private static readonly string[] EmptyResultArray = new string[] { };
 
         public CampaignManager(ISubscriber<string> notificationSubscriber, IList<ICampaignSubscriber> campaignSubscriberList,  ILoggerClient loggerClient)
         {
@@ -24,8 +27,13 @@
             _notificationSubscriber.AddOnReceiveActionToChannel(message => ProcessCampaigns(message));
         }
 
-        public void ProcessCampaigns(string message)
+        public string[] ProcessCampaigns(string message)
         {
+            // Check that there are Campaigns to be Managed
+            if (!_campaignSubscriberList.Any())
+                return EmptyResultArray; 
+
+            // 
             var campaignCnt = _campaignSubscriberList.Count;
             var campaignResults = new string[campaignCnt];
             var tasks = new Task<string>[campaignCnt];
@@ -41,7 +49,7 @@
                 campaignResults[i] = tasks[i].Result;
             }
 
-            // Resolve...... return campaignResults;
+            return campaignResults;
         }
 
         //public void AddCampaign(ICampaignSubscriber newCampaingSubscriber)

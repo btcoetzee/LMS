@@ -1,4 +1,4 @@
-namespace Rules.UnitTests
+namespace LMS.Rules.UnitTests
 {
     using System;
     using System.IO;
@@ -6,12 +6,12 @@ namespace Rules.UnitTests
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Decorator.Interface;
-    using Validator.Interface;
-    using Rule.Interface;
+    using LMS.Decorator.Interface;
+    using LMS.LeadEntity.Interface;
+    using LMS.Publisher.Interface;
+    using LMS.Rule.Interface;
+    using LMS.Validator.Interface;
 
-    using Publisher.Interface;
-    using LeadEntity.Interface;
 
     [TestClass]
     public class RuleTests

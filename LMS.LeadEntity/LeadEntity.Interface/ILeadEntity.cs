@@ -1,4 +1,4 @@
-﻿namespace LeadEntity.Interface
+﻿namespace LMS.LeadEntity.Interface
 {
     using System;
 

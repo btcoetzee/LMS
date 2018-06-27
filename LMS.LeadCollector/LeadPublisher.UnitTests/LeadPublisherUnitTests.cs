@@ -1,4 +1,4 @@
-namespace LeadPublisher.UnitTests
+namespace LMS.LeadPublisher.UnitTests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     [TestClass]
