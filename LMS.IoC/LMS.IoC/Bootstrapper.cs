@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LMS.LeadEntity.Interface;
-using LMS.Validator.Interface;
-using Moq;
-
-
-namespace LMS.IoC
+﻿namespace LMS.IoC
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using LMS.LeadEntity.Interface;
+    using LMS.Validator.Interface;
+    using Moq;
     using System.Linq;
     using Admiral.Components.Instrumentation.Contract;
     using Admiral.Components.Instrumentation.Logging;
@@ -24,8 +22,8 @@ namespace LMS.IoC
         {
             container
                 .AddLogger()
-                .AddNotificationChannel()
-                .AddLeadCollector();
+                .AddNotificationChannel();
+                //.AddLeadCollector();
 
             return container;
         }
@@ -79,12 +77,12 @@ namespace LMS.IoC
             return container;
         }
 
-        public static IServiceCollection AddLeadCollector(this IServiceCollection container)
-        {
-            container.AddSingleton<ILeadCollector>(provider =>
-                new LeadCollector.Implementation.LeadCollector(provider.GetService<IValidator>(), null, null));
+        //public static IServiceCollection AddLeadCollector(this IServiceCollection container)
+        //{
+        //    container.AddSingleton<ILeadCollector>(provider =>
+        //        new LeadCollector.Implementation.LeadCollector(provider.GetService<IValidator>(), null, null));
 
-            return container;
-        }
+        //    return container;
+        //}
     }
 }

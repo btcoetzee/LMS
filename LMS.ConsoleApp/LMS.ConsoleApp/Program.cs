@@ -1,12 +1,11 @@
-﻿using System.Net;
-
-namespace LMS.ConsoleApp
+﻿namespace LMS.ConsoleApp
 {
-    using LeadEntity.Interface;
+  
     using LMS.IoC;
     using Microsoft.Extensions.DependencyInjection;
     using System;
     using System.Collections.Generic;
+    using LMS.LeadEntity.Interface;
 
     class Program
     {
@@ -28,7 +27,7 @@ namespace LMS.ConsoleApp
             //    .BuildServiceProvider()
             //    .GetService<ILeadCollector>();
 
-            var leadCollector = new LeadCollector.LeadCollector(null, null, null);
+            var leadCollector = new LeadCollector.Implementation.LeadCollector(null, null, null);
 
             var leadEntities = CreateLeads();
             var leadChoice = 1;
