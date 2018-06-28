@@ -15,8 +15,11 @@ namespace LMS.IoC
     using Compare.Components.Notification.Contract;
     using Compare.Components.Notification.Publishers;
     using Compare.Components.Notification.Subscribers;
-    using LMS.LeadCollector.Interface;
+    using Decorator.Interface;
+    using LeadCollector.Implementation;
+    using LeadCollector.Interface;
     using Microsoft.Extensions.DependencyInjection;
+    using Publisher.Interface;
 
     public static class Bootstrapper
     {
@@ -25,6 +28,9 @@ namespace LMS.IoC
             container
                 .AddLogger()
                 .AddNotificationChannel()
+                .AddLeadValidator()
+                .AddLeadDecorator()
+                .AddLeadPublisher()
                 .AddLeadCollector();
 
             return container;
@@ -46,7 +52,7 @@ namespace LMS.IoC
         public static IServiceCollection AddNotificationChannel(this IServiceCollection container)
         {
             container.AddSingleton<INotificationChannel<string>>(provider =>
-                new InProcNotificationChannel<string>("Lead Channel", provider.GetService<ILogger>()));
+                new InProcNotificationChannel<string>("Lead Channel", provider.GetRequiredService<ILogger>()));
 
             return container;
         }
@@ -54,7 +60,7 @@ namespace LMS.IoC
         public static IServiceCollection AddNotificationSubscriber(this IServiceCollection container)
         {
             container.AddSingleton<ISubscriber<string>>(provider =>
-                new Subscriber<string>(provider.GetService<INotificationChannel<string>>(), true));
+                new Subscriber<string>(provider.GetRequiredService<INotificationChannel<string>>(), true));
 
             return container;
         }
@@ -79,10 +85,34 @@ namespace LMS.IoC
             return container;
         }
 
+        public static IServiceCollection AddLeadDecorator(this IServiceCollection container)
+        {
+            var decoratorMock = new Mock<IDecorator>();
+            decoratorMock.Setup(d => d.DecorateLead(It.IsAny<ILeadEntity>()));
+
+            var decorator = decoratorMock.Object;
+
+            container.AddSingleton<IDecorator>(decorator);
+            return container;
+        }
+
+        public static IServiceCollection AddLeadPublisher(this IServiceCollection container)
+        {
+            var publisherMock = new Mock<IPublisher>();
+            publisherMock.Setup(p => p.PublishLead(It.IsAny<ILeadEntity>()));
+
+            var publisher = publisherMock.Object;
+
+            container.AddSingleton<IPublisher>(publisher);
+
+            return container;
+        }
+
         public static IServiceCollection AddLeadCollector(this IServiceCollection container)
         {
             container.AddSingleton<ILeadCollector>(provider =>
-                new LeadCollector.Implementation.LeadCollector(provider.GetService<IValidator>(), null, null));
+                new LeadCollector(provider.GetRequiredService<IValidator>(), provider.GetRequiredService<IDecorator>(),
+                    provider.GetRequiredService<IPublisher>()));
 
             return container;
         }

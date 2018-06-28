@@ -16,23 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Campaign.Interface">
-      <HintPath>..\..\lib\Campaign.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="CampaignManagerSubscriber.Interface">
-      <HintPath>..\..\lib\CampaignManagerSubscriber.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="Decorator.Interface">
-      <HintPath>..\..\lib\Decorator.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LeadCollector">
-      <HintPath>..\..\lib\LeadCollector.dll</HintPath>
-    </Reference>
-    <Reference Include="LeadCollector.Interface">
-      <HintPath>..\..\lib\LeadCollector.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LeadEntity.Interface">
-      <HintPath>..\..\lib\LeadEntity.Interface.dll</HintPath>
+    <Reference Include="LMS.Decorator.Interface">
+      <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LeadCollector.Implementation">
       <HintPath>..\..\lib\LMS.LeadCollector.Implementation.dll</HintPath>
@@ -46,17 +31,11 @@
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.Publisher.Interface">
+      <HintPath>..\..\lib\LMS.Publisher.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.Validator.Interface">
       <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="Publisher.Interface">
-      <HintPath>..\..\lib\Publisher.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="Resolution.Interface">
-      <HintPath>..\..\lib\Resolution.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="Validator.Interface">
-      <HintPath>..\..\lib\Validator.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

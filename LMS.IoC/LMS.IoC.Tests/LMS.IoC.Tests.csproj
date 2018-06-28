@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LeadCollector.Interface">
-      <HintPath>..\..\lib\LeadCollector.Interface.dll</HintPath>
+    <Reference Include="LMS.LeadCollector.Interface">
+      <HintPath>..\..\lib\LMS.LeadCollector.Interface.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
       <HintPath>..\..\..\..\Users\milo.wical\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>

@@ -1,10 +1,9 @@
-﻿using LeadCollector.Interface;
-
-namespace LMS.IoC.Tests
+﻿namespace LMS.IoC.Tests
 {
     using System;
     using Admiral.Components.Instrumentation.Contract;
     using Compare.Components.Notification.Contract;
+    using LeadCollector.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -40,7 +39,7 @@ namespace LMS.IoC.Tests
                 //Can't build without the dependencies.
                 channel = provider.GetService<INotificationChannel<string>>();
             }
-            catch (ArgumentNullException ane)
+            catch (InvalidOperationException ioe)
             {
                 //Swallow the exception because we know what caused it.
             }
@@ -64,7 +63,7 @@ namespace LMS.IoC.Tests
                 //Can't build without the dependencies.
                 subscriber = provider.GetService<ISubscriber<string>>();
             }
-            catch (ArgumentNullException ane)
+            catch (InvalidOperationException ioe)
             {
                 //Swallow the exception because we know what caused it.
             }
@@ -112,9 +111,13 @@ namespace LMS.IoC.Tests
         [TestMethod]
         public void AddLeadCollectorTest()
         {
-            var provider = _container.AddLeadValidator().AddLeadCollector().BuildServiceProvider();
+            var provider = _container.AddLeadValidator().AddLeadDecorator().AddLeadPublisher().AddLeadCollector()
+                .BuildServiceProvider();
 
-            provider.GetService<ILeadCollector>();
+            var collector = provider.GetService<ILeadCollector>();
+
+            //For now, we can just check to make sure that it's made.
+            Assert.IsNotNull(collector);
         }
     }
 }
