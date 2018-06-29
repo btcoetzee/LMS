@@ -2,8 +2,10 @@
 {
     using LeadEntity.Interface;
     using System;
+    using System.Linq;
     using IoC;
     using LeadCollector.Interface;
+    using LeadEntity.Interface.Constants;
     using Microsoft.Extensions.DependencyInjection;
 
     public class Program
@@ -33,6 +35,10 @@
             int.TryParse(Console.ReadLine(), out leadChoice);
             while (leadChoice >= 1 && leadChoice <= leadEntities.Length)
             {
+                leadChoice--; //Since array indices start at 0
+                Console.WriteLine($"Processing Activity ID {leadEntities[leadChoice].Context.First(ctx => ctx.Id == ContextKeys.ActivityGuidKey).Value}");
+                leadCollector.CollectLead(leadEntities[leadChoice]);
+                Console.WriteLine("Processing complete.\n");
 
                 Console.WriteLine($"Select lead [1-{leadEntities.Length}]: ");
                 int.TryParse(Console.ReadLine(), out leadChoice);
@@ -48,26 +54,26 @@
 
                 Context = new IContext[]
                 {
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.AdditionalProductKey,AdditonalProducts)
+                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
+                    new MyContext(ContextKeys.AdditionalProductKey,AdditonalProducts)
                 },
 
                 Properties = new IProperty[]
                 {
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorBIKey,PriorBI),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.QuotedBIKey,QuotedBI),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
+                    new MyProperty(PropertyKeys.PriorBIKey,PriorBI),
+                    new MyProperty(PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
+                    new MyProperty(PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
+                    new MyProperty(PropertyKeys.QuotedBIKey,QuotedBI),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(LeadEntity.Interface.Constants.SegementKeys.HighPOPKey),
-                    new MySegment(LeadEntity.Interface.Constants.SegementKeys.HomeownerKey)
+                    new MySegment(SegementKeys.HighPOPKey),
+                    new MySegment(SegementKeys.HomeownerKey)
                 }
 
             };
@@ -77,26 +83,26 @@
 
                 Context = new IContext[]
                 {
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.AdditionalProductKey,AdditonalProducts)
+                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
+                    new MyContext(ContextKeys.AdditionalProductKey,AdditonalProducts)
                 },
 
                 Properties = new IProperty[]
                 {
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorBIKey,PriorBI),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.QuotedBIKey,QuotedBI),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
+                    new MyProperty(PropertyKeys.PriorBIKey,PriorBI),
+                    new MyProperty(PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
+                    new MyProperty(PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
+                    new MyProperty(PropertyKeys.QuotedBIKey,QuotedBI),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(LeadEntity.Interface.Constants.SegementKeys.HighPOPKey),
-                    new MySegment(LeadEntity.Interface.Constants.SegementKeys.HomeownerKey)
+                    new MySegment(SegementKeys.HighPOPKey),
+                    new MySegment(SegementKeys.HomeownerKey)
                 }
 
             };
@@ -106,26 +112,26 @@
 
                 Context = new IContext[]
                 {
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.AdditionalProductKey,AdditonalProducts)
+                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
+                    new MyContext(ContextKeys.AdditionalProductKey,AdditonalProducts)
                 },
 
                 Properties = new IProperty[]
                 {
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorBIKey,PriorBI),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.QuotedBIKey,QuotedBI),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
+                    new MyProperty(PropertyKeys.PriorBIKey,PriorBI),
+                    new MyProperty(PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
+                    new MyProperty(PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
+                    new MyProperty(PropertyKeys.QuotedBIKey,QuotedBI),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(LeadEntity.Interface.Constants.SegementKeys.HighPOPKey),
-                    new MySegment(LeadEntity.Interface.Constants.SegementKeys.HomeownerKey)
+                    new MySegment(SegementKeys.HighPOPKey),
+                    new MySegment(SegementKeys.HomeownerKey)
                 }
 
             };
@@ -135,26 +141,26 @@
 
                 Context = new IContext[]
                 {
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.AdditionalProductKey,AdditonalProducts)
+                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
+                    new MyContext(ContextKeys.AdditionalProductKey,AdditonalProducts)
                 },
 
                 Properties = new IProperty[]
                 {
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorBIKey,PriorBI),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.QuotedBIKey,QuotedBI),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
+                    new MyProperty(PropertyKeys.PriorBIKey,PriorBI),
+                    new MyProperty(PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
+                    new MyProperty(PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
+                    new MyProperty(PropertyKeys.QuotedBIKey,QuotedBI),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(LeadEntity.Interface.Constants.SegementKeys.HighPOPKey),
-                    new MySegment(LeadEntity.Interface.Constants.SegementKeys.HomeownerKey)
+                    new MySegment(SegementKeys.HighPOPKey),
+                    new MySegment(SegementKeys.HomeownerKey)
                 }
 
             };
@@ -164,26 +170,26 @@
 
                 Context = new IContext[]
                 {
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
-                    new MyContext(LeadEntity.Interface.Constants.ContextKeys.AdditionalProductKey,AdditonalProducts)
+                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
+                    new MyContext(ContextKeys.AdditionalProductKey,AdditonalProducts)
                 },
 
                 Properties = new IProperty[]
                 {
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorBIKey,PriorBI),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.QuotedBIKey,QuotedBI),
-                    new MyProperty(LeadEntity.Interface.Constants.PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
+                    new MyProperty(PropertyKeys.PriorBIKey,PriorBI),
+                    new MyProperty(PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
+                    new MyProperty(PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
+                    new MyProperty(PropertyKeys.QuotedBIKey,QuotedBI),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(LeadEntity.Interface.Constants.SegementKeys.HighPOPKey),
-                    new MySegment(LeadEntity.Interface.Constants.SegementKeys.HomeownerKey)
+                    new MySegment(SegementKeys.HighPOPKey),
+                    new MySegment(SegementKeys.HomeownerKey)
                 }
 
             };
