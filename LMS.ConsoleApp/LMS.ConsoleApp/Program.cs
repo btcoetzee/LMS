@@ -2,9 +2,11 @@
 {
     using LeadEntity.Interface;
     using System;
-    using LeadCollector.Implementation;
+    using IoC;
+    using LeadCollector.Interface;
+    using Microsoft.Extensions.DependencyInjection;
 
-    class Program
+    public class Program
     {
         public static int QuotedProduct = 101;
         public static string AdditonalProducts = "None";
@@ -16,15 +18,14 @@
         public string HighPOP = "yes";
         public string Homeowner = "yes";
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            //var serviceProvider = Bootstrapper.BuildUp(new ServiceCollection()).BuildServiceProvider();
-            //var leadCollector = (new ServiceCollection())
-            //    .BuildUp()
-            //    .BuildServiceProvider()
-            //    .GetService<ILeadCollector>();
-
-            var leadCollector = new LeadCollector(null, null, null);
+            Console.WriteLine("Hello, World!");
+    
+            var leadCollector = new ServiceCollection()
+                .BuildUp()
+                .BuildServiceProvider()
+                .GetService<ILeadCollector>();
 
             var leadEntities = CreateLeads();
             var leadChoice = 1;

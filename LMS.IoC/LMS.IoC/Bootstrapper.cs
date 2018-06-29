@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LMS.LeadEntity.Interface;
-using LMS.Validator.Interface;
-using Moq;
-
-
-namespace LMS.IoC
+﻿namespace LMS.IoC
 {
     using System.Linq;
     using Admiral.Components.Instrumentation.Contract;
@@ -18,8 +10,11 @@ namespace LMS.IoC
     using Decorator.Interface;
     using LeadCollector.Implementation;
     using LeadCollector.Interface;
+    using LeadEntity.Interface;
     using Microsoft.Extensions.DependencyInjection;
+    using Moq;
     using Publisher.Interface;
+    using Validator.Interface;
 
     public static class Bootstrapper
     {
