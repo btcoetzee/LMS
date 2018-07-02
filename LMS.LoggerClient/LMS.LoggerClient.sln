@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.LoggerClient", "LMS.LoggerClient\LMS.LoggerClient.csproj", "{49A55562-9363-4019-BC7C-45F2852101C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LoggerClient", "LMS.LoggerClient\LMS.LoggerClient.csproj", "{49A55562-9363-4019-BC7C-45F2852101C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.LoggerClient.Interface", "LMS.LoggerClient.Interface\LMS.LoggerClient.Interface.csproj", "{80322F45-6E46-4423-A659-EC784F789F75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LoggerClient.Interface", "LMS.LoggerClient.Interface\LMS.LoggerClient.Interface.csproj", "{80322F45-6E46-4423-A659-EC784F789F75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.LoggerClient.File", "LMS.LoggerClient.File\LMS.LoggerClient.File.csproj", "{1078CB77-8326-458D-82D0-78C7BCAACCF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LoggerClient.File", "LMS.LoggerClient.File\LMS.LoggerClient.File.csproj", "{1078CB77-8326-458D-82D0-78C7BCAACCF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.LoggerClient.Console", "LMS.LoggerClient.Console\LMS.LoggerClient.Console.csproj", "{15156F1C-60E3-4344-8B41-C22F02A09BDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{1078CB77-8326-458D-82D0-78C7BCAACCF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1078CB77-8326-458D-82D0-78C7BCAACCF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1078CB77-8326-458D-82D0-78C7BCAACCF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15156F1C-60E3-4344-8B41-C22F02A09BDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15156F1C-60E3-4344-8B41-C22F02A09BDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15156F1C-60E3-4344-8B41-C22F02A09BDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15156F1C-60E3-4344-8B41-C22F02A09BDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
