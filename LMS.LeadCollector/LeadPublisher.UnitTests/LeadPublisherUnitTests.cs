@@ -57,7 +57,8 @@ namespace LMS.LeadPublisher.UnitTests
             var testChannel = new InProcNotificationChannel<string>(new Mock<ILogger>().Object);
             var testPublisher = new Publisher<string>(new INotificationChannel<string>[] {testChannel}, true);
             var testSubscriber = new Subscriber<string>(testChannel, true);
-            const string expectedMessage = "{\"Context\":null,\"Properties\":[{\"Id\":\"testKey\",\"Value\":\"testValue\"}],\"Segments\":null}";
+            const string expectedMessage =
+                "{\"Context\":null,\"Properties\":[{\"Id\":\"testKey\",\"Value\":\"testValue\"}],\"Segments\":null,\"Results\":null}";
             var actualMessage = string.Empty;
 
             var leadPublisher = new LeadPublisher(testPublisher, new Mock<ILoggerClient>().Object);
@@ -95,6 +96,7 @@ namespace LMS.LeadPublisher.UnitTests
         public IContext[] Context { get; set; }
         public IProperty[] Properties { get; set; }
         public ISegment[] Segments { get; set; }
+        public IResults[] Results { get; set; }
     }
 
     internal struct TestProperty : IProperty
