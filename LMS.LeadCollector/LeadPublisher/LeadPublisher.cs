@@ -1,29 +1,22 @@
-﻿
-
-namespace LMS.LeadPublisher.Implementation
+﻿namespace LMS.LeadPublisher.Implementation
 {
-
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Admiral.Components.Instrumentation.Contract;
     using Compare.Components.Notification.Contract;
-    using LMS.LoggerClient.Interface;
-    using LMS.LeadEntity.Interface;
-    using LMS.Publisher.Interface;
+    using LoggerClient.Interface;
+    using LeadEntity.Interface;
+    using Newtonsoft.Json;
+    using Publisher.Interface;
 
     public class LeadPublisher : IPublisher
     {
         ILoggerClient  _loggerClient;
         ILeadEntity _leadEntity;
-        private static INotificationChannel<string> _notificationChannel; 
+        private static IPublisher<string> _notificationChannelPublisher; 
 
-        public LeadPublisher(INotificationChannel<string> notificationChannel,  ILoggerClient loggerClient)
+        public LeadPublisher(IPublisher<string> notificationChannelPublisher,  ILoggerClient loggerClient)
         {
-            _loggerClient = loggerClient;
-            _notificationChannel = notificationChannel;
+            _notificationChannelPublisher = notificationChannelPublisher ?? throw new ArgumentNullException(nameof(notificationChannelPublisher));
+            _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
         }
 
         public void PublishLead(ILeadEntity leadEntity)
@@ -31,7 +24,7 @@ namespace LMS.LeadPublisher.Implementation
             _leadEntity = leadEntity;
 
             // Pass leadEntity onto channel to be picked up by Subscribed Campaign Managers
-            _notificationChannel.Transmit("message");
+            _notificationChannelPublisher.BroadcastMessage(JsonConvert.SerializeObject(leadEntity));
         }
 
 
