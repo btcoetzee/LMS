@@ -20,56 +20,54 @@
                 return false;
             }
 
-            else if (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey) == null)
+            if (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey) == null)
             {
                 return false;
             }
 
-            else if (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey) == null)
+            if (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey) == null)
             {
                 return false;
             }
 
-            else if (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey) == null)
+            if (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey) == null)
             {
                 return false;
             }
 
-            else
+            // Check the value here.
+            Guid activityGuid;
+            Guid identityGuid;
+            Guid sessionGuid;
+            int quotedProduct;
+
+            if (!Guid.TryParse(lead.Context.Where(ac => ac.Id == LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey)
+                .Select(i => i.Value).ToString(), out activityGuid))
             {
-                // Check the value here.
-                Guid activityGuid;
-                Guid identityGuid;
-                Guid sessionGuid;
-                int quotedProduct;
-
-                if (!Guid.TryParse(lead.Context.Where(ac => ac.Id == LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey)
-                    .Select(i => i.Value).ToString(), out activityGuid))
-                {
-                    return false;
-                }
-
-                else if (!Guid.TryParse(lead.Context.Where(ac => ac.Id == LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey)
-                    .Select(i => i.Value).ToString(), out identityGuid))
-                {
-                    return false;
-                }
-
-                else if (!Guid.TryParse(lead.Context.Where(ac => ac.Id == LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey)
-                    .Select(i => i.Value).ToString(), out sessionGuid))
-                {
-                    return false;
-                }
-
-                else if (!Int32.TryParse(lead.Context.Where(ac => ac.Id == LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey)
-                    .Select(i => i.Value).ToString(), out quotedProduct))
-                {
-                    return false;
-
-
-                }
-                // try tryParse on guid to see if valid guid.
+                return false;
             }
+
+             if (!Guid.TryParse(lead.Context.Where(ac => ac.Id == LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey)
+                .Select(i => i.Value).ToString(), out identityGuid))
+            {
+                return false;
+            }
+
+             if (!Guid.TryParse(lead.Context.Where(ac => ac.Id == LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey)
+                .Select(i => i.Value).ToString(), out sessionGuid))
+            {
+                return false;
+            }
+
+             if (!Int32.TryParse(lead.Context.Where(ac => ac.Id == LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey)
+                .Select(i => i.Value).ToString(), out quotedProduct))
+            {
+                return false;
+
+
+            }
+            // try tryParse on guid to see if valid guid.
+
             return true;
 
         }

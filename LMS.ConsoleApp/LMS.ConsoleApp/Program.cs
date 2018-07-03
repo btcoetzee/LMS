@@ -7,6 +7,8 @@
     using LeadCollector.Interface;
     using LeadEntity.Interface.Constants;
     using Microsoft.Extensions.DependencyInjection;
+    using LMS.LoggerClient.Console;
+    using LMS.LoggerClient.Interface;
 
     public class Program
     {
@@ -23,7 +25,15 @@
         public static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
-    
+
+            new ConsoleLoggerClient().Log(new DefaultLoggerClientObject
+            {
+                LogDateTime = DateTime.Now,
+                OperationContext = "ConsoleApp.Main Start",
+                ProcessContext = "LMS.ConsoleApp.Exe",
+                SolutionContext = string.Empty
+            });
+
             var leadCollector = new ServiceCollection()
                 .BuildUp()
                 .BuildServiceProvider()
@@ -43,11 +53,21 @@
                 Console.WriteLine($"Select lead [1-{leadEntities.Length}]: ");
                 int.TryParse(Console.ReadLine(), out leadChoice);
             }
+
+            new ConsoleLoggerClient().Log(new DefaultLoggerClientObject
+            {
+                LogDateTime = DateTime.Now,
+                OperationContext = "ConsoleApp.Main End",
+                ProcessContext = "LMS.ConsoleApp.Exe",
+                SolutionContext = string.Empty
+            });
+
+            Console.ReadKey();
         }
 
         static ILeadEntity[] CreateLeads()
         {
-            var leadEntities = new ILeadEntity[5];
+            var leadEntities = new ILeadEntity[6];
 
             leadEntities[0] = new MyLeads
             {
@@ -171,6 +191,35 @@
                 Context = new IContext[]
                 {
                     new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.QuotedProductKey,QuotedProduct.ToString()),
+                    new MyContext(ContextKeys.AdditionalProductKey,AdditonalProducts)
+                },
+
+                Properties = new IProperty[]
+                {
+                    new MyProperty(PropertyKeys.PriorBIKey,PriorBI),
+                    new MyProperty(PropertyKeys.PriorInsuranceKey,PriorInsurance.ToString()),
+                    new MyProperty(PropertyKeys.VehicleCountKey,VehicleCount.ToString()),
+                    new MyProperty(PropertyKeys.QuotedBIKey,QuotedBI),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,DisplayedBrands.ToString())
+                },
+
+                Segments = new ISegment[]
+                {
+                    new MySegment(SegementKeys.HighPOPKey),
+                    new MySegment(SegementKeys.HomeownerKey)
+                }
+
+            };
+
+            leadEntities[5] = new MyLeads
+            {
+
+                Context = new IContext[]
+                {
+                    new MyContext(ContextKeys.ActivityGuidKey, null),
                     new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,QuotedProduct.ToString()),

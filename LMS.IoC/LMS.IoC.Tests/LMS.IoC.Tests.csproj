@@ -20,11 +20,17 @@
     <Reference Include="LMS.LeadCollector.Interface">
       <HintPath>..\..\lib\LMS.LeadCollector.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.LeadValidator.Implementation">
+      <HintPath>..\..\lib\LMS.LeadValidator.Implementation.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.LoggerClient.Console">
       <HintPath>..\..\lib\LMS.LoggerClient.Console.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.Validator.Interface">
+      <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
       <HintPath>..\..\..\..\Users\milo.wical\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
