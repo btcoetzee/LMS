@@ -4,6 +4,8 @@
     using Admiral.Components.Instrumentation.Contract;
     using Compare.Components.Notification.Contract;
     using LeadCollector.Interface;
+    using LoggerClient.Console;
+    using LoggerClient.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -118,6 +120,18 @@
 
             //For now, we can just check to make sure that it's made.
             Assert.IsNotNull(collector);
+        }
+
+        [TestMethod]
+        public void AddLoggerClientTest()
+        {
+            var provider = _container.AddLoggerClient().BuildServiceProvider();
+
+            var logger = provider.GetRequiredService<ILoggerClient>();
+
+            Assert.IsNotNull(logger);
+            //This instance type will need to be updated if it changes in the future.
+            Assert.IsInstanceOfType(logger, typeof(ConsoleLoggerClient));
         }
     }
 }

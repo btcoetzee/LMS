@@ -11,6 +11,8 @@
     using LeadCollector.Implementation;
     using LeadCollector.Interface;
     using LeadEntity.Interface;
+    using LoggerClient.Console;
+    using LoggerClient.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Publisher.Interface;
@@ -26,7 +28,8 @@
                 .AddLeadValidator()
                 .AddLeadDecorator()
                 .AddLeadPublisher()
-                .AddLeadCollector();
+                .AddLeadCollector()
+                .AddLoggerClient();
 
             return container;
         }
@@ -110,6 +113,12 @@
                     provider.GetRequiredService<IPublisher>()));
 
             return container;
+        }
+
+        public static IServiceCollection AddLoggerClient(this IServiceCollection container)
+        {
+            //The registered type can be changed in the future.
+            return container.AddSingleton<ILoggerClient, ConsoleLoggerClient>();
         }
     }
 }
