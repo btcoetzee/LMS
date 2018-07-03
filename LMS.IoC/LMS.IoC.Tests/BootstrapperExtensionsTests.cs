@@ -4,6 +4,8 @@
     using Admiral.Components.Instrumentation.Contract;
     using Compare.Components.Notification.Contract;
     using LeadCollector.Interface;
+    using LMS.Validator.Interface;
+    using LMS.LeadValidator.Implementation;
     using LoggerClient.Console;
     using LoggerClient.Interface;
     using Microsoft.Extensions.DependencyInjection;
@@ -132,6 +134,18 @@
             Assert.IsNotNull(logger);
             //This instance type will need to be updated if it changes in the future.
             Assert.IsInstanceOfType(logger, typeof(ConsoleLoggerClient));
+        }
+
+        [TestMethod]
+        public void AddLeadValidatorTest()
+        {
+            var provider = _container.AddLeadValidator().BuildServiceProvider();
+
+            var validator = provider.GetRequiredService<IValidator>();
+
+            Assert.IsNotNull(validator);
+            //This instance type will need to be updated if it changes in the future.
+            Assert.IsInstanceOfType(validator, typeof(LeadValidator));
         }
     }
 }

@@ -17,6 +17,7 @@
     using Moq;
     using Publisher.Interface;
     using Validator.Interface;
+    using LeadValidator.Implementation;
 
     public static class Bootstrapper
     {
@@ -68,17 +69,22 @@
             container.AddSingleton<IPublisher<string>>(provider =>
                 new Publisher<string>(provider.GetServices<INotificationChannel<string>>().ToArray(), true));
 
+            //WTF, mate?
+            //container.AddSingleton<IPublisher<string>, Publisher<string>>();
+
             return container;
         }
 
         public static IServiceCollection AddLeadValidator(this IServiceCollection container)
         {
-            var validatorMock = new Mock<IValidator>();
-            validatorMock.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
+            //var validatorMock = new Mock<IValidator>();
+            //validatorMock.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
 
-            var validator = validatorMock.Object;
+            //var validator = validatorMock.Object;
 
-            container.AddSingleton<IValidator>(validator);
+            //container.AddSingleton<IValidator>(validator);
+
+            container.AddSingleton<IValidator, LeadValidator>();
 
             return container;
         }
@@ -108,9 +114,7 @@
 
         public static IServiceCollection AddLeadCollector(this IServiceCollection container)
         {
-            container.AddSingleton<ILeadCollector>(provider =>
-                new LeadCollector(provider.GetRequiredService<IValidator>(), provider.GetRequiredService<IDecorator>(),
-                    provider.GetRequiredService<IPublisher>()));
+            container.AddSingleton<ILeadCollector, LeadCollector>();
 
             return container;
         }
