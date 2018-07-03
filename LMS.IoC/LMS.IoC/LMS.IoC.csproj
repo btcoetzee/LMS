@@ -25,6 +25,9 @@
     <Reference Include="LMS.LeadCollector.Interface">
       <HintPath>..\..\lib\LMS.LeadCollector.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.LeadDecorator.Implementation">
+      <HintPath>..\..\lib\LMS.LeadDecorator.Implementation.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.LeadEntity.Interface">
       <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
     </Reference>

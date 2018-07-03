@@ -10,6 +10,8 @@
     using LoggerClient.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using LMS.Decorator.Interface;
+    using LMS.LeadDecorator.Implementation;
 
     [TestClass]
     public class BootstrapperExtensionsTests
@@ -146,6 +148,18 @@
             Assert.IsNotNull(validator);
             //This instance type will need to be updated if it changes in the future.
             Assert.IsInstanceOfType(validator, typeof(LeadValidator));
+        }
+
+        [TestMethod]
+        public void AddLeadDecoratorTest()
+        {
+            var provider = _container.AddLeadDecorator().BuildServiceProvider();
+
+            var decorator = provider.GetRequiredService<IDecorator>();
+
+            Assert.IsNotNull(decorator);
+            //This instance type will need to be updated if it changes in the future.
+            Assert.IsInstanceOfType(decorator, typeof(LeadDecorator));
         }
     }
 }

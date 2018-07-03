@@ -18,6 +18,7 @@
     using Publisher.Interface;
     using Validator.Interface;
     using LeadValidator.Implementation;
+    using LMS.LeadDecorator.Implementation;
 
     public static class Bootstrapper
     {
@@ -91,12 +92,15 @@
 
         public static IServiceCollection AddLeadDecorator(this IServiceCollection container)
         {
-            var decoratorMock = new Mock<IDecorator>();
-            decoratorMock.Setup(d => d.DecorateLead(It.IsAny<ILeadEntity>()));
+            //var decoratorMock = new Mock<IDecorator>();
+            //decoratorMock.Setup(d => d.DecorateLead(It.IsAny<ILeadEntity>()));
 
-            var decorator = decoratorMock.Object;
+            //var decorator = decoratorMock.Object;
 
-            container.AddSingleton<IDecorator>(decorator);
+            //container.AddSingleton<IDecorator>(decorator);
+
+            container.AddSingleton<IDecorator, LeadDecorator>();
+
             return container;
         }
 

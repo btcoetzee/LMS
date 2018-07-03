@@ -17,8 +17,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="LMS.Decorator.Interface">
+      <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.LeadCollector.Interface">
       <HintPath>..\..\lib\LMS.LeadCollector.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadDecorator.Implementation">
+      <HintPath>..\..\lib\LMS.LeadDecorator.Implementation.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LeadValidator.Implementation">
       <HintPath>..\..\lib\LMS.LeadValidator.Implementation.dll</HintPath>
