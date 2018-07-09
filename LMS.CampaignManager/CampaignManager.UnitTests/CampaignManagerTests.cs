@@ -1,14 +1,19 @@
-namespace LMS.CampaignManager.UnitTests
+namespace LMS.Campaign.Manager.UnitTests
 {
     using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using Admiral.Components.Instrumentation.Contract;
+    using CampaignManager.Implementation;
+    using Compare.Components.Notification.Channels.InProc;
+    using Compare.Components.Notification.Contract;
+    using Compare.Components.Notification.Publishers;
+    using Compare.Components.Notification.Subscribers;
+    using Interface;
+    using LoggerClient.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using System.Collections.Generic;
-    using Compare.Components.Notification.Contract;
-    using Compare.Components.Notification.Subscribers;
-    using LMS.Campaign.Interface;
-    using LMS.LoggerClient.Interface;
 
     [TestClass]
     public class CampaignManagerTests
@@ -61,7 +66,7 @@ namespace LMS.CampaignManager.UnitTests
         [TestMethod]
         public void CampaignConstructorTest()
         {
-            var campaignManager = new Implementation.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object,  _loggerClient.Object);
+            var campaignManager = new LMS.CampaignManager.Implementation.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object,  _loggerClient.Object);
         }
 
         /// <summary>
@@ -73,7 +78,7 @@ namespace LMS.CampaignManager.UnitTests
         {
             try
             {
-                var campaignManager = new Implementation.CampaignManager(null, _campaingSubscriberList.Object, _loggerClient.Object);
+                var campaignManager = new LMS.CampaignManager.Implementation.CampaignManager(null, _campaingSubscriberList.Object, _loggerClient.Object);
                 Assert.Fail("An Argument Null Exception is expected when the NotificationSubscriber is null");
             }
             catch (Exception exception)
@@ -92,7 +97,7 @@ namespace LMS.CampaignManager.UnitTests
 
             try
             {
-                var campaignManager = new Implementation.CampaignManager(_notificationSubscriber.Object, null, _loggerClient.Object);
+                var campaignManager = new LMS.CampaignManager.Implementation.CampaignManager(_notificationSubscriber.Object, null, _loggerClient.Object);
                 Assert.Fail("An Argument Null Exception is expected when the CampaignSubscriberList is null");
             }
             catch (Exception exception)
@@ -110,7 +115,7 @@ namespace LMS.CampaignManager.UnitTests
 
             try
             {
-                var campaignManager = new Implementation.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object, null);
+                var campaignManager = new LMS.CampaignManager.Implementation.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object, null);
                 Assert.Fail("An Argument Null Exception is expected when the LoggerClient is null");
             }
             catch (Exception exception)
@@ -127,9 +132,45 @@ namespace LMS.CampaignManager.UnitTests
         public void CampaignProcessEmptyCampaignTest()
         {
             // No Campaigns set up, so result list should be empty
-            var campaignManager = new Implementation.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object, _loggerClient.Object);
+            var campaignManager = new LMS.CampaignManager.Implementation.CampaignManager(_notificationSubscriber.Object, _campaingSubscriberList.Object, _loggerClient.Object);
             var resultList = campaignManager.ProcessCampaigns("This is the lead");
             Assert.AreEqual(resultList.Length, 0);
+        }
+
+        [TestMethod]
+        public void CampaignManagerProcessMultipleCampaignTest()
+        {
+            #region Notification Setup
+
+            INotificationChannel<string> channel = new InProcNotificationChannel<string>(new Mock<ILogger>().Object);
+            var publisher = new Publisher<string>(new[] {channel}, true);
+            var subscriber = new Subscriber<string>(channel, true);
+
+            #endregion
+
+            var random = new Random();
+            const int minSleepInMs = 1000;
+            const int maxSleepInMs = 5000;
+
+            const string testMessage = "Hello from Milo! :-)";
+            const string responseFormat = "Campaign {0} complete.";
+
+            const int campaignCount = 3;
+            var campaignSubscribers = new ICampaignSubscriber[campaignCount];
+
+            for (var i = 0; i < campaignCount; i++)
+            {
+                var id = i;
+                var mock = new Mock<ICampaignSubscriber>();
+                mock.Setup(campaign => campaign.ReceiveLead(It.IsIn(testMessage)))
+                    .Callback(() => Thread.Sleep(random.Next(minSleepInMs, maxSleepInMs)))
+                    .Returns(string.Format(responseFormat, id));
+                campaignSubscribers[i] = mock.Object;
+            }
+
+            var campaignManager = new CampaignManager(subscriber, campaignSubscribers, new Mock<ILoggerClient>().Object);
+
+            var results = campaignManager.ProcessCampaigns("TestMessage");
         }
 
         /// <summary>

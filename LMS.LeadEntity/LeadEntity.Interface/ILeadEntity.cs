@@ -9,6 +9,7 @@
         IProperty[] Properties { get; set; }
 
         ISegment[] Segments { get; set; }
+        IResults[] Results { get; set; }
 
         // Is Lead Entity Valid
         bool isValid();

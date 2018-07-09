@@ -13,6 +13,7 @@
     <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.2" />
     <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Moq" Version="4.8.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +22,9 @@
     </Reference>
     <Reference Include="LMS.Campaign.Interface">
       <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Implementation.dll</HintPath>
     </Reference>
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
@@ -39,6 +43,9 @@
     </Reference>
     <Reference Include="LMS.LeadEntity.JSON">
       <HintPath>..\..\lib\LMS.LeadEntity.JSON.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClient.Console">
+      <HintPath>..\..\lib\LMS.LoggerClient.Console.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>

@@ -18,4 +18,17 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LeadPublisher\LMS.LeadPublisher.Implementation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LMS.LeadEntity.Interface">
+      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClient.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

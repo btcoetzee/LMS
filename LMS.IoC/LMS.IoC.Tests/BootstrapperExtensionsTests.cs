@@ -3,9 +3,15 @@
     using System;
     using Admiral.Components.Instrumentation.Contract;
     using Compare.Components.Notification.Contract;
+    using LeadCollector.Interface;
+    using LMS.Validator.Interface;
+    using LMS.LeadValidator.Implementation;
+    using LoggerClient.Console;
+    using LoggerClient.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using LMS.LeadCollector.Interface;
+    using LMS.Decorator.Interface;
+    using LMS.LeadDecorator.Implementation;
 
     [TestClass]
     public class BootstrapperExtensionsTests
@@ -39,7 +45,7 @@
                 //Can't build without the dependencies.
                 channel = provider.GetService<INotificationChannel<string>>();
             }
-            catch (ArgumentNullException ane)
+            catch (InvalidOperationException ioe)
             {
                 //Swallow the exception because we know what caused it.
             }
@@ -63,7 +69,7 @@
                 //Can't build without the dependencies.
                 subscriber = provider.GetService<ISubscriber<string>>();
             }
-            catch (ArgumentNullException ane)
+            catch (InvalidOperationException ioe)
             {
                 //Swallow the exception because we know what caused it.
             }
@@ -108,12 +114,52 @@
             Assert.AreEqual(1, publisher.ChannelCount);
         }
 
-       // [TestMethod]
-        //public void AddLeadCollectorTest()
-        //{
-        //    var provider = _container.AddLeadValidator().AddLeadCollector().BuildServiceProvider();
+        [TestMethod]
+        public void AddLeadCollectorTest()
+        {
+            var provider = _container.AddLeadValidator().AddLeadDecorator().AddLeadPublisher().AddLeadCollector()
+                .BuildServiceProvider();
 
-        //    provider.GetService<ILeadCollector>();
-        //}
+            var collector = provider.GetService<ILeadCollector>();
+
+            //For now, we can just check to make sure that it's made.
+            Assert.IsNotNull(collector);
+        }
+
+        [TestMethod]
+        public void AddLoggerClientTest()
+        {
+            var provider = _container.AddLoggerClient().BuildServiceProvider();
+
+            var logger = provider.GetRequiredService<ILoggerClient>();
+
+            Assert.IsNotNull(logger);
+            //This instance type will need to be updated if it changes in the future.
+            Assert.IsInstanceOfType(logger, typeof(ConsoleLoggerClient));
+        }
+
+        [TestMethod]
+        public void AddLeadValidatorTest()
+        {
+            var provider = _container.AddLeadValidator().BuildServiceProvider();
+
+            var validator = provider.GetRequiredService<IValidator>();
+
+            Assert.IsNotNull(validator);
+            //This instance type will need to be updated if it changes in the future.
+            Assert.IsInstanceOfType(validator, typeof(LeadValidator));
+        }
+
+        [TestMethod]
+        public void AddLeadDecoratorTest()
+        {
+            var provider = _container.AddLeadDecorator().BuildServiceProvider();
+
+            var decorator = provider.GetRequiredService<IDecorator>();
+
+            Assert.IsNotNull(decorator);
+            //This instance type will need to be updated if it changes in the future.
+            Assert.IsInstanceOfType(decorator, typeof(LeadDecorator));
+        }
     }
 }
