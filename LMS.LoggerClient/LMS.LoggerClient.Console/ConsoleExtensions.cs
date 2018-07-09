@@ -5,7 +5,7 @@
 
     public static class ConsoleExtensions
     {
-        private static readonly ColorSet StandardLoggingColors = new ColorSet(ConsoleColor.Green, ConsoleColor.White);
+        private static readonly ColorSet StandardLoggingColors = new ColorSet(ConsoleColor.DarkGreen, ConsoleColor.White);
         private static readonly ColorSet ErrorLoggingColors = new ColorSet(ConsoleColor.Red, ConsoleColor.Yellow);
 
         public static void Log(ILoggerClientObject loggerObject)

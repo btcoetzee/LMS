@@ -62,6 +62,14 @@
                 SolutionContext = string.Empty
             });
 
+            new ConsoleLoggerClient().Log(new DefaultLoggerClientErrorObject
+            {
+                LogDateTime = DateTime.Now,
+                OperationContext = "Had an error occurred...",
+                ProcessContext = "LMS.ConsoleApp.Exe",
+                SolutionContext = string.Empty
+            });
+
             Console.ReadKey();
         }
 
