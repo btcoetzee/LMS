@@ -258,6 +258,7 @@
         public IContext[] Context { get; set; }
         public IProperty[] Properties { get; set; }
         public ISegment[] Segments { get; set; }
+        public IResults[] Results { get; set; }
     }
 
     struct MyContext : IContext
