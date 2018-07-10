@@ -19,19 +19,23 @@
     using Validator.Interface;
     using LeadValidator.Implementation;
     using LMS.LeadDecorator.Implementation;
+    using LMS.LeadPublisher.Implementation;
+    
 
     public static class Bootstrapper
     {
         public static IServiceCollection BuildUp(this IServiceCollection container)
         {
-            container
+            container                
                 .AddLogger()
+                .AddLoggerClient()
                 .AddNotificationChannel()
+                .AddNotificationPublisher()
                 .AddLeadValidator()
                 .AddLeadDecorator()
                 .AddLeadPublisher()
-                .AddLeadCollector()
-                .AddLoggerClient();
+                .AddLeadCollector();
+                
 
             return container;
         }
@@ -105,13 +109,8 @@
         }
 
         public static IServiceCollection AddLeadPublisher(this IServiceCollection container)
-        {
-            var publisherMock = new Mock<IPublisher>();
-            publisherMock.Setup(p => p.PublishLead(It.IsAny<ILeadEntity>()));
-
-            var publisher = publisherMock.Object;
-
-            container.AddSingleton<IPublisher>(publisher);
+        {           
+            container.AddSingleton<IPublisher, LeadPublisher>();
 
             return container;
         }
@@ -128,5 +127,12 @@
             //The registered type can be changed in the future.
             return container.AddSingleton<ILoggerClient, ConsoleLoggerClient>();
         }
+
+        //public static IServiceCollection AddPublisherNotificationChannel(this IServiceCollection container)
+        //{
+        //    var notificationPublisher = 
+
+        //    return container;
+        //}
     }
 }

@@ -102,6 +102,11 @@
                 {
                     new MySegment(SegementKeys.HighPOPKey),
                     new MySegment(SegementKeys.HomeownerKey)
+                },
+
+                Results = new IResults[]
+                {
+                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
                 }
 
             };
@@ -131,6 +136,11 @@
                 {
                     new MySegment(SegementKeys.HighPOPKey),
                     new MySegment(SegementKeys.HomeownerKey)
+                },
+
+                Results = new IResults[]
+                {
+                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
                 }
 
             };
@@ -160,6 +170,11 @@
                 {
                     new MySegment(SegementKeys.HighPOPKey),
                     new MySegment(SegementKeys.HomeownerKey)
+                },
+
+                Results = new IResults[]
+                {
+                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
                 }
 
             };
@@ -189,6 +204,11 @@
                 {
                     new MySegment(SegementKeys.HighPOPKey),
                     new MySegment(SegementKeys.HomeownerKey)
+                },
+
+                Results = new IResults[]
+                {
+                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
                 }
 
             };
@@ -218,6 +238,11 @@
                 {
                     new MySegment(SegementKeys.HighPOPKey),
                     new MySegment(SegementKeys.HomeownerKey)
+                },
+
+                Results = new IResults[]
+                {
+                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
                 }
 
             };
@@ -247,6 +272,11 @@
                 {
                     new MySegment(SegementKeys.HighPOPKey),
                     new MySegment(SegementKeys.HomeownerKey)
+                },
+
+                Results = new IResults[]
+                {
+                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
                 }
 
             };
@@ -332,6 +362,19 @@
             type = Type;
         }
         public string type { get; private set; }
+    }
+
+    struct MyResult : IResults
+    {
+        public MyResult(string id, object value)
+        {
+            Id = id;
+            Value = value;
+        }
+
+        public string Id { get; private set; }
+
+        public object Value { get; private set; }
     }
 
 }
