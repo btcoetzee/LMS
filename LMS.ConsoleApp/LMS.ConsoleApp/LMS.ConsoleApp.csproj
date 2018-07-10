@@ -38,11 +38,20 @@
     <Reference Include="LMS.LeadCollector.Interface">
       <HintPath>..\..\lib\LMS.LeadCollector.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.LeadDecorator.Implementation">
+      <HintPath>..\..\lib\LMS.LeadDecorator.Implementation.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.LeadEntity.Interface">
       <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LeadEntity.JSON">
       <HintPath>..\..\lib\LMS.LeadEntity.JSON.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadPublisher.Implementation">
+      <HintPath>..\..\lib\LMS.LeadPublisher.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadValidator.Implementation">
+      <HintPath>..\..\lib\LMS.LeadValidator.Implementation.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LoggerClient.Console">
       <HintPath>..\..\lib\LMS.LoggerClient.Console.dll</HintPath>

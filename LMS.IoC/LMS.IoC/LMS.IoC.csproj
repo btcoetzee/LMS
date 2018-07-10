@@ -31,6 +31,9 @@
     <Reference Include="LMS.LeadEntity.Interface">
       <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.LeadPublisher.Implementation">
+      <HintPath>..\..\lib\LMS.LeadPublisher.Implementation.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.LeadValidator.Implementation">
       <HintPath>..\..\lib\LMS.LeadValidator.Implementation.dll</HintPath>
     </Reference>
