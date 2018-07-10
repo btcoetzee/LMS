@@ -6,7 +6,6 @@ namespace LMS.LoggerClient.Interface
 {
     public struct DefaultLoggerClientErrorObject : ILoggerClientErrorObject
     {
-        public DateTime LogDateTime { get; set; }
         public string SolutionContext { get; set; }
         public string ProcessContext { get; set; }
         public string OperationContext { get; set; }

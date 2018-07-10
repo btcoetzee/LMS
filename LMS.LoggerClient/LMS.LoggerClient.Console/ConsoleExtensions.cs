@@ -1,4 +1,7 @@
-﻿namespace LMS.LoggerClient.Console
+﻿using System.Globalization;
+using System.Runtime.Serialization;
+
+namespace LMS.LoggerClient.Console
 {
     using System;
     using Interface;
@@ -7,17 +10,18 @@
     {
         private static readonly ColorSet StandardLoggingColors = new ColorSet(ConsoleColor.DarkGreen, ConsoleColor.White);
         private static readonly ColorSet ErrorLoggingColors = new ColorSet(ConsoleColor.Red, ConsoleColor.Yellow);
+        private static string DateTimeFormat = "yyyy-MM-ddTHH:mm:ss";
 
         public static void Log(ILoggerClientObject loggerObject)
         {
-            WriteLogEntry(
+            WriteLogEntry(GetLogDateTime() + "\t" +
                 loggerObject.SolutionContext + "\t" + loggerObject.ProcessContext + "\t" +
                 loggerObject.OperationContext, StandardLoggingColors);
         }
 
         public static void Log(ILoggerClientErrorObject loggerErrorObject)
         {
-            WriteLogEntry(
+            WriteLogEntry(GetLogDateTime() + "\t" +
                 loggerErrorObject.SolutionContext + "\t" + loggerErrorObject.ProcessContext + "\t" +
                 loggerErrorObject.OperationContext + "\t" + loggerErrorObject.ErrorContext + "\t" +
                 loggerErrorObject.Exception, ErrorLoggingColors);
@@ -35,6 +39,17 @@
             Console.ForegroundColor = originalColors.ForegroundColor;
             Console.BackgroundColor = originalColors.BackgroundColor;
         }
+        #region Log Date and Time
+        /// <summary>
+        /// Return the Date and Time 
+        /// </summary>
+        /// <returns></returns>
+        private static DateTime GetLogDateTime()
+        {
+            // RoundtripKind - prevents conversion of UTC times to local times
+            return DateTime.ParseExact(DateTime.UtcNow.ToString("s"), DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+        }
+        #endregion
     }
 
     internal struct ColorSet
