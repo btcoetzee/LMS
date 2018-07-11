@@ -6,8 +6,7 @@ namespace LMS.LoggerClient.Interface
 {
     public interface ILoggerClientErrorObject
     {
-        DateTime LogDateTime { get; set; }
-
+ 
         // Name of Soluction
         string SolutionContext { get; set; }
 
