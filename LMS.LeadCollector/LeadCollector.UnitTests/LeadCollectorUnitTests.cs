@@ -10,7 +10,7 @@ namespace LMS.LeadCollector.UnitTests
     using LMS.LeadEntity.Interface;
     using LMS.Validator.Interface;
     using LMS.Publisher.Interface;
-
+    using LMS.LoggerClient.Interface;
 
     [TestClass]
     public class LeadCollectorUnitTests
@@ -20,6 +20,7 @@ namespace LMS.LeadCollector.UnitTests
         private Mock<IValidator> _validator;
         private Mock<IPublisher> _publisher;
         private Mock<IDecorator> _decorator;
+        private Mock<ILoggerClient> _loggingClient;
 
         [TestInitialize]
         public void Initialize()
@@ -28,10 +29,12 @@ namespace LMS.LeadCollector.UnitTests
             _validator = new Mock<IValidator>();
             _publisher = new Mock<IPublisher>();
             _decorator = new Mock<IDecorator>();
+            _loggingClient = new Mock<ILoggerClient>();
 
             _serviceProvider = new ServiceCollection().AddSingleton(typeof(IValidator), _validator.Object)
                 .AddSingleton(typeof(IPublisher), _publisher.Object)
-                .AddSingleton(typeof(IDecorator), _decorator.Object).BuildServiceProvider();
+                .AddSingleton(typeof(IDecorator), _decorator.Object)
+                .AddSingleton(typeof(ILoggerClient), _loggingClient.Object).BuildServiceProvider();
         }
 
         [TestCleanup]
@@ -45,6 +48,8 @@ namespace LMS.LeadCollector.UnitTests
             _publisher = null;
             _decorator.VerifyAll();
             _decorator = null;
+            _loggingClient.VerifyAll();
+            _loggingClient = null;
         }
 
         /// <summary>
@@ -146,16 +151,17 @@ namespace LMS.LeadCollector.UnitTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void AllNullParamLeadCollectorConstructorTest()
         {
-            new Implementation.LeadCollector(null, null, null);
+            new Implementation.LeadCollector(null, null, null, null);
         }
 
         [TestMethod]
         public void MockedParamParamLeadCollectorConstructorTest()
         {
             new Implementation.LeadCollector(_serviceProvider.GetService<IValidator>(), _serviceProvider.GetService<IDecorator>(),
-                _serviceProvider.GetService<IPublisher>());
+                _serviceProvider.GetService<IPublisher>(), _serviceProvider.GetService<ILoggerClient>());
         }
     }
 }

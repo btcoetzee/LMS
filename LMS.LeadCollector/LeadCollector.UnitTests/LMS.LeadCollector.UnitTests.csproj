@@ -30,6 +30,12 @@
     <Reference Include="LMS.LeadEntity.Interface">
       <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.LoggerClient.Console">
+      <HintPath>..\..\lib\LMS.LoggerClient.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClient.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.Publisher.Interface">
       <HintPath>..\..\lib\LMS.Publisher.Interface.dll</HintPath>
     </Reference>

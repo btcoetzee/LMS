@@ -9,19 +9,35 @@
 
     public class LeadPublisher : IPublisher
     {
-        ILoggerClient  _loggerClient;
+
+
+       private static ILoggerClient  _loggerClient;
         ILeadEntity _leadEntity;
-        private static IPublisher<string> _notificationChannelPublisher; 
+        private static IPublisher<string> _notificationChannelPublisher;
+        private static string solutionContext = "LeadPublisher";
 
         public LeadPublisher(IPublisher<string> notificationChannelPublisher,  ILoggerClient loggerClient)
         {
             _notificationChannelPublisher = notificationChannelPublisher ?? throw new ArgumentNullException(nameof(notificationChannelPublisher));
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
+
+            
         }
 
         public void PublishLead(ILeadEntity leadEntity)
         {
+            string processContext = "PublishLead";
+
+            _loggerClient.Log(new DefaultLoggerClientObject
+            {
+                OperationContext = "Publishing the Lead",
+                ProcessContext = processContext,
+                SolutionContext = solutionContext
+            });
+
             _leadEntity = leadEntity;
+
+
 
             // Pass leadEntity onto channel to be picked up by Subscribed Campaign Managers
             _notificationChannelPublisher.BroadcastMessage(JsonConvert.SerializeObject(leadEntity));

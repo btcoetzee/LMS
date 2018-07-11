@@ -7,7 +7,7 @@
     using LMS.Publisher.Interface;
     using LMS.Resolution.Interface;
     using System;
-  
+    using LMS.LoggerClient.Interface;
 
     public class LeadCollector : ILeadCollector
     {
@@ -19,6 +19,11 @@
         private readonly IPublisher _leadPublisher;
         private readonly IResolution _leadResolver;
 
+
+        private readonly ILoggerClient _loggerClient;
+        private static ILeadCollector _notificationChannelPublisher;
+        private static string solutionContext = "LeadCollector";
+
         /// <summary>
         /// Constructor for LeadCollector
         /// </summary>
@@ -26,12 +31,14 @@
         /// <param name="leadDecorator"></param>
         /// <param name="leadPublisher"></param>
         /// <param name="leadResolver"></param>
-        public LeadCollector(IValidator leadValidator, IDecorator leadDecorator, IPublisher leadPublisher)
+        public LeadCollector(IValidator leadValidator, IDecorator leadDecorator, IPublisher leadPublisher, ILoggerClient loggerClient)
         {
 
             _leadValidator = leadValidator ?? throw new ArgumentNullException(nameof(leadValidator));
             _leadDecorator = leadDecorator ?? throw new ArgumentNullException(nameof(leadDecorator));
             _leadPublisher = leadPublisher ?? throw new ArgumentNullException(nameof(leadPublisher));
+            _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
+
         }
 
         /// <summary>
@@ -40,14 +47,31 @@
         /// <param name="lead"></param>
         public void CollectLead(ILeadEntity lead)
         {
+
+            string processContext = "CollectLead";
+
+            _loggerClient.Log(new DefaultLoggerClientObject
+            {
+                OperationContext = "Validating the Lead",
+                ProcessContext = processContext,
+                SolutionContext = solutionContext
+            });
             //If the lead is valid, decorate and publish 
             if (_leadValidator.ValidLead(lead).Equals(true))
             {
+                _loggerClient.Log(new DefaultLoggerClientObject
+                {
+                    OperationContext = "Decorating the Lead",
+                    ProcessContext = processContext,
+                    SolutionContext = solutionContext
+                });
                 // Decorate
                 _leadDecorator.DecorateLead(lead);
 
                 // Broadcast to the Campaigns
                 _leadPublisher.PublishLead(lead);
+
+               
             }
         }
 
