@@ -28,7 +28,6 @@
 
             new ConsoleLoggerClient().Log(new DefaultLoggerClientObject
             {
-                LogDateTime = DateTime.Now,
                 OperationContext = "ConsoleApp.Main Start",
                 ProcessContext = "LMS.ConsoleApp.Exe",
                 SolutionContext = string.Empty
@@ -43,6 +42,8 @@
             var leadChoice = 1;
             Console.WriteLine($"Select lead [1-{leadEntities.Length}]: ");
             int.TryParse(Console.ReadLine(), out leadChoice);
+
+
             while (leadChoice >= 1 && leadChoice <= leadEntities.Length)
             {
                 leadChoice--; //Since array indices start at 0
@@ -56,7 +57,6 @@
 
             new ConsoleLoggerClient().Log(new DefaultLoggerClientObject
             {
-                LogDateTime = DateTime.Now,
                 OperationContext = "ConsoleApp.Main End",
                 ProcessContext = "LMS.ConsoleApp.Exe",
                 SolutionContext = string.Empty
@@ -64,7 +64,6 @@
 
             new ConsoleLoggerClient().Log(new DefaultLoggerClientErrorObject
             {
-                LogDateTime = DateTime.Now,
                 OperationContext = "Had an error occurred...",
                 ProcessContext = "LMS.ConsoleApp.Exe",
                 SolutionContext = string.Empty

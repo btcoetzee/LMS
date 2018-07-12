@@ -52,7 +52,7 @@
 
             _loggerClient.Log(new DefaultLoggerClientObject
             {
-                OperationContext = "Validating the Lead",
+                OperationContext = "Collecting the Lead",
                 ProcessContext = processContext,
                 SolutionContext = solutionContext
             });
@@ -61,17 +61,31 @@
             {
                 _loggerClient.Log(new DefaultLoggerClientObject
                 {
-                    OperationContext = "Decorating the Lead",
+                    OperationContext = "Validating the Lead",
                     ProcessContext = processContext,
                     SolutionContext = solutionContext
                 });
                 // Decorate
                 _leadDecorator.DecorateLead(lead);
 
+                _loggerClient.Log(new DefaultLoggerClientObject
+                {
+                    OperationContext = "Decorating the Lead",
+                    ProcessContext = processContext,
+                    SolutionContext = solutionContext
+                });
+
                 // Broadcast to the Campaigns
                 _leadPublisher.PublishLead(lead);
 
-               
+                _loggerClient.Log(new DefaultLoggerClientObject
+                {
+                    OperationContext = "Publishing the Lead",
+                    ProcessContext = processContext,
+                    SolutionContext = solutionContext
+                });
+
+
             }
         }
 
