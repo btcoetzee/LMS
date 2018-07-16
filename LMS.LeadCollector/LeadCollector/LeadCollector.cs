@@ -5,7 +5,6 @@
     using LMS.LeadEntity.Interface;
     using LMS.Validator.Interface;
     using LMS.Publisher.Interface;
-    using LMS.Resolution.Interface;
     using System;
     using LMS.LoggerClient.Interface;
 
@@ -17,9 +16,6 @@
         private readonly IValidator _leadValidator;
         private readonly IDecorator _leadDecorator;
         private readonly IPublisher _leadPublisher;
-        private readonly IResolution _leadResolver;
-
-
         private readonly ILoggerClient _loggerClient;
         private static ILeadCollector _notificationChannelPublisher;
         private static string solutionContext = "LeadCollector";
