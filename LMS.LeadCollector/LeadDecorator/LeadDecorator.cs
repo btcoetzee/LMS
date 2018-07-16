@@ -15,11 +15,10 @@
         private static ILoggerClient _loggerClient;
         ILeadEntity _leadEntity;
         private static IDecorator _notificationChannelPublisher;
-        private static string solutionContext = "LeadPublisher";
+        private static string solutionContext = "LeadDecorator";
 
-        public LeadDecorator(IDecorator notificationChannelPublisher, ILoggerClient loggerClient)
+        public LeadDecorator(ILoggerClient loggerClient)
         {
-            _notificationChannelPublisher = notificationChannelPublisher ?? throw new ArgumentNullException(nameof(notificationChannelPublisher));
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));            
         }
 
