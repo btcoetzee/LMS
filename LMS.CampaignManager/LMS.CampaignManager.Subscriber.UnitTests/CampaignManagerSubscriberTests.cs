@@ -1,3 +1,5 @@
+using LMS.CampaignManager.Subscriber.Interface;
+
 namespace LMS.CampaignManager.Subscriber.UnitTests
 {
     using System;
@@ -14,15 +16,15 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
     using LMS.LoggerClient.Interface;
     using LMS.CampaignManager.Subscriber.Implementation;
     using LMS.CampaignManager.Interface;
- 
+    using LMS.LeadEntity.Interface;
+
     [TestClass]
     public class CampaignManagerSubscriberTests
     {
-
         private static IServiceProvider _campaignManagerSubscriberServiceProvider;
-        private Mock<ISubscriber<string>> _notificationSubscriber;
-        private Mock<ICampaignManager> _campaignManager;
+        private Mock<ISubscriber<ILeadEntity>> _notificationSubscriber;
         private Mock<ILoggerClient> _loggerClient;
+        private ILeadEntity _testLleadEntity;
 
         /// <summary>
         /// Initializes this instance.
@@ -31,17 +33,49 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         public void Initialize()
         {
             // Mock the Notification Subscriber, CampaignManager and Logger Client
-            _notificationSubscriber = new Mock<ISubscriber<string>>();
-            _campaignManager = new Mock<ICampaignManager>();
+            _notificationSubscriber = new Mock<ISubscriber<ILeadEntity>>();
             _loggerClient = new Mock<ILoggerClient>();
 
             // Create Service Providers 
             _campaignManagerSubscriberServiceProvider = new ServiceCollection()
-                .AddSingleton(typeof(ISubscriber<string>), _notificationSubscriber.Object)
-                .AddSingleton(typeof(ICampaignManager), _campaignManager.Object)
+                .AddSingleton(typeof(ISubscriber<ILeadEntity>), _notificationSubscriber.Object)
                 .AddSingleton(typeof(ILoggerClient), _loggerClient.Object)
                 .BuildServiceProvider();
+            // Create a leadEntity
+            CreateLeadEntity();
         }
+
+        /// <summary>
+        /// Create an Instance of the LeadEntity
+        /// </summary>
+        private class TestLeadEntityClass : ILeadEntity
+        {
+            public bool isValid()
+            {
+                throw new NotImplementedException();
+            }
+
+            public IContext[] Context { get; set; }
+            public IProperty[] Properties { get; set; }
+            public ISegment[] Segments { get; set; }
+            public IResults[] Results { get; set; }
+        }
+        void CreateLeadEntity()
+        {
+            _testLleadEntity = new TestLeadEntityClass()
+            {
+                Context = new IContext[]
+                    {},
+                Properties = new IProperty[]
+                    {},
+                Segments = new ISegment[]
+                    {},
+                Results = new IResults[]
+                    {}
+            };
+
+        }
+
         /// <summary>
         /// Cleanups this instance.
         /// </summary>
@@ -50,8 +84,6 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         {
             _notificationSubscriber.VerifyAll();
             _notificationSubscriber = null;
-            _campaignManager.VerifyAll();
-            _campaignManager = null;
             _loggerClient.VerifyAll();
             _loggerClient = null;
             _campaignManagerSubscriberServiceProvider = null;
@@ -64,7 +96,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         [TestMethod]
         public void CampaignManagerSubscriberConstructorTest()
         {
-            var campaignManagerSubscriber = new CampaignManagerSubscriber(_notificationSubscriber.Object, _campaignManager.Object, _loggerClient.Object);
+            var campaignManagerSubscriber = new CampaignManagerSubscriber(_notificationSubscriber.Object, _loggerClient.Object);
         }
 
         /// <summary>
@@ -76,7 +108,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         {
             try
             {
-                var campaignManagerSubscriber = new CampaignManagerSubscriber(null, _campaignManager.Object, _loggerClient.Object);
+                var campaignManagerSubscriber = new CampaignManagerSubscriber(null, _loggerClient.Object);
                 Assert.Fail("An Argument Null Exception is expected when the NotificationSubscriber is null");
             }
             catch (Exception exception)
@@ -87,24 +119,6 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         }
 
         /// <summary>
-        /// Campaing Constructor Test with a Null Campaign List.
-        /// </summary>
-        [TestMethod]
-        public void CampaignManagerSubscriberConstructorNullCampaignManagerTest()
-        {
-
-            try
-            {
-                var campaignManagerSubscriber = new CampaignManagerSubscriber(_notificationSubscriber.Object, null, _loggerClient.Object);
-                Assert.Fail("An Argument Null Exception is expected when the CampaignManager is null");
-            }
-            catch (Exception exception)
-            {
-                Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
-                Assert.AreEqual("Value cannot be null. Parameter name: campaignManager", exception.Message.Replace(Environment.NewLine, " "));
-            }
-        }
-        /// <summary>
         /// Campaing Constructor Test with a Null LoggerClient.
         /// </summary>
         [TestMethod]
@@ -112,7 +126,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         {
             try
             {
-                var campaignManagerSubscriber = new CampaignManagerSubscriber(_notificationSubscriber.Object, _campaignManager.Object, null);
+                var campaignManagerSubscriber = new CampaignManagerSubscriber(_notificationSubscriber.Object, null);
                 Assert.Fail("An Argument Null Exception is expected when the LoggerClient is null");
             }
             catch (Exception exception)
@@ -122,24 +136,37 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
             }
         }
 
-     #endregion
+        #endregion
 
-     #region ReceiveLeadTests
+        #region ReceiveLeadTests
+
         /// <summary>
-        /// Campaign Manager Receive Lead Test
+        /// Campaign Manager AddOnReceiveActionToChannel Test
         /// </summary>
-        [TestMethod]
-        public void CampaignManagerSubscriberReceiveLead()
-        {
-            const string testMessage = "This is a Lead";
-            string[] campaignOutputArray = new string[]
-                {"Campaign 1 processed Lead", "Campaign 2 processed Lead", "Campaign 3 processed Lead"};
-            _campaignManager.Setup(cm => cm.ProcessCampaigns((It.IsIn(testMessage))))
-                .Returns(campaignOutputArray);
-            var campaignManagerSubscriber = new CampaignManagerSubscriber(_notificationSubscriber.Object,
-                _campaignManager.Object, _loggerClient.Object);
-            campaignManagerSubscriber.ReceiveLead(testMessage);
-        }
+        //[TestMethod]
+        //public void CampaignManagerSubscriberAddOnReceiveActionToChannel()
+        //{
+        //    EventArgs 
+        //    var campaignManagerSubscriber = new Mock<ICampaignManagerSubscriber>();
+
+        //    campaignManagerSubscriber.Setup(svc => svc.SetupAddOnReceiveActionToChannel(It.IsAny<Action<ILeadEntity>>()))
+        //        .Callback((Action<ILeadEntity> action) => action(_testLleadEntity));
+        //    _notificationSubscriber.Raise(x => x.S);
+            
+          
+     
+
+        //}
+
+        //const string testMessage = "This is a Lead";
+        //    string[] campaignOutputArray = new string[]
+        //        {"Campaign 1 processed Lead", "Campaign 2 processed Lead", "Campaign 3 processed Lead"};
+        //    _campaignManager.Setup(cm => cm.ProcessCampaigns((It.IsIn(testMessage))))
+        //        .Returns(campaignOutputArray);
+        //    var campaignManagerSubscriber = new CampaignManagerSubscriber(_notificationSubscriber.Object,
+        //        _campaignManager.Object, _loggerClient.Object);
+        //    campaignManagerSubscriber.AddOnReceiveActionToChannel();.ReceiveLead(testMessage);
+        //}
 
         //[TestMethod]
         //public void CampaignManagerProcessMultipleCampaignTest()

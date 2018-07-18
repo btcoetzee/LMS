@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.CampaignManager.UnitTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.CampaignManager.Subscriber.UnitTests", "LMS.CampaignManager.Subscriber.UnitTests\LMS.CampaignManager.Subscriber.UnitTests.csproj", "{60C5A1C8-73B9-4914-BBC1-95F61EF4EFBD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.CampaignManager.Resolver.Implementation", "LMS.CampaignManager.Resolver.Implementation\LMS.CampaignManager.Resolver.Implementation.csproj", "{B63E1452-D4EE-4F56-ADE6-32D119E0C6AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.CampaignManager.Validator.Implementation", "LMS.CampaignManager.Validator.Implementation\LMS.CampaignManager.Validator.Implementation.csproj", "{B73023CD-00ED-46F7-85C7-EC3EFA3DB49F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{60C5A1C8-73B9-4914-BBC1-95F61EF4EFBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60C5A1C8-73B9-4914-BBC1-95F61EF4EFBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60C5A1C8-73B9-4914-BBC1-95F61EF4EFBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B63E1452-D4EE-4F56-ADE6-32D119E0C6AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B63E1452-D4EE-4F56-ADE6-32D119E0C6AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B63E1452-D4EE-4F56-ADE6-32D119E0C6AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B63E1452-D4EE-4F56-ADE6-32D119E0C6AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B73023CD-00ED-46F7-85C7-EC3EFA3DB49F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B73023CD-00ED-46F7-85C7-EC3EFA3DB49F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B73023CD-00ED-46F7-85C7-EC3EFA3DB49F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B73023CD-00ED-46F7-85C7-EC3EFA3DB49F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

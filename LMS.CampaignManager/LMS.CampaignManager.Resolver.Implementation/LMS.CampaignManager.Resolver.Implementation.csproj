@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.LeadEntity.Interface">
-      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\LMS.CampaignManager.Resolver.Interface\LMS.CampaignManager.Resolver.Interface.csproj" />
   </ItemGroup>
 
 </Project>
