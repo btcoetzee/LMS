@@ -1,4 +1,6 @@
-﻿namespace LMS.IoC
+﻿using System;
+
+namespace LMS.IoC
 {
     using System.Linq;
     using Admiral.Components.Instrumentation.Contract;
@@ -117,7 +119,12 @@
 
         public static IServiceCollection AddLeadCollector(this IServiceCollection container)
         {
-            container.AddSingleton<ILeadCollector, LeadCollector>();
+            container.AddSingleton<ILeadCollector>(provider => new LeadCollector(
+                provider.GetRequiredService<IValidator>(), 
+                provider.GetRequiredService<IDecorator>(),
+                provider.GetRequiredService<IPublisher>(),
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkBlue, ConsoleColor.White),
+                    ColorSet.ErrorLoggingColors)));
 
             return container;
         }

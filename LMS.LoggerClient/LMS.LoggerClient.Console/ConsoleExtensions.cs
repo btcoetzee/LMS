@@ -8,25 +8,34 @@ namespace LMS.LoggerClient.Console
 
     public static class ConsoleExtensions
     {
-        private static readonly ColorSet StandardLoggingColors = new ColorSet(ConsoleColor.DarkGreen, ConsoleColor.White);
-        private static readonly ColorSet ErrorLoggingColors = new ColorSet(ConsoleColor.Red, ConsoleColor.Yellow);
         private static string DateTimeFormat = "yyyy-MM-ddTHH:mm:ss";
 
         public static void Log(ILoggerClientObject loggerObject)
         {
+           Log(loggerObject, ColorSet.StandardLoggingColors);
+        }
+
+        public static void Log(ILoggerClientObject loggerObject, ColorSet displayColors)
+        {
             WriteLogEntry(GetLogDateTime() + "\t" +
                 loggerObject.SolutionContext + "\t" + loggerObject.ProcessContext + "\t" +
-                loggerObject.OperationContext, StandardLoggingColors);
+                loggerObject.OperationContext, displayColors);
         }
 
         public static void Log(ILoggerClientErrorObject loggerErrorObject)
         {
+            Log(loggerErrorObject, ColorSet.ErrorLoggingColors);
+        }
+
+        public static void Log(ILoggerClientErrorObject loggerErrorObject, ColorSet displayColors)
+        {
             WriteLogEntry(GetLogDateTime() + "\t" +
                 loggerErrorObject.SolutionContext + "\t" + loggerErrorObject.ProcessContext + "\t" +
                 loggerErrorObject.OperationContext + "\t" + loggerErrorObject.ErrorContext + "\t" +
-                loggerErrorObject.Exception, ErrorLoggingColors);
+                loggerErrorObject.Exception, displayColors);
         }
 
+   
         private static void WriteLogEntry(string message, ColorSet logColors)
         {
             var originalColors = new ColorSet(Console.ForegroundColor, Console.BackgroundColor);
@@ -52,15 +61,5 @@ namespace LMS.LoggerClient.Console
         #endregion
     }
 
-    internal struct ColorSet
-    {
-        internal ConsoleColor ForegroundColor { get; }
-        internal ConsoleColor BackgroundColor { get; }
-
-        public ColorSet(ConsoleColor fg, ConsoleColor bg)
-        {
-            ForegroundColor = fg;
-            BackgroundColor = bg;
-        }
-    }
+    
 }
