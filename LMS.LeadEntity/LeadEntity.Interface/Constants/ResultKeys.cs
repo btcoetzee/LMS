@@ -7,5 +7,7 @@ namespace LMS.LeadEntity.Interface.Constants
     public static class ResultKeys
     {
         public const string ResultTimeStampKey = "ResultTimeStamp";
+
+        public const string CampaignSuccessStatus = "CampaignSuccessStatus";
     }
 }

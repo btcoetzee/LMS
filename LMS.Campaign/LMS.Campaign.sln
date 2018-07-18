@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Campaign.Interface", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Rule.UnitTests", "Rules.UnitTests\LMS.Rule.UnitTests.csproj", "{8937E1D0-5FAF-43B7-929A-4596D080EFB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Campaign.Implementation", "Campaign\LMS.Campaign.Implementation.csproj", "{FDE69B3B-10DA-481A-AE54-79754A99944A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Campaign.BuyClick", "Campaign\LMS.Campaign.BuyClick.csproj", "{FDE69B3B-10DA-481A-AE54-79754A99944A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

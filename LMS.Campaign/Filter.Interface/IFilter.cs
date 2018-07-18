@@ -5,6 +5,6 @@
     public interface IFilter
     {
         // Process the Lead through Filter
-        void ProcessLead(ILeadEntity lead);
+        bool ClearedFilter(ILeadEntity lead);
     }
 }

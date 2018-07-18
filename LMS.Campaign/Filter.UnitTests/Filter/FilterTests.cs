@@ -68,11 +68,11 @@
             string actualMessage = "";
 
             // Mock the ProcessLead function to update the message
-            _filter.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback(() => {
+            _filter.Setup(c => c.ClearedFilter(It.IsAny<ILeadEntity>())).Callback(() => {
                 actualMessage = expectedMessage;
             });
 
-            Filter.ProcessLead(_leadEntity.Object);
+            Filter.ClearedFilter(_leadEntity.Object);
             Assert.AreEqual(expectedMessage, actualMessage);
         }
         /// <summary>
@@ -101,7 +101,7 @@
              });
 
             // Tie the Filter to call out to the validator
-            _filter.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s => {
+            _filter.Setup(c => c.ClearedFilter(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s => {
                 if(validator.ValidLead(s))
                     actualMessage = expectedValidLeadMessage;
                 else
@@ -109,11 +109,11 @@
             });
 
             // Send a valid stream parameter
-            Filter.ProcessLead(_leadEntity.Object);
+            Filter.ClearedFilter(_leadEntity.Object);
             Assert.AreEqual(expectedValidLeadMessage, actualMessage);
 
             // Send a null value parameter
-            Filter.ProcessLead(null);
+            Filter.ClearedFilter(null);
             Assert.AreEqual(expectedInvalidLeadMessage, actualMessage);
         }
 
@@ -146,7 +146,7 @@
             });
 
             // Tie the Filter to call out to the validator and if valid, decorate lead
-            _filter.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>()))
+            _filter.Setup(c => c.ClearedFilter(It.IsAny<ILeadEntity>()))
                 .Callback<ILeadEntity>(s => 
                 {
                     if (validator.ValidLead(s))
@@ -156,7 +156,7 @@
                 });
 
             // Send a valid stream parameter and check that lead is decorated
-            Filter.ProcessLead(_leadEntity.Object);
+            Filter.ClearedFilter(_leadEntity.Object);
 
             // Read the stream returned
             StreamReader reader = new StreamReader(lead);

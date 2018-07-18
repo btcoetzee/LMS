@@ -75,20 +75,20 @@
             const string expectedMessage = "Lead was processed";
             string actualMessage = "";
 
-            // TBD - Uncomment when change string --> ILEadEntity
-            // Mock the ProcessLead function to update the message
-            //_campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback(() => {
-            //    actualMessage = expectedMessage;
-            //});
-            //campaign.ProcessLead(_leadEntity.Object);
-
-            // Mock the ProcessLead function to update the message
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<string>())).Callback(() =>
+            //TBD - Uncomment when change string --> ILEadEntity
+             //Mock the ProcessLead function to update the message
+            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback(() =>
             {
                 actualMessage = expectedMessage;
             });
+            campaign.ProcessLead(_leadEntity.Object);
 
-            campaign.ProcessLead(expectedMessage);
+            // Mock the ProcessLead function to update the message
+            //_campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback(() =>
+            //{
+            //    actualMessage = expectedMessage;
+            //});
+
             Assert.AreEqual(expectedMessage, actualMessage);
         }
         /// <summary>
@@ -118,17 +118,7 @@
 
             // TBD - Uncomment when change string --> ILEadEntity
             // Tie the campaign to call out to the validator
-            //_campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s => {
-            //    if(validator.ValidLead(s))
-            //        actualMessage = expectedValidLeadMessage;
-            //    else
-            //        actualMessage = expectedInvalidLeadMessage;
-            //});
-            // Send a valid stream parameter
-            //campaign.ProcessLead(_leadEntity.Object);
-
-            // Tie the campaign to call out to the validator
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<string>())).Callback<ILeadEntity>(s =>
+            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s =>
             {
                 if (validator.ValidLead(s))
                     actualMessage = expectedValidLeadMessage;
@@ -136,12 +126,23 @@
                     actualMessage = expectedInvalidLeadMessage;
             });
             // Send a valid stream parameter
-            campaign.ProcessLead(expectedValidLeadMessage);
+            campaign.ProcessLead(_leadEntity.Object);
 
-            Assert.AreEqual(expectedValidLeadMessage, actualMessage);
+            // Tie the campaign to call out to the validator
+            //_campaign.Setup(c => c.ProcessLead(It.IsAny<string>())).Callback<ILeadEntity>(s =>
+            //{
+            //    if (validator.ValidLead(s))
+            //        actualMessage = expectedValidLeadMessage;
+            //    else
+            //        actualMessage = expectedInvalidLeadMessage;
+            //});
+            //// Send a valid stream parameter
+            //campaign.ProcessLead(expectedValidLeadMessage);
 
-            // Send a null value parameter
-            campaign.ProcessLead(null);
+            //Assert.AreEqual(expectedValidLeadMessage, actualMessage);
+
+            //// Send a null value parameter
+            //campaign.ProcessLead(null);
             Assert.AreEqual(expectedInvalidLeadMessage, actualMessage);
         }
 
@@ -175,18 +176,7 @@
             });
             // TBD - Uncomment when change string --> ILEadEntity
             //// Tie the campaign to call out to the validator and if valid, decorate and then publish lead
-            //_campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>()))
-            //    .Callback<ILeadEntity>(s => 
-            //    {
-            //        if (validator.ValidLead(s))
-            //        {
-            //            decorator.DecorateLead(s);
-            //        }
-            //    });
-
-            //// Send a valid stream parameter and check that lead is decorated
-            //campaign.ProcessLead(_leadEntity.Object);
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<string>()))
+            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>()))
                 .Callback<ILeadEntity>(s =>
                 {
                     if (validator.ValidLead(s))
@@ -195,8 +185,19 @@
                     }
                 });
 
+            //// Send a valid stream parameter and check that lead is decorated
+            campaign.ProcessLead(_leadEntity.Object);
+            //_campaign.Setup(c => c.ProcessLead(It.IsAny<string>()))
+            //    .Callback<ILeadEntity>(s =>
+            //    {
+            //        if (validator.ValidLead(s))
+            //        {
+            //            decorator.DecorateLead(s);
+            //        }
+            //    });
+
             // Send a valid stream parameter and check that lead is decorated
-            campaign.ProcessLead(expectedDecoratedLeadMessage);
+            //campaign.ProcessLead(expectedDecoratedLeadMessage);
 
             // Read the stream returned
             StreamReader reader = new StreamReader(lead);
@@ -244,30 +245,31 @@
 
             // TBD - Uncomment when change string --> ILEadEntity
             // Tie the campaign to call out to the validator and if valid, publish lead
-            //_campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s => {
-            //    if (validator.ValidLead(s))
+            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s =>
+            {
+                if (validator.ValidLead(s))
+                {
+                    decorator.DecorateLead(s);
+                    publisher.PublishLead(s);
+                }
+
+            });
+
+            //// Send a valid stream parameter
+            campaign.ProcessLead(_leadEntity.Object);
+
+            // Tie the campaign to call out to the validator and if valid, publish lead - some cheating going on here!!!! :-) - change to leadEntity 
+            //_campaign.Setup(c => c.ProcessLead(It.IsAny<string>())).Callback<string>(s => {
+            //    if (validator.ValidLead(_leadEntity.Object))
             //    {
-            //        decorator.DecorateLead(s);
-            //        publisher.PublishLead(s);
+            //        decorator.DecorateLead(_leadEntity.Object);
+            //        publisher.PublishLead(_leadEntity.Object);
             //    }
 
             //});
 
             //// Send a valid stream parameter
-            //campaign.ProcessLead(_leadEntity.Object);
-
-            // Tie the campaign to call out to the validator and if valid, publish lead - some cheating going on here!!!! :-) - change to leadEntity 
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<string>())).Callback<string>(s => {
-                if (validator.ValidLead(_leadEntity.Object))
-                {
-                    decorator.DecorateLead(_leadEntity.Object);
-                    publisher.PublishLead(_leadEntity.Object);
-                }
-
-            });
-
-            // Send a valid stream parameter
-            campaign.ProcessLead(expectedPublishedLeadMessage);
+            //campaign.ProcessLead(expectedPublishedLeadMessage);
             Assert.AreEqual(expectedPublishedLeadMessage, actualMessage);
         }
 

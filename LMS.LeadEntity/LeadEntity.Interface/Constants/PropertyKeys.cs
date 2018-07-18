@@ -36,6 +36,18 @@
         /// <returns></returns>
         public const string DisplayedBrandsKey = "DisplayedBrands";
 
+        /// <summary>
+        /// PhoneNumber Key - value - string
+        /// </summary>
+        /// <returns></returns>
+        public const string PhoneNumber = "PhoneNumber";
+
+        /// <summary>
+        /// PNI_Age Key - value - int
+        /// </summary>
+        /// <returns></returns>
+        public const string PNI_Age = "PNI_Age";
+
 
     }
 }
