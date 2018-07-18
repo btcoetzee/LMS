@@ -1,10 +1,14 @@
-﻿using System.Threading.Tasks;
-
-namespace LMS.CampaignManager.Interface
+﻿namespace LMS.CampaignManager.Interface
 {
+    using LMS.LeadEntity.Interface;
+
     public interface ICampaignManager
     {
-        string[] ProcessCampaigns(string message);
+        // Manage the Campaign
+        void CampaignManagerDriver(ILeadEntity leadEntity);
+
+        // Process through all the campaigns
+        string[] ProcessCampaigns(ILeadEntity leadEntity);
     }
 }
 

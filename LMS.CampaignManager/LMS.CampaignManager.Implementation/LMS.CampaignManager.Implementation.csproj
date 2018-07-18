@@ -6,14 +6,23 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LMS.CampaignManager.Interface\LMS.CampaignManager.Interface.csproj" />
+    <ProjectReference Include="..\LMS.CampaignManager.Resolver.Interface\LMS.CampaignManager.Resolver.Interface.csproj" />
+    <ProjectReference Include="..\LMS.CampaignManager.Subscriber.Implementation\LMS.CampaignManager.Subscriber.Implementation.csproj" />
+    <ProjectReference Include="..\LMS.CampaignManager.Subscriber.Interface\LMS.CampaignManager.Subscriber.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="LMS.Campaign.Interface">
       <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.LeadEntity.Interface">
+      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.Validator.Interface">
+      <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 
