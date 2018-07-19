@@ -8,10 +8,7 @@
 
     public class BuyClickValidator : IValidator
     {
-        public DefaultLoggerClientObject defaultLoggerClientObject;
-
         ILoggerClient _loggerClient;
-        private static IValidator _notificationChannelPublisher;
         private static string solutionContext = "BuyClickValidator";
 
         public BuyClickValidator(ILoggerClient loggerClient)
@@ -22,7 +19,7 @@
         public bool ValidLead(ILeadEntity lead)
         {
             string processContext = "ValidLead";
-            int phoneNumber;
+            long phoneNumber;
             int pni_Age;
 
             _loggerClient.Log(new DefaultLoggerClientObject
@@ -36,14 +33,14 @@
 
             try
             {
-                if (((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber) == null) ||
-                    (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber).Value == null) ||
-               (!int.TryParse((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber).Value).ToString(), out phoneNumber))))
+                if (((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber) == null) ||
+                    (lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber).Value == null) ||
+               (!long.TryParse((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber).Value).ToString(), out phoneNumber))))
                     errorStr += "PhoneNumber Invalid or Not In Properties \n";
 
-                if (((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age) == null) ||
-                    (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age).Value == null) ||
-               (!int.TryParse((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age).Value).ToString(), out pni_Age))))
+                if (((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age) == null) ||
+                    (lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age).Value == null) ||
+               (!int.TryParse((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age).Value).ToString(), out pni_Age))))
                     errorStr += "PNI_Age Invalid or Not In Properties \n";
             }
             catch (Exception ex)
