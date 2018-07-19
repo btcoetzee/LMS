@@ -3,6 +3,6 @@
     using LMS.LeadEntity.Interface;
     public interface ICampaignManagerResolver
     {
-        void ResolveLeads(ILeadEntity[] leads);
+        void ResolveLeads(ILeadEntity[] leadCollection);
     }
 }

@@ -90,8 +90,6 @@
                     }
                 }
             }
-
-   
             if  (validForTheseCampaigns)
             {
                 _loggerClient.Log(new DefaultLoggerClientObject
