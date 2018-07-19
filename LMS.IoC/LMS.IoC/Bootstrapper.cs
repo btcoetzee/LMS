@@ -41,6 +41,7 @@ namespace LMS.IoC
                 .AddLoggerClient()
                 .AddNotificationChannel()
                 .AddNotificationPublisher()
+                .AddNotificationSubscriber()
                 .AddLeadValidator()
                 .AddLeadDecorator()
                 .AddLeadPublisher()
