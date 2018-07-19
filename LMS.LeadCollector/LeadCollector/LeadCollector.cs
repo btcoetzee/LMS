@@ -17,7 +17,6 @@
         private readonly IDecorator _leadDecorator;
         private readonly IPublisher _leadPublisher;
         private readonly ILoggerClient _loggerClient;
-        private static ILeadCollector _notificationChannelPublisher;
         private static string solutionContext = "LeadCollector";
 
         /// <summary>
@@ -26,7 +25,7 @@
         /// <param name="leadValidator"></param>
         /// <param name="leadDecorator"></param>
         /// <param name="leadPublisher"></param>
-        /// <param name="leadResolver"></param>
+        /// <param name="loggerClient"></param>
         public LeadCollector(IValidator leadValidator, IDecorator leadDecorator, IPublisher leadPublisher, ILoggerClient loggerClient)
         {
 

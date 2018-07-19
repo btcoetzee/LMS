@@ -13,15 +13,13 @@
 
        private static ILoggerClient  _loggerClient;
         ILeadEntity _leadEntity;
-        private static IPublisher<string> _notificationChannelPublisher;
+        private static IPublisher<ILeadEntity> _notificationChannelPublisher;
         private static string solutionContext = "LeadPublisher";
 
-        public LeadPublisher(IPublisher<string> notificationChannelPublisher,  ILoggerClient loggerClient)
+        public LeadPublisher(IPublisher<ILeadEntity> notificationChannelPublisher,  ILoggerClient loggerClient)
         {
             _notificationChannelPublisher = notificationChannelPublisher ?? throw new ArgumentNullException(nameof(notificationChannelPublisher));
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
-
-            
         }
 
         public void PublishLead(ILeadEntity leadEntity)
@@ -37,10 +35,9 @@
 
             _leadEntity = leadEntity;
 
-
-
             // Pass leadEntity onto channel to be picked up by Subscribed Campaign Managers
-            _notificationChannelPublisher.BroadcastMessage(JsonConvert.SerializeObject(leadEntity));
+            //notificationChannelPublisher.BroadcastMessage(JsonConvert.SerializeObject(leadEntity));
+            _notificationChannelPublisher.BroadcastMessage(leadEntity);
         }
 
 

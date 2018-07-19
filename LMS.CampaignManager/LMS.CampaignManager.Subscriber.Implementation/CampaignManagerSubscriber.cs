@@ -7,10 +7,12 @@
     using LMS.LoggerClient.Interface;
     using LMS.LeadEntity.Interface;
 
+
     public class CampaignManagerSubscriber : ICampaignManagerSubscriber
     {
         private readonly ISubscriber<ILeadEntity> _notificationSubscriber;
         private readonly ILoggerClient _loggerClient;
+        private const string SolutionContext = "CampaignManagerSubscriber";
 
         public CampaignManagerSubscriber(ISubscriber<ILeadEntity> notificationSubscriber, ILoggerClient loggerClient)
         {
@@ -25,7 +27,21 @@
         /// <param name="receiveAction"></param>
         public void SetupAddOnReceiveActionToChannel(Action<ILeadEntity> receiveAction)
         {
+            var processContext = "SetupAddOnReceiveActionToChannel";
+            _loggerClient.Log(new DefaultLoggerClientObject
+            {
+                OperationContext = "Setting up the function to call when subscriber receives a message.",
+                ProcessContext = processContext,
+                SolutionContext = SolutionContext
+            });
+
             _notificationSubscriber.AddOnReceiveActionToChannel(receiveAction);
+            _loggerClient.Log(new DefaultLoggerClientObject
+            {
+                OperationContext = "Finished setting up the function to call when subscriber receives a message.",
+                ProcessContext = processContext,
+                SolutionContext = SolutionContext
+            });
         }
 
 }

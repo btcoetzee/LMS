@@ -22,6 +22,7 @@
         private readonly ICampaign[] _campaignCollection;
         private readonly ILoggerClient _loggerClient;
         private static readonly ILeadEntity[] EmptyResultArray = new ILeadEntity[] { };
+        private const string SolutionContext = "CampaignManager";
 
         /// <summary>
         /// Constructor
@@ -68,6 +69,13 @@
         /// <param name="leadEntity"></param>
         public void CampaignManagerDriver(ILeadEntity leadEntity)
         {
+            var processContext = "CampaignManagerDriver";
+            _loggerClient.Log(new DefaultLoggerClientObject
+            {
+                OperationContext = "Processing through the campaigns.",
+                ProcessContext = processContext,
+                SolutionContext = SolutionContext
+            });
             bool validForTheseCampaigns = true;
             // Validate the Lead to see if it should be sent through campaigns
             if (_campaignManagerValidatorCollection != null)
@@ -83,11 +91,27 @@
                 }
             }
 
+   
             if  (validForTheseCampaigns)
             {
+                _loggerClient.Log(new DefaultLoggerClientObject
+                {
+                    OperationContext = "Lead is valid for these Campaigns - Start Campaigns.",
+                    ProcessContext = processContext,
+                    SolutionContext = SolutionContext
+                });
                 // Kick off all the campaigns with a task and then resolve following.
                 ProcessCampaigns(leadEntity);
 
+            }
+            else
+            {
+                _loggerClient.Log(new DefaultLoggerClientObject
+                {
+                    OperationContext = "Lead is not valid for these Campaigns.",
+                    ProcessContext = processContext,
+                    SolutionContext = SolutionContext
+                });
             }
  
             
@@ -95,13 +119,35 @@
 
         public ILeadEntity[] ProcessCampaigns(ILeadEntity leadEntity)
         {
+
+            var processContext = "ProcessCampaigns";
+            _loggerClient.Log(new DefaultLoggerClientObject
+            {
+                OperationContext = "Checking for Campaigns to be Managed.",
+                ProcessContext = processContext,
+                SolutionContext = SolutionContext
+            });
             // Check that there are Campaigns to be Managed
             if (!_campaignCollection.Any())
+            {
+                _loggerClient.Log(new DefaultLoggerClientObject
+                {
+                    OperationContext = "There are no Campaigns to be Managed.",
+                    ProcessContext = processContext,
+                    SolutionContext = SolutionContext
+                });
                 return EmptyResultArray;
+            }
+   
 
             // Start the various Campaigns as Tasks
             var campaignCnt = _campaignCollection.Length;
- 
+            _loggerClient.Log(new DefaultLoggerClientObject
+            {
+                OperationContext = $"There are {campaignCnt} Campaigns to be Managed.",
+                ProcessContext = processContext,
+                SolutionContext = SolutionContext
+            });
             var processCampaignsTask = new Task<ILeadEntity[]>(() =>
             {
                 var campaignResults = new ILeadEntity[campaignCnt];

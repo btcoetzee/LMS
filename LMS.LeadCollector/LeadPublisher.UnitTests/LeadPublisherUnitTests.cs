@@ -28,7 +28,7 @@ namespace LMS.LeadPublisher.UnitTests
             {
                 Assert.AreEqual(
                     typeof(LeadPublisher)
-                        .GetConstructor(new[] { typeof(IPublisher<string>), typeof(ILoggerClient)})
+                        .GetConstructor(new[] { typeof(IPublisher<ILeadEntity>), typeof(ILoggerClient)})
                         .GetParameters()[0]
                         .Name, ane.ParamName);
             }
@@ -39,13 +39,13 @@ namespace LMS.LeadPublisher.UnitTests
         {
             try
             {
-                new LeadPublisher(new Mock<IPublisher<string>>().Object, null);
+                new LeadPublisher(new Mock<IPublisher<ILeadEntity>>().Object, null);
             }
             catch (ArgumentNullException ane)
             {
                 Assert.AreEqual(
                     typeof(LeadPublisher)
-                        .GetConstructor(new[] { typeof(IPublisher<string>), typeof(ILoggerClient) })
+                        .GetConstructor(new[] { typeof(IPublisher<ILeadEntity>), typeof(ILoggerClient) })
                         .GetParameters()[1]
                         .Name, ane.ParamName);
             }
@@ -54,12 +54,12 @@ namespace LMS.LeadPublisher.UnitTests
         [TestMethod]
         public void LeadPublisherPublishLeadTest()
         {
-            var testChannel = new InProcNotificationChannel<string>(new Mock<ILogger>().Object);
-            var testPublisher = new Publisher<string>(new INotificationChannel<string>[] {testChannel}, true);
-            var testSubscriber = new Subscriber<string>(testChannel, true);
+            var testChannel = new InProcNotificationChannel<ILeadEntity>(new Mock<ILogger>().Object);
+            var testPublisher = new Publisher<ILeadEntity>(new INotificationChannel<ILeadEntity>[] {testChannel}, true);
+            var testSubscriber = new Subscriber<ILeadEntity>(testChannel, true);
             const string expectedMessage =
                 "{\"Context\":null,\"Properties\":[{\"Id\":\"testKey\",\"Value\":\"testValue\"}],\"Segments\":null,\"Results\":null}";
-            var actualMessage = string.Empty;
+           
 
             var leadPublisher = new LeadPublisher(testPublisher, new Mock<ILoggerClient>().Object);
 
@@ -73,14 +73,15 @@ namespace LMS.LeadPublisher.UnitTests
             {
                 Properties = new IProperty[] {testProperty}
             };
+            var actualLead = new TestLeadEntity(); 
 
-            testSubscriber.AddOnReceiveActionToChannel(message => actualMessage = message);
+            testSubscriber.AddOnReceiveActionToChannel(testlead => actualLead = testLead);
 
             leadPublisher.PublishLead(testLead);
 
             Thread.Sleep(5); //Speed bump to let the threads process.
 
-            Assert.AreEqual(expectedMessage, actualMessage);
+            Assert.AreEqual(testLead, actualLead);
         }
     }
 

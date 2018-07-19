@@ -17,9 +17,9 @@ namespace LMS.IoC
     using LoggerClient.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
-    using Publisher.Interface;
-    using Validator.Interface;
-    using LeadValidator.Implementation;
+    using LMS.Publisher.Interface;
+    using LMS.Validator.Interface;
+    using LMS.LeadValidator.Implementation;
     using LMS.LeadDecorator.Implementation;
     using LMS.LeadPublisher.Implementation;
     using LMS.CampaignManager.Interface;
@@ -46,10 +46,10 @@ namespace LMS.IoC
                 .AddLeadDecorator()
                 .AddLeadPublisher()
                 .AddLeadCollector()
-                .AddCampaignManager()
-                .AddCampaignCollection()
                 .AddCampaignManagerSubscriber()
-                .AddCampaignManagerResolver();
+                .AddCampaignCollection()
+                .AddCampaignManagerResolver()
+                .AddCampaignManager();
                 
 
             return container;
@@ -70,26 +70,26 @@ namespace LMS.IoC
 
         public static IServiceCollection AddNotificationChannel(this IServiceCollection container)
         {
-            container.AddSingleton<INotificationChannel<string>>(provider =>
-                new InProcNotificationChannel<string>("Lead Channel", provider.GetRequiredService<ILogger>()));
+            container.AddSingleton<INotificationChannel<ILeadEntity>>(provider =>
+                new InProcNotificationChannel<ILeadEntity>("Lead Channel", provider.GetRequiredService<ILogger>()));
 
             return container;
         }
 
         public static IServiceCollection AddNotificationSubscriber(this IServiceCollection container)
         {
-            container.AddSingleton<ISubscriber<string>>(provider =>
-                new Subscriber<string>(provider.GetRequiredService<INotificationChannel<string>>(), true));
+            container.AddSingleton<ISubscriber<ILeadEntity>>(provider =>
+                new Subscriber<ILeadEntity>(provider.GetRequiredService<INotificationChannel<ILeadEntity>>(), true));
 
             return container;
         }
 
         public static IServiceCollection AddNotificationPublisher(this IServiceCollection container)
         {
-            container.AddSingleton<IPublisher<string>>(provider =>
-                new Publisher<string>(provider.GetServices<INotificationChannel<string>>().ToArray(), true));
+            container.AddSingleton<IPublisher<ILeadEntity>>(provider =>
+                new Publisher<ILeadEntity>(provider.GetServices<INotificationChannel<ILeadEntity>>().ToArray(), true));
 
-            //WTF, mate?
+            //mmm, mate?
             //container.AddSingleton<IPublisher<string>, Publisher<string>>();
 
             return container;
@@ -132,8 +132,12 @@ namespace LMS.IoC
 
         public static IServiceCollection AddLeadCollector(this IServiceCollection container)
         {
+
+            //container.AddSingleton<ILeadCollector, LeadCollector>();
+
+            // To add the CustomCollerLoggerClient here, each component has the be defined.
             container.AddSingleton<ILeadCollector>(provider => new LeadCollector(
-                provider.GetRequiredService<IValidator>(), 
+                provider.GetRequiredService<IValidator>(),
                 provider.GetRequiredService<IDecorator>(),
                 provider.GetRequiredService<IPublisher>(),
                 new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkBlue, ConsoleColor.White),
@@ -171,7 +175,10 @@ namespace LMS.IoC
 
         public static IServiceCollection AddCampaignCollection(this IServiceCollection container)
         {
-            container.AddSingleton<ICampaign[], BuyClickCampaign[]>();
+            container.AddSingleton<ICampaign[]>(provider => new ICampaign[]
+            {
+                new BuyClickCampaign(provider.GetRequiredService<IValidator>(), provider.GetRequiredService<IDecorator>(), provider.GetRequiredService<ILoggerClient>()) 
+            });
 
             return container;
         }
