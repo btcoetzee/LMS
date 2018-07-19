@@ -22,7 +22,15 @@ namespace LMS.IoC
     using LeadValidator.Implementation;
     using LMS.LeadDecorator.Implementation;
     using LMS.LeadPublisher.Implementation;
-    
+    using LMS.CampaignManager.Interface;
+    using LMS.CampaignManager.Implementation;
+    using LMS.CampaignManager.Subscriber.Interface;
+    using LMS.CampaignManager.Subscriber.Implementation;
+    using LMS.Campaign.Interface;
+    using LMS.Campaign.Implementation.BuyClickCampaign;
+    using LMS.Campaign.Implementation.BuyClick;
+    using LMS.CampaignManager.Resolver.Interface;
+    using LMS.CampaignManager.Resolver.Implementation;
 
     public static class Bootstrapper
     {
@@ -36,7 +44,11 @@ namespace LMS.IoC
                 .AddLeadValidator()
                 .AddLeadDecorator()
                 .AddLeadPublisher()
-                .AddLeadCollector();
+                .AddLeadCollector()
+                .AddCampaignManager()
+                .AddCampaignCollection()
+                .AddCampaignManagerSubscriber()
+                .AddCampaignManagerResolver();
                 
 
             return container;
@@ -141,5 +153,33 @@ namespace LMS.IoC
 
         //    return container;
         //}
+
+        public static IServiceCollection AddCampaignManager(this IServiceCollection container)
+        {
+            container.AddSingleton<ICampaignManager, CampaignManager>();
+
+            return container;
+        }
+
+        public static IServiceCollection AddCampaignManagerSubscriber(this IServiceCollection container)
+        {
+            container.AddSingleton<ICampaignManagerSubscriber, CampaignManagerSubscriber>();
+
+            return container;
+        }
+
+        public static IServiceCollection AddCampaignCollection(this IServiceCollection container)
+        {
+            container.AddSingleton<ICampaign[], BuyClickCampaign[]>();
+
+            return container;
+        }
+
+        public static IServiceCollection AddCampaignManagerResolver(this IServiceCollection container)
+        {
+            container.AddSingleton<ICampaignManagerResolver, CampaignManagerResolver>();
+
+            return container;
+        }
     }
 }

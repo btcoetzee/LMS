@@ -8,7 +8,7 @@
         void CampaignManagerDriver(ILeadEntity leadEntity);
 
         // Process through all the campaigns
-        string[] ProcessCampaigns(ILeadEntity leadEntity);
+        ILeadEntity[] ProcessCampaigns(ILeadEntity leadEntity);
     }
 }
 

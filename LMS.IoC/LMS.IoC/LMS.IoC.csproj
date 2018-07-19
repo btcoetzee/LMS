@@ -16,6 +16,33 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="LMS.Campaign.Implementation">
+      <HintPath>..\..\lib\LMS.Campaign.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.Campaign.Interface">
+      <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Resolver.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Resolver.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Resolver.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Resolver.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Subscriber.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Subscriber.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Subscriber.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Subscriber.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Validator.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Validator.Implementation.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
     </Reference>

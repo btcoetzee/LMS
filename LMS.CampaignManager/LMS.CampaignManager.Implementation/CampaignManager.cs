@@ -21,7 +21,7 @@
         private readonly IValidator[] _campaignManagerValidatorCollection;
         private readonly ICampaign[] _campaignCollection;
         private readonly ILoggerClient _loggerClient;
-        private static readonly string[] EmptyResultArray = new string[] { };
+        private static readonly ILeadEntity[] EmptyResultArray = new ILeadEntity[] { };
 
         /// <summary>
         /// Constructor
@@ -93,7 +93,7 @@
             
         }
 
-        public string[] ProcessCampaigns(ILeadEntity leadEntity)
+        public ILeadEntity[] ProcessCampaigns(ILeadEntity leadEntity)
         {
             // Check that there are Campaigns to be Managed
             if (!_campaignCollection.Any())
@@ -102,15 +102,15 @@
             // Start the various Campaigns as Tasks
             var campaignCnt = _campaignCollection.Length;
  
-            var processCampaignsTask = new Task<string[]>(() =>
+            var processCampaignsTask = new Task<ILeadEntity[]>(() =>
             {
-                var campaignResults = new string[campaignCnt];
+                var campaignResults = new ILeadEntity[campaignCnt];
 
-                var campaignTasks = new Task<string>[campaignCnt];
+                var campaignTasks = new Task<ILeadEntity>[campaignCnt];
                 for (var ix = 0; ix < campaignCnt; ix++)
                 {
                     var ixClosure = ix;
-                    campaignTasks[ix] = new Task<string>(() => _campaignCollection[ixClosure].ProcessLead(leadEntity.ToString()));
+                    campaignTasks[ix] = new Task<ILeadEntity>(() => _campaignCollection[ixClosure].ProcessLead(leadEntity));
                     campaignTasks[ix].Start();
                 }
                 for (var i = 0; i < campaignCnt; i++)
