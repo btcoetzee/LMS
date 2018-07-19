@@ -8,6 +8,7 @@
     using LMS.LoggerClient.Interface;
     using LMS.Validator.Interface;
     using System;
+    using System.Linq;
 
     public class BuyClickCampaign : ICampaign
     {
@@ -23,9 +24,18 @@
             _buyClickValidator = buyClickValidator ?? throw new ArgumentNullException(nameof(buyClickValidator));
             _buyClickDecorator = buyClickDecorator ?? throw new ArgumentNullException(nameof(buyClickDecorator));
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
+
         }
 
-        
+        struct CampaignResult : IResults
+        {
+            public CampaignResult(string id, object value) { Id = id; Value = value; }
+
+            public string Id { get; private set; }
+
+            public object Value { get; private set; }
+        }
+
         public string CampaignName
         {
             get { return ThisCampaignName; }
@@ -35,6 +45,11 @@
         public ILeadEntity ProcessLead(ILeadEntity leadEntity)
         {
             string processContext = "ProcessLead";
+
+            // Add the campaignName to the lead results
+            leadEntity.Results.ToList()
+                .Add(new CampaignResult(LeadEntity.Interface.Constants.ResultKeys.CampaignName,
+                    CampaignName));
 
             _loggerClient.Log(new DefaultLoggerClientObject
             {
