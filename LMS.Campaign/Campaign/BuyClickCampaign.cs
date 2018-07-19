@@ -1,5 +1,7 @@
 ﻿namespace LMS.Campaign.Implementation.BuyClick
 {
+    using LMS.Campaign.Implementation.BuyClick.Validator;
+    using LMS.Campaign.Implementation.BuyClickCampaign.Decorator;
     using LMS.Campaign.Interface;
     using LMS.Decorator.Interface;
     using LMS.LeadEntity.Interface;

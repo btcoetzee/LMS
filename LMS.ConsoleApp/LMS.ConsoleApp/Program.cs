@@ -86,6 +86,8 @@ namespace LMS.ConsoleApp
             const int vehicleCount = 2;
             const string quotedBi = "100/300";
             int[] displayedBrands = new int[] { 22, 58, 181, 218 };
+            const long phoneNumber = 88855654569;
+            const int pni_Age = 28;
 
             var leadEntities = new ILeadEntity[6];
 
@@ -107,7 +109,9 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString())
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]
@@ -141,7 +145,9 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString())
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]
@@ -175,7 +181,9 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString())
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]
@@ -209,7 +217,9 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString())
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]
@@ -277,7 +287,9 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString())
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]

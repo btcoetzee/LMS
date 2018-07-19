@@ -31,12 +31,14 @@ namespace LMS.IoC
     using LMS.Campaign.Implementation.BuyClick;
     using LMS.CampaignManager.Resolver.Interface;
     using LMS.CampaignManager.Resolver.Implementation;
+    using LMS.Campaign.Implementation.BuyClick.Validator;
+    using LMS.Campaign.Implementation.BuyClickCampaign.Decorator;
 
     public static class Bootstrapper
     {
         public static IServiceCollection BuildUp(this IServiceCollection container)
         {
-            container                
+            container
                 .AddLogger()
                 .AddLoggerClient()
                 .AddNotificationChannel()
@@ -49,7 +51,9 @@ namespace LMS.IoC
                 .AddCampaignManagerSubscriber()
                 .AddCampaignCollection()
                 .AddCampaignManagerResolver()
-                .AddCampaignManager();
+                .AddCampaignManager()
+                .AddCampaignValidators()
+                .AddCampaignDecorators();
                 
 
             return container;
@@ -177,7 +181,7 @@ namespace LMS.IoC
         {
             container.AddSingleton<ICampaign[]>(provider => new ICampaign[]
             {
-                new BuyClickCampaign(provider.GetRequiredService<IValidator>(), provider.GetRequiredService<IDecorator>(), provider.GetRequiredService<ILoggerClient>()) 
+                new BuyClickCampaign(provider.GetRequiredService<BuyClickValidator>(), provider.GetRequiredService<BuyClickDecorator>(), provider.GetRequiredService<ILoggerClient>()) 
             });
 
             return container;
@@ -186,6 +190,20 @@ namespace LMS.IoC
         public static IServiceCollection AddCampaignManagerResolver(this IServiceCollection container)
         {
             container.AddSingleton<ICampaignManagerResolver, CampaignManagerResolver>();
+
+            return container;
+        }
+
+        public static IServiceCollection AddCampaignValidators(this IServiceCollection container)
+        {
+            container.AddSingleton<BuyClickValidator>(provider => new BuyClickValidator(provider.GetRequiredService<ILoggerClient>()));
+
+            return container;
+        }
+
+        public static IServiceCollection AddCampaignDecorators(this IServiceCollection container)
+        {
+            container.AddSingleton<BuyClickDecorator>(provider => new BuyClickDecorator(provider.GetRequiredService<ILoggerClient>()));
 
             return container;
         }
