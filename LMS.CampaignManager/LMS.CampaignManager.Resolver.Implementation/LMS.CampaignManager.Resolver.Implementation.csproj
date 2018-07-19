@@ -12,6 +12,9 @@
     <Reference Include="LMS.LeadEntity.Interface">
       <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.LoggerClient.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
