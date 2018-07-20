@@ -86,7 +86,7 @@ namespace LMS.ConsoleApp
             const int vehicleCount = 2;
             const string quotedBi = "100/300";
             int[] displayedBrands = new int[] { 22, 58, 181, 218 };
-            const long phoneNumber = 88855654569;
+            const string phoneNumber = "888-556-5456";
             const int pni_Age = 28;
 
             var leadEntities = new ILeadEntity[6];

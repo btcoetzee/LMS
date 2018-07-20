@@ -19,7 +19,6 @@
         public bool ValidLead(ILeadEntity lead)
         {
             string processContext = "ValidLead";
-            long phoneNumber;
             int pni_Age;
 
             _loggerClient.Log(new DefaultLoggerClientObject
@@ -35,7 +34,7 @@
             {
                 if (((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber) == null) ||
                     (lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber).Value == null) ||
-               (!long.TryParse((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber).Value).ToString(), out phoneNumber))))
+               (String.IsNullOrEmpty((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber).Value).ToString()))))
                     errorStr += "PhoneNumber Invalid or Not In Properties \n";
 
                 if (((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age) == null) ||
