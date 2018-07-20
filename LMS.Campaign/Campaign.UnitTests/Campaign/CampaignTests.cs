@@ -245,28 +245,29 @@
 
             // TBD - Uncomment when change string --> ILEadEntity
             // Tie the campaign to call out to the validator and if valid, publish lead
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s =>
-            {
-                if (validator.ValidLead(s))
-                {
-                    decorator.DecorateLead(s);
-                    publisher.PublishLead(s);
-                }
+            //_campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s =>
+            //{
+            //    if (validator.ValidLead(s))
+            //    {
+            //        decorator.DecorateLead(s);
+            //        publisher.PublishLead(s);
+            //    }
 
-            });
+            //});
 
             //// Send a valid stream parameter
             campaign.ProcessLead(_leadEntity.Object);
 
             // Tie the campaign to call out to the validator and if valid, publish lead - some cheating going on here!!!! :-) - change to leadEntity 
-            //_campaign.Setup(c => c.ProcessLead(It.IsAny<string>())).Callback<string>(s => {
-            //    if (validator.ValidLead(_leadEntity.Object))
-            //    {
-            //        decorator.DecorateLead(_leadEntity.Object);
-            //        publisher.PublishLead(_leadEntity.Object);
-            //    }
+            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback<ILeadEntity>(s =>
+            {
+                if (validator.ValidLead(_leadEntity.Object))
+                {
+                    decorator.DecorateLead(_leadEntity.Object);
+                    publisher.PublishLead(_leadEntity.Object);
+                }
 
-            //});
+            });
 
             //// Send a valid stream parameter
             //campaign.ProcessLead(expectedPublishedLeadMessage);
