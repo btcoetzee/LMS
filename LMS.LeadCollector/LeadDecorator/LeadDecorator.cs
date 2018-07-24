@@ -1,10 +1,12 @@
-﻿namespace LMS.LeadDecorator.Implementation
+﻿
+namespace LMS.LeadDecorator.Implementation
 {
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
     using LMS.LeadEntity.Interface;
     using LMS.Decorator.Interface;
     using LMS.LeadEntity.Components;
-    using System;
-    using System.Linq;
     using LMS.LeadEntity.Interface.Constants;
     using LMS.LoggerClient.Interface;
 
@@ -13,8 +15,6 @@
     {
 
         private static ILoggerClient _loggerClient;
-        ILeadEntity _leadEntity;
-        private static IDecorator _notificationChannelPublisher;
         private static string solutionContext = "LeadDecorator";
 
         public LeadDecorator(ILoggerClient loggerClient)
@@ -23,27 +23,25 @@
         }
 
         
-        public void DecorateLead(ILeadEntity lead)
+        public void DecorateLead(ILeadEntity leadEntity, List<IResult> leadCollectorResultList)
         {
             string processContext = "DecorateLead";
 
-            _loggerClient.Log(new DefaultLoggerClientObject
-            {
-                OperationContext = "Decorating the Lead",
-                ProcessContext = processContext,
-                SolutionContext = solutionContext
-            });
+            _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Decorating the Lead", ProcessContext = processContext, SolutionContext = solutionContext});
 
-            _leadEntity = lead;
+            // Create LeadCollector Results
+            if (leadEntity.ResultCollection == null)
+                leadEntity.ResultCollection = new DefaultResultCollection();
 
-            if (lead.Results == null)
-                lead.Results = new IResults[0];
+            // If there has been LeadCollectorCollection Decoration
+            if (leadEntity.ResultCollection.LeadCollectorCollection != null)
+                leadCollectorResultList.AddRange(leadEntity.ResultCollection.LeadCollectorCollection.ToList());
 
-          
-            var resultsList = lead.Results.ToList();
-           
-            
-            resultsList.Add(new DefaultResult(ResultKeys.ResultTimeStampKey, DateTime.Now));
+            // Add Decorator Processed
+            leadCollectorResultList.Add(new DefaultResult(ResultKeys.DecoratorStatusKey , ResultKeys.ResultKeysStatusEnum.Processed.ToString()) );
+
+            // Assign all Lead Collector Results that were Recorded
+            leadEntity.ResultCollection.LeadCollectorCollection = leadCollectorResultList.ToArray();
         }
     }
 }

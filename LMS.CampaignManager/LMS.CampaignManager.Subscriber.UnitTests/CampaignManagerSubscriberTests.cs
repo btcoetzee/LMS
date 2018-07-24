@@ -1,5 +1,3 @@
-using LMS.CampaignManager.Subscriber.Interface;
-
 namespace LMS.CampaignManager.Subscriber.UnitTests
 {
     using System;
@@ -17,6 +15,9 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
     using LMS.CampaignManager.Subscriber.Implementation;
     using LMS.CampaignManager.Interface;
     using LMS.LeadEntity.Interface;
+    using LMS.CampaignManager.Subscriber.Interface;
+    using LMS.LeadEntity.Components;
+
 
     [TestClass]
     public class CampaignManagerSubscriberTests
@@ -50,15 +51,12 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         /// </summary>
         private class TestLeadEntityClass : ILeadEntity
         {
-            public bool isValid()
-            {
-                throw new NotImplementedException();
-            }
+           
 
             public IContext[] Context { get; set; }
             public IProperty[] Properties { get; set; }
             public ISegment[] Segments { get; set; }
-            public IResults[] Results { get; set; }
+            public IResultCollection ResultCollection { get; set; }
         }
         void CreateLeadEntity()
         {
@@ -70,8 +68,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
                     {},
                 Segments = new ISegment[]
                     {},
-                Results = new IResults[]
-                    {}
+                ResultCollection = new DefaultResultCollection()
             };
 
         }

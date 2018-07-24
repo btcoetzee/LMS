@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LMS.LeadEntity.Interface
 {
-    public interface IResults
+    public interface IResult
     {
         string Id { get; }
         object Value { get; }

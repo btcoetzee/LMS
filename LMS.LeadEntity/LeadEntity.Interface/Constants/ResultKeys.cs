@@ -4,12 +4,50 @@ using System.Text;
 
 namespace LMS.LeadEntity.Interface.Constants
 {
-    public static class ResultKeys
+    public static partial class ResultKeys
     {
-        public const string ResultTimeStampKey = "ResultTimeStamp";
 
-        public const string CampaignSuccessStatus = "CampaignSuccessStatus";
+        // Keys for Collector, CampaignManager and Campaigns
 
-        public const string CampaignName = "CampaignName";
+        // Enums for Status Keys etc.
+
+        public static class DiagnosticKeys
+        {
+            /// <summary>
+            /// Time Stamp when Processing Started
+            /// </summary>
+            public const string TimeStampStartKey = "TimeStampStart";
+
+            /// <summary>
+            /// Time Stamp when  Processing Ended
+            /// </summary>
+            public const string TimeStampEndKey = "TimeStampEnd";
+        }
+
+        /// <summary>
+        /// Validator Status - ResultKeysStatusEnum
+        /// </summary>
+        /// <returns></returns>
+        public const string ValidatorStatusKey = "ValidatorStatus";
+
+        /// <summary>
+        /// Decorator Status - ResultKeysStatusEnum
+        /// </summary>
+        /// <returns></returns>
+        public const string DecoratorStatusKey = "DecoratorStatus";
+
+        ///<summary>
+        /// Resolver Status - ResultKeysStatusEnum
+        /// </summary>
+        /// <returns></returns>
+        public const string ResolverStatusKey = "ResolverStatus";
+
+        /// <summary>
+        /// Number of Leads that reached Resolver
+        /// </summary>
+        /// <returns></returns>
+        public const string ResolverResultCountKey = "ResolverResultCount";
+
+ 
     }
 }

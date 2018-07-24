@@ -120,11 +120,7 @@ namespace LMS.ConsoleApp
                     new MySegment(SegementKeys.HomeownerKey)
                 },
 
-                Results = new IResults[]
-                {
-                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
-                }
-
+ 
             };
 
             leadEntities[1] = new MyLeads
@@ -156,11 +152,7 @@ namespace LMS.ConsoleApp
                     new MySegment(SegementKeys.HomeownerKey)
                 },
 
-                Results = new IResults[]
-                {
-                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
-                }
-
+ 
             };
 
             leadEntities[2] = new MyLeads
@@ -192,11 +184,7 @@ namespace LMS.ConsoleApp
                     new MySegment(SegementKeys.HomeownerKey)
                 },
 
-                Results = new IResults[]
-                {
-                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
-                }
-
+  
             };
 
             leadEntities[3] = new MyLeads
@@ -228,10 +216,7 @@ namespace LMS.ConsoleApp
                     new MySegment(SegementKeys.HomeownerKey)
                 },
 
-                Results = new IResults[]
-                {
-                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
-                }
+          
 
             };
 
@@ -262,11 +247,7 @@ namespace LMS.ConsoleApp
                     new MySegment(SegementKeys.HomeownerKey)
                 },
 
-                Results = new IResults[]
-                {
-                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
-                }
-
+   
             };
 
             leadEntities[5] = new MyLeads
@@ -298,11 +279,7 @@ namespace LMS.ConsoleApp
                     new MySegment(SegementKeys.HomeownerKey)
                 },
 
-                Results = new IResults[]
-                {
-                    new MyResult(ResultKeys.ResultTimeStampKey, DateTime.Now)
-                }
-
+  
             };
             return leadEntities;
         }
@@ -311,16 +288,10 @@ namespace LMS.ConsoleApp
 
     class MyLeads : ILeadEntity
     {
-
-        public bool isValid()
-        {
-            throw new NotImplementedException();
-        }
-
         public IContext[] Context { get; set; }
         public IProperty[] Properties { get; set; }
         public ISegment[] Segments { get; set; }
-        public IResults[] Results { get; set; }
+        public IResultCollection ResultCollection { get; set; }
     }
 
     struct MyContext : IContext
@@ -387,18 +358,5 @@ namespace LMS.ConsoleApp
         }
         public string type { get; private set; }
     }
-
-    struct MyResult : IResults
-    {
-        public MyResult(string id, object value)
-        {
-            Id = id;
-            Value = value;
-        }
-
-        public string Id { get; private set; }
-
-        public object Value { get; private set; }
-    }
-
+ 
 }

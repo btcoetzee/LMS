@@ -1,4 +1,6 @@
-﻿namespace LMS.LeadValidator.Implementation
+﻿using LMS.LeadEntity.Interface;
+
+namespace LMS.LeadValidator.Implementation
 {
     using System.Linq;
     using System;
@@ -9,9 +11,9 @@
     public class LeadValidator : IValidator
     {
 
-        public DefaultLoggerClientObject defaultLoggerClientObject;
+        public DefaultLoggerClientObject DefaultLoggerClientObject;
 
-        ILoggerClient _loggerClient;
+        readonly ILoggerClient _loggerClient;
         private static IValidator _notificationChannelPublisher;
         private static string solutionContext = "LeadValidator";
 
@@ -22,7 +24,7 @@
         }
 
         //public bool ValidLead(LMS.LeadEntity.Interface.ILeadEntity lead)
-        public bool ValidLead(LMS.LeadEntity.Interface.ILeadEntity lead)
+        public bool ValidLead(ILeadEntity lead)
         {
 
             Guid activityGuid;

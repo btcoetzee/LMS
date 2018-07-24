@@ -14,9 +14,6 @@ namespace LMS.LeadDecorator.UnitTests
         private Mock<IDecorator> _decorator;
         private Mock<ILeadEntity> _leadEntity;
 
-        
-
-
         [TestInitialize]
         public void Initialize()
         {

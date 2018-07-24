@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LMS.LeadEntity.Components
 {
-    public struct DefaultResult : IResults
+    public struct DefaultResult : IResult
     {
         public string Id { get; }
         public object Value { get; }

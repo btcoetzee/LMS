@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <DebugType>Full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,9 @@
   <ItemGroup>
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadEntity.Components">
+      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LeadEntity.Interface">
       <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>

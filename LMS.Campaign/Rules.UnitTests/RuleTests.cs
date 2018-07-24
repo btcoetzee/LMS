@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace LMS.Rules.UnitTests
 {
     using System;
@@ -22,7 +24,7 @@ namespace LMS.Rules.UnitTests
         private Mock<IDecorator> _decorator;
         private Mock<IPublisher> _publisher;
         private Mock<ILeadEntity> _leadEntity;
-
+        private Mock<List<IResult>> _resultList;
         /// <summary>
         /// Initializes this instance.
         /// </summary>
@@ -32,6 +34,7 @@ namespace LMS.Rules.UnitTests
             // Mock the Rule and Validator
             _rule = new Mock<IRule>();
             _leadEntity = new Mock<ILeadEntity>();
+            _resultList = new Mock<List<IResult>>();
             _validator = new Mock<IValidator>();
             _decorator = new Mock<IDecorator>();
             _publisher = new Mock<IPublisher>();
@@ -147,7 +150,7 @@ namespace LMS.Rules.UnitTests
 
 
             // Mock the decorator lead function to decorate the lead - The text is copied to the input parameter
-            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>())).Callback(() => {
+            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Callback(() => {
                 lead = new MemoryStream(decoratedLeadMessageByteArray);
             });
 
@@ -157,7 +160,8 @@ namespace LMS.Rules.UnitTests
                 {
                     if (validator.ValidLead(s))
                     {
-                        decorator.DecorateLead(s);
+                        // TBD IResultList
+                        decorator.DecorateLead(s, new List<IResult>());
                     }
                 });
 

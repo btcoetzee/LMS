@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LMS.CampaignManager.Resolver.Interface\LMS.CampaignManager.Resolver.Interface.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
     </Reference>
@@ -22,9 +18,5 @@
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
-  </Target>
 
 </Project>

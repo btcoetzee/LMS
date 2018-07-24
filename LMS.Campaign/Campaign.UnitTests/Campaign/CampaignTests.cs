@@ -1,9 +1,10 @@
-﻿namespace LMS.Campaign.UnitTests.Campaign
+﻿using System.Collections.Generic;
+
+namespace LMS.Campaign.UnitTests.Campaign
 {
     using System;
     using System.IO;
     using System.Text;
-    using LMS.Decorator.Interface;
     using LMS.Campaign.Interface;
     using LMS.LeadEntity.Interface;
     using LMS.Publisher.Interface;
@@ -23,7 +24,6 @@
         private Mock<ICampaign> _campaign;
         private Mock<IValidator> _validator;
         private Mock<IPublisher> _publisher;
-        private Mock<IDecorator> _decorator;
         private Mock<ILeadEntity> _leadEntity;
 
 
@@ -37,7 +37,6 @@
             _campaign = new Mock<ICampaign>();
             _validator = new Mock<IValidator>();
             _publisher = new Mock<IPublisher>();
-            _decorator = new Mock<IDecorator>();
             _leadEntity = new Mock<ILeadEntity>();
 
             // Create Service Providers 
@@ -45,7 +44,6 @@
                 .AddSingleton(typeof(ICampaign), _campaign.Object)
                 .AddSingleton(typeof(IValidator), _validator.Object)
                 .AddSingleton(typeof(IPublisher), _publisher.Object)
-                .AddSingleton(typeof(IDecorator), _decorator.Object)
                 .BuildServiceProvider(); 
         }
         /// <summary>
@@ -60,8 +58,6 @@
             _validator = null;
             _publisher.VerifyAll();
             _publisher = null;
-            _decorator.VerifyAll();
-            _decorator = null;
             _campaignServiceProvider = null;
         }
 
@@ -151,62 +147,62 @@
         /// Tests the campaign lead decorator.
         /// </summary>
       // TBD - This can be enabled again when we use LeadEntity  [TestMethod]
-        public void TestLeadDecoratorForACampaign()
-        {
-            // A campaign
-            var campaign = _campaignServiceProvider.GetService<ICampaign>();
+        //public void TestLeadDecoratorForACampaign()
+        //{
+        //    // A campaign
+        //    var campaign = _campaignServiceProvider.GetService<ICampaign>();
 
-            // the validator
-            var validator = _campaignServiceProvider.GetService<IValidator>();
+        //    // the validator
+        //    var validator = _campaignServiceProvider.GetService<IValidator>();
 
-            // the decorator
-            var decorator = _campaignServiceProvider.GetService<IDecorator>();
+        //    // the decorator
+        //    var decorator = _campaignServiceProvider.GetService<IDecorator>();
 
-            // Set up the messages for campaign to return
-            const string expectedDecoratedLeadMessage = "Decorated Lead";
-            byte[] decoratedLeadMessageByteArray = Encoding.UTF8.GetBytes(expectedDecoratedLeadMessage);
-            var lead = new MemoryStream();
+        //    // Set up the messages for campaign to return
+        //    const string expectedDecoratedLeadMessage = "Decorated Lead";
+        //    byte[] decoratedLeadMessageByteArray = Encoding.UTF8.GetBytes(expectedDecoratedLeadMessage);
+        //    var lead = new MemoryStream();
  
-            // Set up validator to return valid
-            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => { return true; });
+        //    // Set up validator to return valid
+        //    _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => { return true; });
 
-            // Mock the decorator lead function to decorate the lead - The text is copied to the input parameter
-            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>())).Callback(() => {
-                lead = new MemoryStream(decoratedLeadMessageByteArray);
-            });
-            // TBD - Uncomment when change string --> ILEadEntity
-            //// Tie the campaign to call out to the validator and if valid, decorate and then publish lead
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>()))
-                .Callback<ILeadEntity>(s =>
-                {
-                    if (validator.ValidLead(s))
-                    {
-                        decorator.DecorateLead(s);
-                    }
-                });
+        //    // Mock the decorator lead function to decorate the lead - The text is copied to the input parameter
+        //    _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Callback(() => {
+        //        lead = new MemoryStream(decoratedLeadMessageByteArray);
+        //    });
+        //    // TBD - Uncomment when change string --> ILEadEntity
+        //    //// Tie the campaign to call out to the validator and if valid, decorate and then publish lead
+        //    _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>()))
+        //        .Callback<ILeadEntity>(s =>
+        //        {
+        //            if (validator.ValidLead(s))
+        //            {
+        //                decorator.DecorateLead(s, new List<IResult>());
+        //            }
+        //        });
 
-            //// Send a valid stream parameter and check that lead is decorated
-            campaign.ProcessLead(_leadEntity.Object);
-            //_campaign.Setup(c => c.ProcessLead(It.IsAny<string>()))
-            //    .Callback<ILeadEntity>(s =>
-            //    {
-            //        if (validator.ValidLead(s))
-            //        {
-            //            decorator.DecorateLead(s);
-            //        }
-            //    });
+        //    //// Send a valid stream parameter and check that lead is decorated
+        //    campaign.ProcessLead(_leadEntity.Object);
+        //    //_campaign.Setup(c => c.ProcessLead(It.IsAny<string>()))
+        //    //    .Callback<ILeadEntity>(s =>
+        //    //    {
+        //    //        if (validator.ValidLead(s))
+        //    //        {
+        //    //            decorator.DecorateLead(s);
+        //    //        }
+        //    //    });
 
-            // Send a valid stream parameter and check that lead is decorated
-            //campaign.ProcessLead(expectedDecoratedLeadMessage);
+        //    // Send a valid stream parameter and check that lead is decorated
+        //    //campaign.ProcessLead(expectedDecoratedLeadMessage);
 
-            // Read the stream returned
-            StreamReader reader = new StreamReader(lead);
-            string decoratedLead = reader.ReadToEnd();
+        //    // Read the stream returned
+        //    StreamReader reader = new StreamReader(lead);
+        //    string decoratedLead = reader.ReadToEnd();
 
-            // Verify that the lead carries the decorated string
-            Assert.IsTrue(decoratedLead.Contains(expectedDecoratedLeadMessage));
+        //    // Verify that the lead carries the decorated string
+        //    Assert.IsTrue(decoratedLead.Contains(expectedDecoratedLeadMessage));
             
-        }
+        //}
 
 
         /// <summary>
@@ -221,9 +217,6 @@
             // the validator
             var validator = _campaignServiceProvider.GetService<IValidator>();
 
-            // the decorator
-            var decorator = _campaignServiceProvider.GetService<IDecorator>();
-
             // the publisher
             var publisher = _campaignServiceProvider.GetService<IPublisher>();
 
@@ -234,10 +227,7 @@
             // Set up validator to return valid
             _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => { return true; });
 
-            // Mock the decorator lead function - doesn't have to do anything here
-            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>())).Callback(() => {
-                //Do Nothing
-                          });
+
             // Mock the publish lead function to update the message
             _publisher.Setup(c => c.PublishLead(It.IsAny<ILeadEntity>())).Callback(() => {
                 actualMessage = expectedPublishedLeadMessage;
@@ -263,7 +253,6 @@
             {
                 if (validator.ValidLead(_leadEntity.Object))
                 {
-                    decorator.DecorateLead(_leadEntity.Object);
                     publisher.PublishLead(_leadEntity.Object);
                 }
 

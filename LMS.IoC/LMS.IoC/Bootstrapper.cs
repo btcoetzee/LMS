@@ -32,7 +32,7 @@ namespace LMS.IoC
     using LMS.CampaignManager.Resolver.Interface;
     using LMS.CampaignManager.Resolver.Implementation;
     using LMS.Campaign.Implementation.BuyClick.Validator;
-    using LMS.Campaign.Implementation.BuyClickCampaign.Decorator;
+
 
     public static class Bootstrapper
     {
@@ -52,8 +52,8 @@ namespace LMS.IoC
                 .AddCampaignCollection()
                 .AddCampaignManagerResolver()
                 .AddCampaignManager()
-                .AddCampaignValidators()
-                .AddCampaignDecorators();
+                .AddCampaignValidators();
+
                 
 
             return container;
@@ -181,7 +181,7 @@ namespace LMS.IoC
         {
             container.AddSingleton<ICampaign[]>(provider => new ICampaign[]
             {
-                new BuyClickCampaign(provider.GetRequiredService<BuyClickValidator>(), provider.GetRequiredService<BuyClickDecorator>(), provider.GetRequiredService<ILoggerClient>()) 
+                new BuyClickCampaign(provider.GetRequiredService<BuyClickValidator>(), provider.GetRequiredService<ILoggerClient>()) 
             });
 
             return container;
@@ -201,11 +201,12 @@ namespace LMS.IoC
             return container;
         }
 
-        public static IServiceCollection AddCampaignDecorators(this IServiceCollection container)
-        {
-            container.AddSingleton<BuyClickDecorator>(provider => new BuyClickDecorator(provider.GetRequiredService<ILoggerClient>()));
+        //public static IServiceCollection AddCampaignDecorators(this IServiceCollection container)
+        //{
 
-            return container;
-        }
+        //    container.AddSingleton<BuyClickDecorator>(provider => new BuyClickDecorator(provider.GetRequiredService<ILoggerClient>()));
+
+        //    return container;
+        //}
     }
 }

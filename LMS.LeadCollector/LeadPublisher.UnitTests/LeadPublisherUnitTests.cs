@@ -89,15 +89,12 @@ namespace LMS.LeadPublisher.UnitTests
 
     internal struct TestLeadEntity : ILeadEntity
     {
-        public bool isValid()
-        {
-            return true;
-        }
+  
 
         public IContext[] Context { get; set; }
         public IProperty[] Properties { get; set; }
         public ISegment[] Segments { get; set; }
-        public IResults[] Results { get; set; }
+        public IResultCollection ResultCollection { get; set; }
     }
 
     internal struct TestProperty : IProperty

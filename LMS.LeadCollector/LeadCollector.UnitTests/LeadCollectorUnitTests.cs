@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace LMS.LeadCollector.UnitTests
 {
 
@@ -17,6 +19,7 @@ namespace LMS.LeadCollector.UnitTests
     {
         private static IServiceProvider _serviceProvider;
         private Mock<ILeadEntity> _leadEntity;
+        private Mock<List<IResult>> _resultList;
         private Mock<IValidator> _validator;
         private Mock<IPublisher> _publisher;
         private Mock<IDecorator> _decorator;
@@ -26,6 +29,7 @@ namespace LMS.LeadCollector.UnitTests
         public void Initialize()
         {
             _leadEntity = new Mock<ILeadEntity>();
+            _resultList = new Mock<List<IResult>>();
             _validator = new Mock<IValidator>();
             _publisher = new Mock<IPublisher>();
             _decorator = new Mock<IDecorator>();
@@ -42,6 +46,8 @@ namespace LMS.LeadCollector.UnitTests
         {
             _leadEntity.VerifyAll();
             _leadEntity = null;
+            _resultList.VerifyAll();
+            _resultList = null;
             _validator.VerifyAll();
             _validator = null;
             _publisher.VerifyAll();
@@ -79,10 +85,10 @@ namespace LMS.LeadCollector.UnitTests
             var decorator = _serviceProvider.GetService<IDecorator>();
 
             // Mock the DecorateLead Function and verify that it was called as expected.
-            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>())).Verifiable();
+            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
 
             // Invoke the Decorate function
-            decorator.DecorateLead(_leadEntity.Object);
+            decorator.DecorateLead(_leadEntity.Object, _resultList.Object);
         }
 
         /// <summary>
@@ -117,10 +123,10 @@ namespace LMS.LeadCollector.UnitTests
             var decorator = _serviceProvider.GetService<IDecorator>();
 
             // Mock the DecorateLead Function and verify that it was called as expected.
-            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>())).Verifiable();
+            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
 
             // Invoke the Decorate function
-            decorator.DecorateLead(_leadEntity.Object);
+            decorator.DecorateLead(_leadEntity.Object, _resultList.Object);
 
             var publisher = _serviceProvider.GetService<IPublisher>();
 
@@ -140,7 +146,7 @@ namespace LMS.LeadCollector.UnitTests
             // Mock the ValidateLead Function and verify that it was called as expected.
             _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(expectedValue);
 
-            _decorator.Verify(v => v.DecorateLead(It.IsAny<ILeadEntity>()), Times.Never());
+            _decorator.Verify(v => v.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>()), Times.Never());
 
             _publisher.Verify(v => v.PublishLead(It.IsAny<ILeadEntity>()), Times.Never());
 
@@ -158,7 +164,7 @@ namespace LMS.LeadCollector.UnitTests
         }
 
         [TestMethod]
-        public void MockedParamParamLeadCollectorConstructorTest()
+        public void MockedParamLeadCollectorConstructorTest()
         {
             new Implementation.LeadCollector(_serviceProvider.GetService<IValidator>(), _serviceProvider.GetService<IDecorator>(),
                 _serviceProvider.GetService<IPublisher>(), _serviceProvider.GetService<ILoggerClient>());

@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="LMS.LeadEntity.Components">
+      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.LeadEntity.Interface">
       <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
     </Reference>

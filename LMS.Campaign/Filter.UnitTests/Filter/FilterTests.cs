@@ -1,4 +1,6 @@
-﻿namespace LMS.Filter.UnitTests.Filter
+﻿using System.Collections.Generic;
+
+namespace LMS.Filter.UnitTests.Filter
 {
     using System;
     using System.IO;
@@ -22,6 +24,7 @@
         private Mock<IValidator> _validator;
         private Mock<IDecorator> _decorator;
         private Mock<ILeadEntity> _leadEntity;
+        private Mock<List<IResult>> _resultList;
 
         /// <summary>
         /// Initializes this instance.
@@ -34,6 +37,7 @@
             _validator = new Mock<IValidator>();
             _decorator = new Mock<IDecorator>();
             _leadEntity = new Mock<ILeadEntity>();
+            _resultList = new Mock<List<IResult>>();
 
             // Create Service Providers for Filter and Validator
             _filterServiceProvider = new ServiceCollection()
@@ -141,7 +145,7 @@
             _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => { return true; });
 
             // Mock the decorator lead function to decorate the lead - The text is copied to the input parameter
-            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>())).Callback(() => {
+            _decorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Callback(() => {
                 lead = new MemoryStream(decoratedLeadMessageByteArray);
             });
 
@@ -151,7 +155,7 @@
                 {
                     if (validator.ValidLead(s))
                     {
-                        decorator.DecorateLead(s);
+                        decorator.DecorateLead(s, new List<IResult>());
                     }
                 });
 

@@ -1,4 +1,6 @@
-﻿namespace LMS.CampaignManager.Interface
+﻿using System.Collections.Generic;
+
+namespace LMS.CampaignManager.Interface
 {
     using LMS.LeadEntity.Interface;
 
@@ -8,7 +10,7 @@
         void CampaignManagerDriver(ILeadEntity leadEntity);
 
         // Process through all the campaigns
-        ILeadEntity[] ProcessCampaigns(ILeadEntity leadEntity);
+        List<IResult>[] ProcessCampaigns(ILeadEntity leadEntity);
     }
 }
 
