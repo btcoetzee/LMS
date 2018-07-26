@@ -9,9 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.Decorator.Interface">
-      <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
-    </Reference>
     <Reference Include="LMS.LeadEntity.Components">
       <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
     </Reference>

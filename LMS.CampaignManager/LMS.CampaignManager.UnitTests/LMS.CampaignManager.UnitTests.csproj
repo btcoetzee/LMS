@@ -15,18 +15,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LMS.CampaignManager.Decorator.Interface\LMS.CampaignManager.Decorator.Interface.csproj" />
     <ProjectReference Include="..\LMS.CampaignManager.Implementation\LMS.CampaignManager.Implementation.csproj" />
     <ProjectReference Include="..\LMS.CampaignManager.Interface\LMS.CampaignManager.Interface.csproj" />
+    <ProjectReference Include="..\LMS.CampaignManager.Publisher.Interface\LMS.CampaignManager.Publisher.Interface.csproj" />
     <ProjectReference Include="..\LMS.CampaignManager.Resolver.Interface\LMS.CampaignManager.Resolver.Interface.csproj" />
     <ProjectReference Include="..\LMS.CampaignManager.Subscriber.Interface\LMS.CampaignManager.Subscriber.Interface.csproj" />
+    <ProjectReference Include="..\LMS.CampaignManager.Validator.Interface\LMS.CampaignManager.Validator.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="LMS.Campaign.Interface">
       <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Decorator.Interface">
-      <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LeadEntity.Components">
       <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
@@ -36,9 +36,6 @@
     </Reference>
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Validator.Interface">
-      <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

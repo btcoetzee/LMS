@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LMS.CampaignManager.Publisher.Interface\LMS.CampaignManager.Publisher.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LMS.LeadEntity.Interface">
+      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClient.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\9.0.1\lib\netstandard1.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

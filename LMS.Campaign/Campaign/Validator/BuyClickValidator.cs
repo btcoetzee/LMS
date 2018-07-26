@@ -1,14 +1,13 @@
-﻿namespace LMS.Campaign.Implementation.BuyClick.Validator
+﻿namespace LMS.Campaign.BuyClick.Validator
 {
-    using LMS.LeadEntity.Interface;
-    using LMS.LoggerClient.Interface;
-    using LMS.Validator.Interface;
     using System;
     using System.Linq;
-
-    public class BuyClickValidator : IValidator
+    using LMS.CampaignValidator.Interface;
+    using LMS.LeadEntity.Interface;
+    using LMS.LoggerClient.Interface;
+    public class BuyClickValidator : ICampaignValidator
     {
-        ILoggerClient _loggerClient;
+        readonly ILoggerClient _loggerClient;
         private static string solutionContext = "BuyClickValidator";
 
         public BuyClickValidator(ILoggerClient loggerClient)
@@ -16,59 +15,34 @@
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
 
         }
-        public bool ValidLead(ILeadEntity lead)
+        public bool ValidLead(ILeadEntityImmutable leadEntity)
         {
             string processContext = "ValidLead";
             int pni_Age;
 
-            _loggerClient.Log(new DefaultLoggerClientObject
-            {
-                OperationContext = "Validating the Lead",
-                ProcessContext = processContext,
-                SolutionContext = solutionContext
-            });
-
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Validating the Lead",ProcessContext = processContext,SolutionContext = solutionContext});
             var errorStr = string.Empty;
-
             try
             {
-                if (((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber) == null) ||
-                    (lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber).Value == null) ||
-               (String.IsNullOrEmpty((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber).Value).ToString()))))
-                    errorStr += "PhoneNumber Invalid or Not In Properties \n";
+                var value = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber)?.Value;
+                if (value != null && ((leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber) == null) ||
+                    (String.IsNullOrEmpty(value.ToString()))))
+                    errorStr += "PhoneNumber Invalid or Not In Properties of LeadEntityObject\n";
 
-                if (((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age) == null) ||
-                    (lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age).Value == null) ||
-               (!int.TryParse((lead.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age).Value).ToString(), out pni_Age))))
-                    errorStr += "PNI_Age Invalid or Not In Properties \n";
+                var age = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age)?.Value;
+                if (age != null && ((leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age) == null) ||
+                    (!int.TryParse(age.ToString(), out pni_Age))))
+                    errorStr += "PNI_Age Invalid or Not In Properties of LeadEntityObject\n";
             }
             catch (Exception ex)
             {
-
-                _loggerClient.Log(new DefaultLoggerClientErrorObject
-                {
-                    OperationContext = "\nAn exception occured...",
-                    ProcessContext = "LMS.ConsoleApp.Exe",
-                    SolutionContext = string.Empty,
-                    Exception = ex,
-                    ErrorContext = ex.Message
-
-                });
+                _loggerClient.Log(new DefaultLoggerClientErrorObject{OperationContext = "\nValidating Phone Number and PNI Age",ProcessContext = processContext,SolutionContext = solutionContext,Exception = ex,ErrorContext = ex.Message});
                 return false;
             }
 
             if (errorStr != String.Empty)
             {
-                _loggerClient.Log(new DefaultLoggerClientErrorObject
-                {
-                    OperationContext = "\nHad an error occurred...",
-                    ProcessContext = "LMS.ConsoleApp.Exe",
-                    SolutionContext = string.Empty,
-                    ErrorContext = errorStr
-
-                });
-
-
+                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext =errorStr,ProcessContext = processContext,SolutionContext = solutionContext});
                 return false;
             }
             return true;

@@ -1,4 +1,5 @@
 ﻿using System;
+using StackExchange.Redis;
 
 namespace LMS.IoC
 {
@@ -17,6 +18,7 @@ namespace LMS.IoC
     using LoggerClient.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
+    using LMS.Campaign.Interface;
     using LMS.Publisher.Interface;
     using LMS.Validator.Interface;
     using LMS.LeadValidator.Implementation;
@@ -26,13 +28,17 @@ namespace LMS.IoC
     using LMS.CampaignManager.Implementation;
     using LMS.CampaignManager.Subscriber.Interface;
     using LMS.CampaignManager.Subscriber.Implementation;
-    using LMS.Campaign.Interface;
-    using LMS.Campaign.Implementation.BuyClickCampaign;
-    using LMS.Campaign.Implementation.BuyClick;
     using LMS.CampaignManager.Resolver.Interface;
     using LMS.CampaignManager.Resolver.Implementation;
-    using LMS.Campaign.Implementation.BuyClick.Validator;
-
+    using LMS.CampaignManager.Decorator.Implementation;
+    using LMS.CampaignManager.Decorator.Interface;
+    using LMS.CampaignManager.Validator.Implementation;
+    using LMS.CampaignManager.Validator.Interface;
+    using LMS.CampaignManager.Publisher.Interface;
+    using LMS.CampaignManager.Publisher.Implementation;
+    using LMS.Campaign.BuyClick.Validator;
+    using LMS.Campaign.BuyClick;
+    using LMS.CampaignValidator.Interface;
 
     public static class Bootstrapper
     {
@@ -50,15 +56,17 @@ namespace LMS.IoC
                 .AddLeadCollector()
                 .AddCampaignManagerSubscriber()
                 .AddCampaignCollection()
+                .AddCampaignManagerValidatorCollection()
+                .AddCampaignManagerDecorator()
                 .AddCampaignManagerResolver()
+                .AddCampaignManagerPublisher()
                 .AddCampaignManager()
-                .AddCampaignValidators();
+                .AddCampaignValidator();
 
                 
 
             return container;
         }
-
         public static IServiceCollection AddLogger(this IServiceCollection container)
         {
             var logger = new Logger
@@ -71,7 +79,6 @@ namespace LMS.IoC
 
             return container;
         }
-
         public static IServiceCollection AddNotificationChannel(this IServiceCollection container)
         {
             container.AddSingleton<INotificationChannel<ILeadEntity>>(provider =>
@@ -79,7 +86,6 @@ namespace LMS.IoC
 
             return container;
         }
-
         public static IServiceCollection AddNotificationSubscriber(this IServiceCollection container)
         {
             container.AddSingleton<ISubscriber<ILeadEntity>>(provider =>
@@ -87,7 +93,6 @@ namespace LMS.IoC
 
             return container;
         }
-
         public static IServiceCollection AddNotificationPublisher(this IServiceCollection container)
         {
             container.AddSingleton<IPublisher<ILeadEntity>>(provider =>
@@ -98,42 +103,25 @@ namespace LMS.IoC
 
             return container;
         }
-
         public static IServiceCollection AddLeadValidator(this IServiceCollection container)
         {
-            //var validatorMock = new Mock<IValidator>();
-            //validatorMock.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
-
-            //var validator = validatorMock.Object;
-
-            //container.AddSingleton<IValidator>(validator);
 
             container.AddSingleton<IValidator, LeadValidator>();
 
             return container;
         }
-
         public static IServiceCollection AddLeadDecorator(this IServiceCollection container)
         {
-            //var decoratorMock = new Mock<IDecorator>();
-            //decoratorMock.Setup(d => d.DecorateLead(It.IsAny<ILeadEntity>()));
-
-            //var decorator = decoratorMock.Object;
-
-            //container.AddSingleton<IDecorator>(decorator);
-
             container.AddSingleton<IDecorator, LeadDecorator>();
 
             return container;
         }
-
         public static IServiceCollection AddLeadPublisher(this IServiceCollection container)
         {           
             container.AddSingleton<IPublisher, LeadPublisher>();
 
             return container;
         }
-
         public static IServiceCollection AddLeadCollector(this IServiceCollection container)
         {
 
@@ -144,62 +132,122 @@ namespace LMS.IoC
                 provider.GetRequiredService<IValidator>(),
                 provider.GetRequiredService<IDecorator>(),
                 provider.GetRequiredService<IPublisher>(),
-                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkBlue, ConsoleColor.White),
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkYellow, ConsoleColor.Black),
                     ColorSet.ErrorLoggingColors)));
 
             return container;
         }
-
         public static IServiceCollection AddLoggerClient(this IServiceCollection container)
         {
             //The registered type can be changed in the future.
             return container.AddSingleton<ILoggerClient, ConsoleLoggerClient>();
         }
-
-        //public static IServiceCollection AddPublisherNotificationChannel(this IServiceCollection container)
-        //{
-        //    var notificationPublisher = 
-
-        //    return container;
-        //}
-
         public static IServiceCollection AddCampaignManager(this IServiceCollection container)
         {
-            container.AddSingleton<ICampaignManager, CampaignManager>();
+            // container.AddSingleton<ICampaignManager, CampaignManager>();
+            // Custom color logging
+            container.AddSingleton<ICampaignManager>(provider => new CampaignManager(
+                provider.GetRequiredService<ICampaignManagerSubscriber>(),
+                provider.GetRequiredService<ICampaign[]>(),
+                provider.GetRequiredService<ICampaignManagerValidator[]>(),
+                provider.GetRequiredService<ICampaignManagerDecorator>(),
+                provider.GetRequiredService<ICampaignManagerResolver>(),
+                provider.GetRequiredService<ICampaignManagerPublisher>(),
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
+              
 
             return container;
         }
-
         public static IServiceCollection AddCampaignManagerSubscriber(this IServiceCollection container)
         {
-            container.AddSingleton<ICampaignManagerSubscriber, CampaignManagerSubscriber>();
+            //container.AddSingleton<ICampaignManagerSubscriber, CampaignManagerSubscriber>();
+            // Custom color logging
+            container.AddSingleton<ICampaignManagerSubscriber>(provider => new CampaignManagerSubscriber(
+                provider.GetRequiredService<ISubscriber<ILeadEntity>>(),
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
+            return container;
+        }
+        public static IServiceCollection AddCampaignManagerResolver(this IServiceCollection container)
+        {
+            // container.AddSingleton<ICampaignManagerResolver, CampaignManagerResolver>();
+            // Custom color logging
+            container.AddSingleton<ICampaignManagerResolver>(provider => new CampaignManagerResolver(
+               new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
 
             return container;
         }
+        public static IServiceCollection AddCampaignManagerPublisher(this IServiceCollection container)
+        {
+            
+            // Custom color logging
+            container.AddSingleton<ICampaignManagerPublisher>(provider => new CampaignManagerPublisher(
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
 
+            return container;
+        }
+        public static IServiceCollection AddCampaignManagerDecorator(this IServiceCollection container)
+        {
+            //container.AddSingleton<ICampaignManagerDecorator, CampaignManagerDecorator>();
+            // Custom color logging
+            container.AddSingleton<ICampaignManagerDecorator>(provider => new CampaignManagerDecorator(
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
+
+            return container;
+        }
         public static IServiceCollection AddCampaignCollection(this IServiceCollection container)
         {
             container.AddSingleton<ICampaign[]>(provider => new ICampaign[]
             {
-                new BuyClickCampaign(provider.GetRequiredService<BuyClickValidator>(), provider.GetRequiredService<ILoggerClient>()) 
+ //               new BuyClickCampaign(provider.GetRequiredService<BuyClickValidator>(), provider.GetRequiredService<ILoggerClient>()) 
+
+
+                    //new BuyClickCampaign(provider.GetRequiredService<ICampaignValidator>(), provider.GetRequiredService<ILoggerClient>())
+                    // Custom color logging
+                    new BuyClickCampaign(provider.GetRequiredService<ICampaignValidator>(),
+                                            new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),ColorSet.ErrorLoggingColors))
+            
             });
 
             return container;
         }
-
-        public static IServiceCollection AddCampaignManagerResolver(this IServiceCollection container)
+        public static IServiceCollection AddCampaignManagerValidatorCollection(this IServiceCollection container)
         {
-            container.AddSingleton<ICampaignManagerResolver, CampaignManagerResolver>();
+            container.AddSingleton<ICampaignManagerValidator[]>(provider => new ICampaignManagerValidator[]
+            {
+               
+                //new CampaignManagerValidator(provider.GetRequiredService<ILoggerClient>())
+                // Custom color logging
+                new CampaignManagerValidator(new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
+                ColorSet.ErrorLoggingColors))
+        });
 
             return container;
         }
-
-        public static IServiceCollection AddCampaignValidators(this IServiceCollection container)
+        public static IServiceCollection AddCampaignValidator(this IServiceCollection container)
         {
-            container.AddSingleton<BuyClickValidator>(provider => new BuyClickValidator(provider.GetRequiredService<ILoggerClient>()));
+            //var validatorMock = new Mock<IValidator>();
+            //validatorMock.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
+            //var validator = validatorMock.Object;
+            //container.AddSingleton<IValidator>(validator);
 
+            //container.AddSingleton<ICampaignValidator, BuyClickValidator>();
+            // Custom color logging
+            container.AddSingleton<ICampaignValidator>(provider => new BuyClickValidator(
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
             return container;
         }
+        //public static IServiceCollection AddCampaignValidators(this IServiceCollection container)
+        //{
+        //    container.AddSingleton<BuyClickValidator>(provider => new BuyClickValidator(provider.GetRequiredService<ILoggerClient>()));
+
+        //    return container;
+        //}
 
         //public static IServiceCollection AddCampaignDecorators(this IServiceCollection container)
         //{

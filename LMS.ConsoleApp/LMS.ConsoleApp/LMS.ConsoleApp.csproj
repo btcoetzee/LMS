@@ -18,17 +18,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.Campaign.Implementation">
-      <HintPath>..\..\lib\LMS.Campaign.Implementation.dll</HintPath>
+    <Reference Include="LMS.Campaign.BuyClick">
+      <HintPath>..\..\lib\LMS.Campaign.BuyClick.dll</HintPath>
     </Reference>
     <Reference Include="LMS.Campaign.Interface">
       <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Decorator.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Decorator.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Decorator.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Decorator.Interface.dll</HintPath>
     </Reference>
     <Reference Include="LMS.CampaignManager.Implementation">
       <HintPath>..\..\lib\LMS.CampaignManager.Implementation.dll</HintPath>
     </Reference>
     <Reference Include="LMS.CampaignManager.Interface">
       <HintPath>..\..\lib\LMS.CampaignManager.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Publisher.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Publisher.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Publisher.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Publisher.Interface.dll</HintPath>
     </Reference>
     <Reference Include="LMS.CampaignManager.Resolver.Implementation">
       <HintPath>..\..\lib\LMS.CampaignManager.Resolver.Implementation.dll</HintPath>
@@ -44,6 +56,12 @@
     </Reference>
     <Reference Include="LMS.CampaignManager.Validator.Implementation">
       <HintPath>..\..\lib\LMS.CampaignManager.Validator.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Validator.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Validator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignValidator.Interface">
+      <HintPath>..\..\lib\LMS.CampaignValidator.Interface.dll</HintPath>
     </Reference>
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>

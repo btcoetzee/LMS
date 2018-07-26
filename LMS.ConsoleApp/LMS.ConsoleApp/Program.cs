@@ -1,4 +1,10 @@
-﻿using LMS.CampaignManager.Interface;
+﻿using System.CodeDom.Compiler;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace LMS.ConsoleApp
 {
@@ -16,20 +22,19 @@ namespace LMS.ConsoleApp
     public class Program
     {
         private const string SolutionContext = "LMS.ConsoleApp.Exe";
+        private static readonly ColorSet LogColors = new ColorSet(ConsoleColor.White, ConsoleColor.Black);
+        private static readonly ColorSet ObjectLogColors = new ColorSet(ConsoleColor.Green, ConsoleColor.Black);
+
 
         public static void Main(string[] args)
         {
 
             const string processContext = "Main";
+           
 
             // Create the logger cliet for this program
             var loggerClient = new ConsoleLoggerClient();
-            loggerClient.Log(new DefaultLoggerClientObject
-            {
-                OperationContext = "ConsoleApp.Main Start",
-                ProcessContext = processContext,
-                SolutionContext = SolutionContext
-            });
+            //loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "ConsoleApp.Main Start",ProcessContext = processContext,SolutionContext = SolutionContext});
 
             var provider = new ServiceCollection()
                 .BuildUp()
@@ -45,38 +50,59 @@ namespace LMS.ConsoleApp
             var leadEntities = CreateLeads();
 
             // Ask for user to select a lead to process
-            Console.WriteLine($"Select lead [1-{leadEntities.Length}]: ");
+            WriteToConsole($"Select lead [1-{leadEntities.Length}]: ", LogColors);
             int.TryParse(Console.ReadLine(), out var leadChoice);
 
             // Process the lead
             while (leadChoice >= 1 && leadChoice <= leadEntities.Length)
             {
                 leadChoice--; //Since array indices start at 0
-                Console.WriteLine($"Processing Activity ID {leadEntities[leadChoice].Context.First(ctx => ctx.Id == ContextKeys.ActivityGuidKey).Value}");
+                WriteToConsole($"Processing Activity ID {leadEntities[leadChoice].Context.First(ctx => ctx.Id == ContextKeys.ActivityGuidKey).Value}", LogColors);
+                WriteToConsole(JsonConvert.SerializeObject(leadEntities[leadChoice], Formatting.Indented), ObjectLogColors);
                 leadCollector.CollectLead(leadEntities[leadChoice]);
-                Console.WriteLine("Processing complete.\n");
-
-                Console.WriteLine($"Select lead [1-{leadEntities.Length}]: ");
+                WriteToConsole("Lead was Handed Off .\n", LogColors);
+                WriteToConsole($"Select lead [1-{leadEntities.Length}]: ", LogColors);
                 int.TryParse(Console.ReadLine(), out leadChoice);
             }
 
-            loggerClient.Log(new DefaultLoggerClientObject
-            {
-                OperationContext = "ConsoleApp.Main End",
-                ProcessContext = processContext,
-                SolutionContext = SolutionContext
-            });
+           
+            //loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "ConsoleApp.Main End",ProcessContext = processContext,SolutionContext = SolutionContext});
 
-           loggerClient.Log(new DefaultLoggerClientErrorObject
-            {
-                OperationContext = "Ending. Press any key to continue...",
-                ProcessContext = processContext,
-                SolutionContext = SolutionContext
-            });
-
+            //loggerClient.Log(new DefaultLoggerClientErrorObject{OperationContext = "Ending. Press any key to continue...",ProcessContext = processContext,SolutionContext = SolutionContext});
+            WriteToConsole("The End.  Press any key to continue...", LogColors);
             Console.ReadKey();
         }
 
+        public static void WriteToConsole(string stringToWrite, ColorSet colorSet)
+        {
+
+            Console.ForegroundColor = colorSet.ForegroundColor;
+            Console.BackgroundColor = colorSet.BackgroundColor;
+            Console.WriteLine(stringToWrite);
+
+        }
+
+
+
+        public static void PrintProperties(ILeadEntity leadEntity)
+        {
+
+
+            Console.WriteLine("Properties:");
+            foreach (var prop in leadEntity.GetType().GetProperties())
+            {
+                Console.WriteLine(prop.Name + ": " + prop.GetValue(leadEntity, null));
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Fields:");
+            foreach (var field in leadEntity.GetType().GetFields())
+            {
+                Console.WriteLine(field.Name + ": " + field.GetValue(leadEntity));
+            }
+        }
+
+     #region CreateLeads
         static ILeadEntity[] CreateLeads()
         {
             const int quotedProduct = 101;
@@ -284,8 +310,9 @@ namespace LMS.ConsoleApp
             return leadEntities;
         }
     }
+    #endregion
 
-
+    #region LeadEntityClassImplementations
     class MyLeads : ILeadEntity
     {
         public IContext[] Context { get; set; }
@@ -358,5 +385,190 @@ namespace LMS.ConsoleApp
         }
         public string type { get; private set; }
     }
- 
+    #endregion
+    public class ObjectDumper
+    {
+
+        public static void Write(object element)
+        {
+            Write(element, 0);
+        }
+
+        public static void Write(object element, int depth)
+        {
+            Write(element, depth, Console.Out);
+        }
+
+        public static void Write(object element, int depth, TextWriter log)
+        {
+            ObjectDumper dumper = new ObjectDumper(depth)
+            {
+                writer = log
+            };
+            dumper.WriteObject(null, element);
+        }
+
+        TextWriter writer;
+        int pos;
+        int level;
+        int depth;
+
+        private ObjectDumper(int depth)
+        {
+            this.depth = depth;
+        }
+
+        private void Write(string s)
+        {
+            if (s != null)
+            {
+                writer.Write(s);
+                pos += s.Length;
+            }
+        }
+
+        private void WriteIndent()
+        {
+            for (int i = 0; i < level; i++) writer.Write("  ");
+        }
+
+        private void WriteLine()
+        {
+            writer.WriteLine();
+            pos = 0;
+        }
+
+        private void WriteTab()
+        {
+            Write("  ");
+            while (pos % 8 != 0) Write(" ");
+        }
+
+        private void WriteObject(string prefix, object element)
+        {
+            if (element == null || element is ValueType || element is string)
+            {
+                WriteIndent();
+                Write(prefix);
+                WriteValue(element);
+                WriteLine();
+            }
+            else
+            {
+                IEnumerable enumerableElement = element as IEnumerable;
+                if (enumerableElement != null)
+                {
+                    foreach (object item in enumerableElement)
+                    {
+                        if (item is IEnumerable && !(item is string))
+                        {
+                            WriteIndent();
+                            Write(prefix);
+                            Write("...");
+                            WriteLine();
+                            if (level < depth)
+                            {
+                                level++;
+                                WriteObject(prefix, item);
+                                level--;
+                            }
+                        }
+                        else
+                        {
+                            WriteObject(prefix, item);
+                        }
+                    }
+                }
+                else
+                {
+                    MemberInfo[] members = element.GetType().GetMembers(BindingFlags.Public | BindingFlags.Instance);
+                    WriteIndent();
+                    Write(prefix);
+                    bool propWritten = false;
+                    foreach (MemberInfo m in members)
+                    {
+                        FieldInfo f = m as FieldInfo;
+                        PropertyInfo p = m as PropertyInfo;
+                        if (f != null || p != null)
+                        {
+                            if (propWritten)
+                            {
+                                WriteTab();
+                            }
+                            else
+                            {
+                                propWritten = true;
+                            }
+                            Write(m.Name);
+                            Write("=");
+                            Type t = f != null ? f.FieldType : p.PropertyType;
+                            if (t.IsValueType || t == typeof(string))
+                            {
+                                WriteValue(f != null ? f.GetValue(element) : p.GetValue(element, null));
+                            }
+                            else
+                            {
+                                if (typeof(IEnumerable).IsAssignableFrom(t))
+                                {
+                                    Write("...");
+                                }
+                                else
+                                {
+                                    Write("{ }");
+                                }
+                            }
+                        }
+                    }
+                    if (propWritten) WriteLine();
+                    if (level < depth)
+                    {
+                        foreach (MemberInfo m in members)
+                        {
+                            FieldInfo f = m as FieldInfo;
+                            PropertyInfo p = m as PropertyInfo;
+                            if (f != null || p != null)
+                            {
+                                Type t = f != null ? f.FieldType : p.PropertyType;
+                                if (!(t.IsValueType || t == typeof(string)))
+                                {
+                                    object value = f != null ? f.GetValue(element) : p.GetValue(element, null);
+                                    if (value != null)
+                                    {
+                                        level++;
+                                        WriteObject(m.Name + ": ", value);
+                                        level--;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void WriteValue(object o)
+        {
+            if (o == null)
+            {
+                Write("null");
+            }
+            else if (o is DateTime)
+            {
+                Write(((DateTime)o).ToShortDateString());
+            }
+            else if (o is ValueType || o is string)
+            {
+                Write(o.ToString());
+            }
+            else if (o is IEnumerable)
+            {
+                Write("...");
+            }
+            else
+            {
+                Write("{ }");
+            }
+        }
+    }
+
 }

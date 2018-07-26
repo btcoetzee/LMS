@@ -17,8 +17,8 @@ namespace LMS.LoggerClient.Console
 
         public static void Log(ILoggerClientObject loggerObject, ColorSet displayColors)
         {
-            WriteLogEntry(GetLogDateTime() + "\t" +
-                loggerObject.SolutionContext + "\t" + loggerObject.ProcessContext + "\t" +
+            WriteLogEntry(GetLogDateTime() + "\tSolution: " +
+                loggerObject.SolutionContext + "\tProcess: " + loggerObject.ProcessContext + "\tOperation: " +
                 loggerObject.OperationContext, displayColors);
         }
 
@@ -29,9 +29,9 @@ namespace LMS.LoggerClient.Console
 
         public static void Log(ILoggerClientErrorObject loggerErrorObject, ColorSet displayColors)
         {
-            WriteLogEntry(GetLogDateTime() + "\t" +
-                loggerErrorObject.SolutionContext + "\t" + loggerErrorObject.ProcessContext + "\t" +
-                loggerErrorObject.OperationContext + "\t" + loggerErrorObject.ErrorContext + "\t" +
+            WriteLogEntry(GetLogDateTime() + "\tSolution: " +
+                loggerErrorObject.SolutionContext + "\tProcess: " + loggerErrorObject.ProcessContext + "\tOperation: " +
+                loggerErrorObject.OperationContext + "\tError: " + loggerErrorObject.ErrorContext + "\t" +
                 loggerErrorObject.Exception, displayColors);
         }
 

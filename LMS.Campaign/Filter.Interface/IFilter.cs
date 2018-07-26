@@ -5,6 +5,6 @@
     public interface IFilter
     {
         // Process the Lead through Filter
-        bool ClearedFilter(ILeadEntity lead);
+        bool ClearedFilter(ILeadEntityImmutable lead);
     }
 }

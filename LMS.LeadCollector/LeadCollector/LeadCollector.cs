@@ -50,6 +50,7 @@
             _loggerClient.Log(new DefaultLoggerClientObject {OperationContext = "Collected the Lead",ProcessContext = processContext,SolutionContext = solutionContext});
 
             // Create the results list
+
             var leadCollectorResultCollectionList = new List<IResult> { new DefaultResult(ResultKeys.DiagnosticKeys.TimeStampStartKey, DateTime.Now) };
 
             _loggerClient.Log(new DefaultLoggerClientObject {OperationContext = "Validating the Lead",ProcessContext = processContext,SolutionContext = solutionContext});

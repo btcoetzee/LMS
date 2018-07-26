@@ -12,18 +12,14 @@ namespace LMS.CampaignManager.Resolver.Implementation
     using LMS.LeadEntity.Interface;
     using LMS.LeadEntity.Components;
     using LMS.LeadEntity.Interface.Constants;
-    using LMS.Decorator.Interface;
     public class CampaignManagerResolver : ICampaignManagerResolver
     {
         private readonly ILoggerClient _loggerClient;
         private const string SolutionContext = "CampaignManagerResolver";
-        private readonly IDecorator _campaignManagerDecorator;
         private List<IResult> _campaignManagerResultList;
 
-        public CampaignManagerResolver(IDecorator campaignManagerDecorator, ILoggerClient loggerClient)
+        public CampaignManagerResolver(ILoggerClient loggerClient)
         {
-            _campaignManagerDecorator = campaignManagerDecorator ??
-                                        throw new ArgumentNullException(nameof(campaignManagerDecorator));
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
         }
 
@@ -48,42 +44,39 @@ namespace LMS.CampaignManager.Resolver.Implementation
             // Check that there are Leads to Resolve 
             if (campaignResultCollectionList.Any())
             {
-
                 // Choose the campaign info with the highest priority
                 var ix = 0;
                 var priorityIx = 0;
                 var highestPriority = Int32.MaxValue;
+                // Create array for the number of campaigns that executed.
+                leadEntity.ResultCollection.CampaignCollection = new IResult[campaignResultCollectionList.Length][];
                 foreach (var resultList in campaignResultCollectionList)
                 {
-                    leadEntity.ResultCollection.CampaignCollection[ix] = resultList.ToArray();
-                    var priorityStr = resultList.SingleOrDefault(r => r.Id == ResultKeys.CampaignKeys.CampaignPriorityKey) != null
-                            ? resultList.SingleOrDefault(r => r.Id == ResultKeys.CampaignKeys.CampaignPriorityKey)
-                                ?.Value.ToString(): null;
-                    Int32.TryParse(priorityStr, out int priority);
-                    if (priority < highestPriority)
+                    leadEntity.ResultCollection.CampaignCollection[ix] = new IResult[resultList.Count];
+                    leadEntity.ResultCollection.CampaignCollection[ix] = (resultList.ToArray());
+                    var value = resultList.SingleOrDefault(r => r.Id == ResultKeys.CampaignKeys.CampaignPriorityKey)
+                        ?.Value;
+                    var priorityStr = value?.ToString();
+                    if (priorityStr != null)
                     {
-                        priorityIx = ix;
+                        Int32.TryParse(priorityStr, out int priorityInt);
+                        if (priorityInt < highestPriority)
+                        {
+                            priorityIx = ix;
+                        }
                     }
                     ix++;
                 }
 
                 leadEntity.ResultCollection.PreferredCampaignCollection = leadEntity.ResultCollection.CampaignCollection[priorityIx];
-                _loggerClient.Log(new DefaultLoggerClientObject 
-                {
-                    // TBD OperationContext = $"Lead {ix} is coming from Campaign: {campaignName} and phone number is: {phoneNumber} ",
-                    ProcessContext = processContext,
-                    SolutionContext = SolutionContext
-                });
+                var campaignName = leadEntity.ResultCollection.PreferredCampaignCollection.SingleOrDefault(r => r.Id == ResultKeys.CampaignKeys.CampaignNameKey)
+                    ?.Value;
+                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = $"Lead selected is coming from Campaign: {campaignName} ", ProcessContext = processContext, SolutionContext = SolutionContext});
 
             }
             else
             {
-                _loggerClient.Log(new DefaultLoggerClientObject
-                {
-                    OperationContext = "There are no Leads to Resolve.",
-                    ProcessContext = processContext,
-                    SolutionContext = SolutionContext
-                });
+                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "There are no Leads to Resolve.",ProcessContext = processContext,SolutionContext = SolutionContext});
             }
 
         }

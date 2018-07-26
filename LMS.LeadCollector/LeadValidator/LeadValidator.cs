@@ -1,12 +1,11 @@
-﻿using LMS.LeadEntity.Interface;
-
-namespace LMS.LeadValidator.Implementation
+﻿namespace LMS.LeadValidator.Implementation
 {
     using System.Linq;
     using System;
     using LMS.Validator.Interface;
     using LMS.LoggerClient.Interface;
     using LMS.Decorator.Interface;
+    using LMS.LeadEntity.Interface;
 
     public class LeadValidator : IValidator
     {
@@ -14,7 +13,6 @@ namespace LMS.LeadValidator.Implementation
         public DefaultLoggerClientObject DefaultLoggerClientObject;
 
         readonly ILoggerClient _loggerClient;
-        private static IValidator _notificationChannelPublisher;
         private static string solutionContext = "LeadValidator";
 
         public LeadValidator(ILoggerClient loggerClient)

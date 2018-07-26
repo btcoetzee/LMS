@@ -11,13 +11,14 @@ namespace LMS.CampaignManager.UnitTests
     using CampaignManager.Implementation;
     using LMS.Campaign.Interface;
     using LMS.LoggerClient.Interface;
-    using LMS.Validator.Interface;
-    using LMS.Decorator.Interface;
+
     using LMS.CampaignManager.Resolver.Interface;
     using LMS.CampaignManager.Subscriber.Interface;
     using LMS.LeadEntity.Interface;
     using LMS.LeadEntity.Components;
-
+    using LMS.CampaignManager.Decorator.Interface;
+    using LMS.CampaignManager.Validator.Interface;
+    using LMS.CampaignManager.Publisher.Interface;
 
     [TestClass]
     public class CampaignManagerTests
@@ -26,9 +27,10 @@ namespace LMS.CampaignManager.UnitTests
         private static IServiceProvider _campaignManagerServiceProvider;
         private Mock<ICampaignManagerSubscriber> _campaignManagerSubscriber;
         private Mock<List<ICampaign>> _campaignCollection;
-        private Mock<IDecorator> _campaignManagerDecorator;
-        private Mock<List<IValidator>> _campaignManagerValidatorCollection;
+        private Mock<ICampaignManagerDecorator> _campaignManagerDecorator;
+        private Mock<List<ICampaignManagerValidator>> _campaignManagerValidatorCollection;
         private Mock<ICampaignManagerResolver> _campaignManagerResolver;
+        private Mock<ICampaignManagerPublisher> _campaignManagerPublisher;
         private Mock<ILoggerClient> _loggerClient;
         private static readonly string[] EmptyResultArray = new string[] { };
         private ILeadEntity _testLleadEntity;
@@ -43,9 +45,10 @@ namespace LMS.CampaignManager.UnitTests
             // Mock the Components that is part of the CampaignManager
             _campaignManagerSubscriber = new Mock<ICampaignManagerSubscriber>();
             _campaignCollection = new Mock<List<ICampaign>> ();
-            _campaignManagerValidatorCollection = new Mock<List<IValidator>>();
-            _campaignManagerDecorator = new Mock<IDecorator>();
+            _campaignManagerValidatorCollection = new Mock<List<ICampaignManagerValidator>>();
+            _campaignManagerDecorator = new Mock<ICampaignManagerDecorator>();
             _campaignManagerResolver = new Mock<ICampaignManagerResolver>();
+            _campaignManagerPublisher = new Mock<ICampaignManagerPublisher>();
             _loggerClient = new Mock<ILoggerClient>();
       
 
@@ -53,9 +56,10 @@ namespace LMS.CampaignManager.UnitTests
             _campaignManagerServiceProvider = new ServiceCollection()
                 .AddSingleton(typeof(ICampaignManagerSubscriber), _campaignManagerSubscriber)
                 .AddSingleton(typeof(List<ICampaign>), _campaignCollection)
-                .AddSingleton(typeof(List<IValidator>), _campaignManagerValidatorCollection)
-                .AddSingleton(typeof(IDecorator), _campaignManagerDecorator.Object)
+                .AddSingleton(typeof(List<ICampaignManagerValidator>), _campaignManagerValidatorCollection)
+                .AddSingleton(typeof(ICampaignManagerDecorator), _campaignManagerDecorator.Object)
                 .AddSingleton(typeof(ICampaignManagerResolver), _campaignManagerResolver)
+                .AddSingleton(typeof(ICampaignManagerPublisher), _campaignManagerPublisher)
                 .AddSingleton(typeof(ILoggerClient), _loggerClient.Object)
                 .BuildServiceProvider();
 
@@ -117,6 +121,8 @@ namespace LMS.CampaignManager.UnitTests
             _campaignManagerValidatorCollection = null;
             _campaignManagerResolver.VerifyAll();
             _campaignManagerResolver = null;
+            _campaignManagerPublisher.VerifyAll();
+            _campaignManagerPublisher = null;
             _loggerClient.VerifyAll();
             _loggerClient = null;
             _campaignManagerServiceProvider = null;
@@ -131,7 +137,7 @@ namespace LMS.CampaignManager.UnitTests
         {
             var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                 _campaignCollection.Object.ToArray(),  _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                _campaignManagerResolver.Object, _loggerClient.Object);
+                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
         }
 
         /// <summary>
@@ -145,7 +151,7 @@ namespace LMS.CampaignManager.UnitTests
             {
                 var campaignManager = new CampaignManager(null,
                     _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                    _campaignManagerResolver.Object, _loggerClient.Object);
+                    _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
                 Assert.Fail("An Argument Null Exception is expected when the CampaignManagerSubscriber is null");
             }
             catch (Exception exception)
@@ -165,7 +171,7 @@ namespace LMS.CampaignManager.UnitTests
             {
                 var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                     null, _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                    _campaignManagerResolver.Object, _loggerClient.Object);
+                    _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
                Assert.Fail("An Argument Null Exception is expected when the campaignCollection is null");
             }
             catch (Exception exception)
@@ -183,11 +189,11 @@ namespace LMS.CampaignManager.UnitTests
         {
             new CampaignManager(_campaignManagerSubscriber.Object,
                 _campaignCollection.Object.ToArray(), null, _campaignManagerDecorator.Object, 
-                _campaignManagerResolver.Object, _loggerClient.Object);
+                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
 
             new CampaignManager(_campaignManagerSubscriber.Object,
                 _campaignCollection.Object.ToArray(), _campaignManagerDecorator.Object, 
-                _campaignManagerResolver.Object, _loggerClient.Object);
+                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
         }
 
         /// <summary>
@@ -200,7 +206,7 @@ namespace LMS.CampaignManager.UnitTests
             {
                 var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                     _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object, 
-                    null, _loggerClient.Object);
+                    null, _campaignManagerPublisher.Object, _loggerClient.Object);
               
                 Assert.Fail("An Argument Null Exception is expected when the CampaignManagerResolver is null");
             }
@@ -221,7 +227,7 @@ namespace LMS.CampaignManager.UnitTests
             {
                 var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                     _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                    _campaignManagerResolver.Object, null);
+                    _campaignManagerResolver.Object, _campaignManagerPublisher.Object, null);
                 Assert.Fail("An Argument Null Exception is expected when the LoggerClient is null");
             }
             catch (Exception exception)
@@ -241,7 +247,7 @@ namespace LMS.CampaignManager.UnitTests
             // No Campaigns set up, so result list should be empty
             var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                 _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                _campaignManagerResolver.Object, _loggerClient.Object);
+                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
             var resultList = campaignManager.ProcessCampaigns(_testLleadEntity);
             Assert.AreEqual(resultList.Length, 0);
         }
@@ -308,7 +314,7 @@ namespace LMS.CampaignManager.UnitTests
 
             var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                 _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                _campaignManagerResolver.Object, _loggerClient.Object);
+                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
 
             // TODO complete!
 

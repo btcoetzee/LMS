@@ -7,6 +7,6 @@
     {
 
         //  Accept Lead and Process
-        void ProcessLead(ILeadEntity lead);
+        void ValidateForRule(ILeadEntityImmutable lead);
     }
 }

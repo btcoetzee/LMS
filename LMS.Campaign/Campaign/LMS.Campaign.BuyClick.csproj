@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>LMS.Campaign.Implementation</AssemblyName>
-    <RootNamespace>LMS.Campaign.Implementation</RootNamespace>
+    <AssemblyName>LMS.Campaign.BuyClick</AssemblyName>
+    <RootNamespace>LMS.Campaign.BuyClick</RootNamespace>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Campaign.Interface\LMS.Campaign.Interface.csproj" />
     <ProjectReference Include="..\Filter.Interface\LMS.Filter.Interface.csproj" />
+    <ProjectReference Include="..\LMS.CampaignValidator.Interface\LMS.CampaignValidator.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,9 +28,6 @@
     </Reference>
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Validator.Interface">
-      <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

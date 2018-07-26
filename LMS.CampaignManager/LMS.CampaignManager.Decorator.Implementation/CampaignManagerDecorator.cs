@@ -1,16 +1,15 @@
-﻿using System.Linq;
-using LMS.LeadEntity.Components;
-using LMS.LeadEntity.Interface.Constants;
-using LMS.LoggerClient.Interface;
-
-namespace LMS.CampaignManager.Decorator.Implementation
+﻿namespace LMS.CampaignManager.Decorator.Implementation
 {
     using System;
-    using LMS.Decorator.Interface;
     using System.Collections.Generic;
+    using LMS.CampaignManager.Decorator.Interface;
     using LMS.LeadEntity.Interface;
+    using System.Linq;
+    using LMS.LeadEntity.Components;
+    using LMS.LeadEntity.Interface.Constants;
+    using LMS.LoggerClient.Interface;
 
-    public class CampaignManagerDecorator: IDecorator
+    public class CampaignManagerDecorator: ICampaignManagerDecorator
     {
         private static ILoggerClient _loggerClient;
         private static string solutionContext = "CampaignManagerDecorator";

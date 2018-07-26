@@ -51,8 +51,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         /// </summary>
         private class TestLeadEntityClass : ILeadEntity
         {
-           
-
+ 
             public IContext[] Context { get; set; }
             public IProperty[] Properties { get; set; }
             public ISegment[] Segments { get; set; }

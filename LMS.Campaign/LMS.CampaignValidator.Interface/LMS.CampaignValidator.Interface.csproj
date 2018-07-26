@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="LMS.LeadEntity.Interface">
+      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.Validator.Interface">
+      <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
+  </Target>
+
+</Project>

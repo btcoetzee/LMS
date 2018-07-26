@@ -5,18 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LMS.CampaignManager.Decorator.Interface\LMS.CampaignManager.Decorator.Interface.csproj" />
     <ProjectReference Include="..\LMS.CampaignManager.Interface\LMS.CampaignManager.Interface.csproj" />
+    <ProjectReference Include="..\LMS.CampaignManager.Publisher.Interface\LMS.CampaignManager.Publisher.Interface.csproj" />
     <ProjectReference Include="..\LMS.CampaignManager.Resolver.Interface\LMS.CampaignManager.Resolver.Interface.csproj" />
-    <ProjectReference Include="..\LMS.CampaignManager.Subscriber.Implementation\LMS.CampaignManager.Subscriber.Implementation.csproj" />
     <ProjectReference Include="..\LMS.CampaignManager.Subscriber.Interface\LMS.CampaignManager.Subscriber.Interface.csproj" />
+    <ProjectReference Include="..\LMS.CampaignManager.Validator.Interface\LMS.CampaignManager.Validator.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="LMS.Campaign.Interface">
       <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
     </Reference>
-    <Reference Include="LMS.Decorator.Interface">
-      <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
+    <Reference Include="LMS.CampaignManager.Subscriber.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Subscriber.Implementation.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LeadEntity.Components">
       <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
@@ -29,6 +31,9 @@
     </Reference>
     <Reference Include="LMS.Validator.Interface">
       <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\9.0.1\lib\netstandard1.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
 
