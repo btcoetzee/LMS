@@ -24,6 +24,9 @@
     <Reference Include="LMS.Campaign.Interface">
       <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.Campaign.Prospect">
+      <HintPath>..\..\lib\LMS.Campaign.Prospect.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.CampaignManager.Decorator.Implementation">
       <HintPath>..\..\lib\LMS.CampaignManager.Decorator.Implementation.dll</HintPath>
     </Reference>

@@ -11,6 +11,7 @@
     using LMS.LoggerClient.Interface;
     using LMS.LeadEntity.Components;
     using LMS.LeadEntity.Interface.Constants;
+    using Newtonsoft.Json;
 
     public class LeadCollector : ILeadCollector
     {
@@ -66,16 +67,27 @@
                     _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Publishing the Lead", ProcessContext = processContext, SolutionContext = solutionContext });
                     _leadPublisher.PublishLead(leadEntity);
                     leadCollectorResultCollectionList.Add(new DefaultResult(ResultKeys.LeadCollectorKeys.PublisherStatusKey, ResultKeys.ResultKeysStatusEnum.Processed.ToString()));
+
+                    // Decorate
+                    _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Decorating the Lead", ProcessContext = processContext, SolutionContext = solutionContext });
+                    leadCollectorResultCollectionList.Add(new DefaultResult(ResultKeys.DiagnosticKeys.TimeStampEndKey, DateTime.Now));
+                    _leadDecorator.DecorateLead(leadEntity, leadCollectorResultCollectionList);
                 }
                 else
                 {
                     leadCollectorResultCollectionList.Add(new DefaultResult(ResultKeys.ValidatorStatusKey, ResultKeys.ResultKeysStatusEnum.Failed.ToString()));
+
+                    // Decorate
+                    _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Decorating the Lead", ProcessContext = processContext, SolutionContext = solutionContext });
+                    leadCollectorResultCollectionList.Add(new DefaultResult(ResultKeys.DiagnosticKeys.TimeStampEndKey, DateTime.Now));
+                    _leadDecorator.DecorateLead(leadEntity, leadCollectorResultCollectionList);
+
+                    // TODO - Show the lead for demo Remove afterwards and move "//Decorate part below if stmnt
+                    _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = JsonConvert.SerializeObject(leadEntity, Newtonsoft.Json.Formatting.Indented), ProcessContext = processContext, SolutionContext = solutionContext });
+
                 }
 
-                // Decorate
-                _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Decorating the Lead", ProcessContext = processContext, SolutionContext = solutionContext });
-                leadCollectorResultCollectionList.Add(new DefaultResult(ResultKeys.DiagnosticKeys.TimeStampEndKey, DateTime.Now));
-                _leadDecorator.DecorateLead(leadEntity, leadCollectorResultCollectionList);
+
             }
             catch (Exception exception)
             {

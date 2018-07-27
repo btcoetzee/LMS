@@ -39,6 +39,8 @@ namespace LMS.IoC
     using LMS.Campaign.BuyClick.Validator;
     using LMS.Campaign.BuyClick;
     using LMS.CampaignValidator.Interface;
+    using LMS.Campaign.Prospect;
+    using LMS.Campaign.Prospect.Validator;
 
     public static class Bootstrapper
     {
@@ -105,21 +107,37 @@ namespace LMS.IoC
         }
         public static IServiceCollection AddLeadValidator(this IServiceCollection container)
         {
+           // container.AddSingleton<IValidator, LeadValidator>();
 
-            container.AddSingleton<IValidator, LeadValidator>();
+            // Custom color
+            container.AddSingleton<IValidator>(provider => new LeadValidator(
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkYellow, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
 
+
+       
             return container;
         }
         public static IServiceCollection AddLeadDecorator(this IServiceCollection container)
         {
-            container.AddSingleton<IDecorator, LeadDecorator>();
+            //container.AddSingleton<IDecorator, LeadDecorator>();
+
+            // Custom color
+            container.AddSingleton<IDecorator>(provider => new LeadDecorator(
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkYellow, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
 
             return container;
         }
         public static IServiceCollection AddLeadPublisher(this IServiceCollection container)
-        {           
-            container.AddSingleton<IPublisher, LeadPublisher>();
+        {
+            // container.AddSingleton<IPublisher, LeadPublisher>();
 
+            // Custom color
+            container.AddSingleton<IPublisher>(provider => new LeadPublisher(
+                provider.GetRequiredService<IPublisher<ILeadEntity>>(),
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkYellow, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors))); ;
             return container;
         }
         public static IServiceCollection AddLeadCollector(this IServiceCollection container)
@@ -203,14 +221,18 @@ namespace LMS.IoC
         {
             container.AddSingleton<ICampaign[]>(provider => new ICampaign[]
             {
- //               new BuyClickCampaign(provider.GetRequiredService<BuyClickValidator>(), provider.GetRequiredService<ILoggerClient>()) 
-
-
+                    //new BuyClickCampaign(provider.GetRequiredService<BuyClickValidator>(), provider.GetRequiredService<ILoggerClient>()) 
                     //new BuyClickCampaign(provider.GetRequiredService<ICampaignValidator>(), provider.GetRequiredService<ILoggerClient>())
+
+
                     // Custom color logging
-                    new BuyClickCampaign(provider.GetRequiredService<ICampaignValidator>(),
-                                            new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),ColorSet.ErrorLoggingColors))
-            
+                    new BuyClickCampaign(provider.GetServices<ICampaignValidator>().FirstOrDefault(validator => validator is BuyClickValidator),
+                                            new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),ColorSet.ErrorLoggingColors)),
+                    
+                    new ProspectCampaign(provider.GetServices<ICampaignValidator>().FirstOrDefault(validator => validator is ProspectValidator),
+                        new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),ColorSet.ErrorLoggingColors))
+
+
             });
 
             return container;
@@ -234,10 +256,15 @@ namespace LMS.IoC
             //validatorMock.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
             //var validator = validatorMock.Object;
             //container.AddSingleton<IValidator>(validator);
-
             //container.AddSingleton<ICampaignValidator, BuyClickValidator>();
+
             // Custom color logging
             container.AddSingleton<ICampaignValidator>(provider => new BuyClickValidator(
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
+
+            // Custom color logging
+            container.AddSingleton<ICampaignValidator>(provider => new ProspectValidator(
                 new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),
                     ColorSet.ErrorLoggingColors)));
             return container;

@@ -23,14 +23,13 @@ namespace LMS.ConsoleApp
     {
         private const string SolutionContext = "LMS.ConsoleApp.Exe";
         private static readonly ColorSet LogColors = new ColorSet(ConsoleColor.White, ConsoleColor.Black);
-        private static readonly ColorSet ObjectLogColors = new ColorSet(ConsoleColor.Green, ConsoleColor.Black);
+        private static readonly ColorSet ObjectLogColors = new ColorSet(ConsoleColor.White, ConsoleColor.Black);
+        private static string[] _leadDirectory;
 
 
         public static void Main(string[] args)
         {
-
             const string processContext = "Main";
-           
 
             // Create the logger cliet for this program
             var loggerClient = new ConsoleLoggerClient();
@@ -50,7 +49,7 @@ namespace LMS.ConsoleApp
             var leadEntities = CreateLeads();
 
             // Ask for user to select a lead to process
-            WriteToConsole($"Select lead [1-{leadEntities.Length}]: ", LogColors);
+            WriteToConsole($"{GetLeadDirectory()}Select a lead [1-{leadEntities.Length}] to process: ", LogColors);
             int.TryParse(Console.ReadLine(), out var leadChoice);
 
             // Process the lead
@@ -61,7 +60,8 @@ namespace LMS.ConsoleApp
                 WriteToConsole(JsonConvert.SerializeObject(leadEntities[leadChoice], Formatting.Indented), ObjectLogColors);
                 leadCollector.CollectLead(leadEntities[leadChoice]);
                 WriteToConsole("Lead was Handed Off .\n", LogColors);
-                WriteToConsole($"Select lead [1-{leadEntities.Length}]: ", LogColors);
+                Console.ReadLine();
+                WriteToConsole($"{GetLeadDirectory()}Select a lead [1-{leadEntities.Length}] to process: ", LogColors);
                 int.TryParse(Console.ReadLine(), out leadChoice);
             }
 
@@ -73,21 +73,30 @@ namespace LMS.ConsoleApp
             Console.ReadKey();
         }
 
+        private static string GetLeadDirectory()
+        {
+            string leadDirectory = "\n";
+
+            var ix = 1;
+            foreach (var directory in _leadDirectory)
+            {
+                leadDirectory += $"\n{ix}. {directory}";
+                ix++;
+            }
+            leadDirectory += "\n";
+           
+            return leadDirectory;
+        }
+
         public static void WriteToConsole(string stringToWrite, ColorSet colorSet)
         {
-
             Console.ForegroundColor = colorSet.ForegroundColor;
             Console.BackgroundColor = colorSet.BackgroundColor;
             Console.WriteLine(stringToWrite);
-
         }
-
-
 
         public static void PrintProperties(ILeadEntity leadEntity)
         {
-
-
             Console.WriteLine("Properties:");
             foreach (var prop in leadEntity.GetType().GetProperties())
             {
@@ -115,8 +124,10 @@ namespace LMS.ConsoleApp
             const string phoneNumber = "888-556-5456";
             const int pni_Age = 28;
 
-            var leadEntities = new ILeadEntity[6];
+            var leadEntities = new ILeadEntity[7];
 
+            _leadDirectory = new string[7];
+            _leadDirectory[0] = "Valid Lead - Phone #, PNI Age";
             leadEntities[0] = new MyLeads
             {
 
@@ -148,7 +159,7 @@ namespace LMS.ConsoleApp
 
  
             };
-
+            _leadDirectory[1] = "Valid Lead - NO Phone #, PNI Age";
             leadEntities[1] = new MyLeads
             {
 
@@ -168,7 +179,6 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
                     new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
-                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
                     new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
@@ -178,9 +188,9 @@ namespace LMS.ConsoleApp
                     new MySegment(SegementKeys.HomeownerKey)
                 },
 
- 
-            };
 
+            };
+            _leadDirectory[2] = "Valid Lead - Phone #, NO PNI Age";
             leadEntities[2] = new MyLeads
             {
 
@@ -201,7 +211,38 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
                     new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
                     new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
+  
+                },
+
+                Segments = new ISegment[]
+                {
+                    new MySegment(SegementKeys.HighPOPKey),
+                    new MySegment(SegementKeys.HomeownerKey)
+                },
+
+ 
+            };
+
+            _leadDirectory[3] = "Valid Lead - NO Phone #, NO PNI Age";
+            leadEntities[3] = new MyLeads
+            {
+
+                Context = new IContext[]
+                {
+                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
+                },
+
+                Properties = new IProperty[]
+                {
+                    new MyProperty(PropertyKeys.PriorBIKey,priorBi),
+                    new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+                    new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+                    new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
                 },
 
                 Segments = new ISegment[]
@@ -213,13 +254,13 @@ namespace LMS.ConsoleApp
   
             };
 
-            leadEntities[3] = new MyLeads
+            _leadDirectory[4] = "Valid Lead - NO IdentityGUID";
+            leadEntities[4] = new MyLeads
             {
 
                 Context = new IContext[]
                 {
                     new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
                     new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
@@ -245,8 +286,8 @@ namespace LMS.ConsoleApp
           
 
             };
-
-            leadEntities[4] = new MyLeads
+            _leadDirectory[5] = "Valid Lead";
+            leadEntities[5] = new MyLeads
             {
 
                 Context = new IContext[]
@@ -264,7 +305,9 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString())
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]
@@ -275,8 +318,8 @@ namespace LMS.ConsoleApp
 
    
             };
-
-            leadEntities[5] = new MyLeads
+            _leadDirectory[6] = "Valid Lead";
+            leadEntities[6] = new MyLeads
             {
 
                 Context = new IContext[]
@@ -386,6 +429,9 @@ namespace LMS.ConsoleApp
         public string type { get; private set; }
     }
     #endregion
+
+    #region ObjectDumper
+
     public class ObjectDumper
     {
 
@@ -570,5 +616,5 @@ namespace LMS.ConsoleApp
             }
         }
     }
-
+    #endregion
 }

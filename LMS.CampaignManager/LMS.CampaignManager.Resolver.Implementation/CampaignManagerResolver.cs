@@ -44,6 +44,7 @@ namespace LMS.CampaignManager.Resolver.Implementation
             // Check that there are Leads to Resolve 
             if (campaignResultCollectionList.Any())
             {
+
                 // Choose the campaign info with the highest priority
                 var ix = 0;
                 var priorityIx = 0;
@@ -54,25 +55,42 @@ namespace LMS.CampaignManager.Resolver.Implementation
                 {
                     leadEntity.ResultCollection.CampaignCollection[ix] = new IResult[resultList.Count];
                     leadEntity.ResultCollection.CampaignCollection[ix] = (resultList.ToArray());
-                    var value = resultList.SingleOrDefault(r => r.Id == ResultKeys.CampaignKeys.CampaignPriorityKey)
+
+                    // If the campaign processed successfully, then seek the Campaign that was successful and has the highest priority
+                    var campaignSuccessStatus = resultList.SingleOrDefault(r => r.Id == ResultKeys.CampaignKeys.LeadSuccessStatusKey)
                         ?.Value;
-                    var priorityStr = value?.ToString();
-                    if (priorityStr != null)
+                    if (campaignSuccessStatus != null)
                     {
-                        Int32.TryParse(priorityStr, out int priorityInt);
-                        if (priorityInt < highestPriority)
+                        if (campaignSuccessStatus.ToString() == ResultKeys.ResultKeysStatusEnum.Processed.ToString())
                         {
-                            priorityIx = ix;
+                            var value = resultList
+                                .SingleOrDefault(r => r.Id == ResultKeys.CampaignKeys.CampaignPriorityKey)
+                                ?.Value;
+                            var priorityStr = value?.ToString();
+                            if (priorityStr != null)
+                            {
+                                Int32.TryParse(priorityStr, out int priorityInt);
+                                if (priorityInt < highestPriority)
+                                {
+                                    priorityIx = ix;
+                                    highestPriority = priorityInt;
+                                }
+                            }
                         }
+
                     }
                     ix++;
                 }
 
-                leadEntity.ResultCollection.PreferredCampaignCollection = leadEntity.ResultCollection.CampaignCollection[priorityIx];
-                var campaignName = leadEntity.ResultCollection.PreferredCampaignCollection.SingleOrDefault(r => r.Id == ResultKeys.CampaignKeys.CampaignNameKey)
-                    ?.Value;
-                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = $"Lead selected is coming from Campaign: {campaignName} ", ProcessContext = processContext, SolutionContext = SolutionContext});
+                // Check that there was a preferred campaign
+                if (highestPriority != Int32.MaxValue)
+                {
+                    leadEntity.ResultCollection.PreferredCampaignCollection = leadEntity.ResultCollection.CampaignCollection[priorityIx];
+                    var campaignName = leadEntity.ResultCollection.PreferredCampaignCollection.SingleOrDefault(r => r.Id == ResultKeys.CampaignKeys.CampaignNameKey)
+                        ?.Value;
+                    _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = $"Lead selected is coming from Campaign: {campaignName} ", ProcessContext = processContext, SolutionContext = SolutionContext });
 
+                }
             }
             else
             {

@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LMS.CampaignValidator.Interface\LMS.CampaignValidator.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LMS.Campaign.Interface">
+      <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadEntity.Components">
+      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadEntity.Interface">
+      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClient.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
+  </Target>
+
+</Project>

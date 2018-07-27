@@ -75,27 +75,14 @@
             {
                 _loggerClient.Log(new DefaultLoggerClientErrorObject
                 {
-                    OperationContext = "\nAn exception occured...",
-                    ProcessContext = "LMS.ConsoleApp.Exe",
-                    SolutionContext = string.Empty,
-                    Exception = ex,
-                    ErrorContext = ex.Message
-
-                });
+                    OperationContext = "Exception in Validation of Lead",ProcessContext = processContext,SolutionContext = solutionContext,Exception = ex,ErrorContext = ex.Message});
                 return false;
             }
            
 
             if (errorStr != String.Empty)
             {
-                _loggerClient.Log(new DefaultLoggerClientErrorObject
-                {
-                    OperationContext = "\nHad an error occurred...",
-                    ProcessContext = "LMS.ConsoleApp.Exe",
-                    SolutionContext = string.Empty,
-                    ErrorContext = errorStr
-
-                });
+                _loggerClient.Log(new DefaultLoggerClientErrorObject{OperationContext = "Validation failed",ProcessContext = processContext,SolutionContext = solutionContext,ErrorContext = errorStr});
 
 
                 return false;
