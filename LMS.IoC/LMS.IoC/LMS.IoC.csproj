@@ -67,6 +67,9 @@
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.Filter.Interface">
+      <HintPath>..\..\lib\LMS.Filter.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.LeadCollector.Implementation">
       <HintPath>..\..\lib\LMS.LeadCollector.Implementation.dll</HintPath>
     </Reference>

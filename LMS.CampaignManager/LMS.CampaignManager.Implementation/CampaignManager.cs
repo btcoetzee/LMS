@@ -192,7 +192,7 @@
 
             _campaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignsProcessedStatusKey,
                 ResultKeys.ResultKeysStatusEnum.Processed.ToString()));
-            _campaignManagerDecorator.DecorateLead(leadEntity, _campaignManagerResultList);
+
 
             // When all the campaigns are finished processing - call the function to Process all the Results from the different campaigns.
             processCampaignsTask.ContinueWith(async resultsCollection =>
@@ -213,7 +213,7 @@
         public void CampaignManagerProcessResults(ILeadEntity leadEntity, List<IResult>[] campaignResultCollection)
         {
             _campaignManagerResolver.ResolveLeads(leadEntity, campaignResultCollection);
-
+            _campaignManagerDecorator.DecorateLead(leadEntity, _campaignManagerResultList);
             // Publish the lead to POE
             _campaignManagerPublisher.PublishLead(leadEntity);
         }

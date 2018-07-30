@@ -23,6 +23,9 @@
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.Filter.Interface">
+      <HintPath>..\..\lib\LMS.Filter.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.LeadCollector.Interface">
       <HintPath>..\..\lib\LMS.LeadCollector.Interface.dll</HintPath>
     </Reference>

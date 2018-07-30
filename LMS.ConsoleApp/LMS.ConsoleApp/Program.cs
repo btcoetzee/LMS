@@ -286,13 +286,13 @@ namespace LMS.ConsoleApp
           
 
             };
-            _leadDirectory[5] = "Valid Lead";
+            _leadDirectory[5] = "Valid Lead - BF526BAF-F860-4530-BAA5-A205E285881A";
             leadEntities[5] = new MyLeads
             {
 
                 Context = new IContext[]
                 {
-                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.ActivityGuidKey, new Guid("BF526BAF-F860-4530-BAA5-A205E285881A").ToString()),
                     new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),

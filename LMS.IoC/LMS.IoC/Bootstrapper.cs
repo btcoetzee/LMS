@@ -41,6 +41,8 @@ namespace LMS.IoC
     using LMS.CampaignValidator.Interface;
     using LMS.Campaign.Prospect;
     using LMS.Campaign.Prospect.Validator;
+    using LMS.Filter.Interface;
+    using LMS.Campaign.BuyClick.Filter;
 
     public static class Bootstrapper
     {
@@ -63,7 +65,8 @@ namespace LMS.IoC
                 .AddCampaignManagerResolver()
                 .AddCampaignManagerPublisher()
                 .AddCampaignManager()
-                .AddCampaignValidator();
+                .AddCampaignValidator()
+                .AddCampaignFilter();
 
                 
 
@@ -227,6 +230,7 @@ namespace LMS.IoC
 
                     // Custom color logging
                     new BuyClickCampaign(provider.GetServices<ICampaignValidator>().FirstOrDefault(validator => validator is BuyClickValidator),
+                                            provider.GetRequiredService<IFilter>(),
                                             new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),ColorSet.ErrorLoggingColors)),
                     
                     new ProspectCampaign(provider.GetServices<ICampaignValidator>().FirstOrDefault(validator => validator is ProspectValidator),
@@ -267,6 +271,17 @@ namespace LMS.IoC
             container.AddSingleton<ICampaignValidator>(provider => new ProspectValidator(
                 new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),
                     ColorSet.ErrorLoggingColors)));
+            return container;
+        }
+
+        public static IServiceCollection AddCampaignFilter(this IServiceCollection container)
+        {
+          
+            // Custom color logging
+            container.AddSingleton<IFilter>(provider => new BuyClickFilter(
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
+            
             return container;
         }
         //public static IServiceCollection AddCampaignValidators(this IServiceCollection container)
