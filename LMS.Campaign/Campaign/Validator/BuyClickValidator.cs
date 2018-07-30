@@ -24,7 +24,7 @@
             try
             {
                 var phoneNumberValue = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber)?.Value;
-                if (phoneNumberValue == null)
+                if ((phoneNumberValue == null) || (String.IsNullOrEmpty(phoneNumberValue.ToString())))
                 {
                     errorStr += "PhoneNumber Invalid or Not In Properties of LeadEntityObject\n";
                 }
