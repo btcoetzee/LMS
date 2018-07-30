@@ -23,13 +23,7 @@
 
         //public bool ValidLead(LMS.LeadEntity.Interface.ILeadEntity lead)
         public bool ValidLead(ILeadEntity lead)
-        {
-
-            Guid activityGuid;
-            Guid identityGuid;
-            Guid sessionGuid;
-            int quotedProduct;
-
+        {          
             string processContext = "ValidLead";
 
             _loggerClient.Log(new DefaultLoggerClientObject
@@ -48,26 +42,33 @@
             // try tryParse on guid to see if valid guid.
             try
             {
+                var activityGuidValue = lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey)?.Value;
+                if ((activityGuidValue == null) || (!Guid.TryParse(activityGuidValue.ToString(), out Guid activityGuid)))
+                {
+                    errorStr += "ActivityGuid Invalid or Not In Context \n";
+                }
 
-                if (((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey) == null) ||
-                    (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey).Value == null) ||
-               (!Guid.TryParse((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey).Value).ToString(), out activityGuid))))
-                errorStr += "ActivityGuid Invalid or Not In Context \n";
 
-                if (((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey) == null) || 
-                    (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey).Value == null) ||
-                    (!Guid.TryParse((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey).Value).ToString(), out identityGuid))))
+                var IdentityGuidValue = lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey)?.Value;
+                if ((IdentityGuidValue == null) || (!Guid.TryParse(IdentityGuidValue.ToString(), out Guid identityGuid)))
+                {
                     errorStr += "IdentityGuid Invalid or Not In Context \n";
+                }
 
-                if (((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey) == null) ||
-                     (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey).Value == null) ||
-                    (!Guid.TryParse((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey).Value).ToString(), out sessionGuid))))
+
+                var SessionGuidValue = lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey)?.Value;
+                if ((SessionGuidValue == null) || (!Guid.TryParse(SessionGuidValue.ToString(), out Guid sessionGuid)))
+                {
                     errorStr += "SessionGuid Invalid or Not In Context \n";
+                }
 
-                if (((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey) == null) ||
-                    (lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey).Value == null) ||
-                    (!Int32.TryParse((lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey).Value).ToString(), out quotedProduct)))) 
+
+                var quotedProductKeyValue = lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey)?.Value;
+                if ((quotedProductKeyValue == null) || (!int.TryParse(quotedProductKeyValue.ToString(), out int quotedProduct)))
+                {
                     errorStr += "QuotedProductKey Invalid or Not In Context \n";
+                }
+                
 
 
             }
