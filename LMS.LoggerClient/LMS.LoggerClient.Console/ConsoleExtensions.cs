@@ -17,9 +17,15 @@ namespace LMS.LoggerClient.Console
 
         public static void Log(ILoggerClientObject loggerObject, ColorSet displayColors)
         {
-            WriteLogEntry(GetLogDateTime() + "\tSolution: " +
-                loggerObject.SolutionContext + "\tProcess: " + loggerObject.ProcessContext + "\tOperation: " +
-                loggerObject.OperationContext, displayColors);
+            // TODO - find better sollution - For now Escape characters that cause exceptions { for String.Format...
+            loggerObject.OperationContext = loggerObject.OperationContext.Replace("{", "{{").Replace("}", "}}");//.Replace("\"", "\\");
+            var str = String.Format(
+                $"{GetLogDateTime(),-15} Solution: {loggerObject.SolutionContext,-25} Process: {loggerObject.ProcessContext,-25} Operation: {loggerObject.OperationContext}");
+
+            WriteLogEntry(str, displayColors);
+            // WriteLogEntry(GetLogDateTime() + "\tSolution: " +
+            // loggerErrorObject.SolutionContext + "\tProcess: " + loggerErrorObject.ProcessContext + "\tOperation: " +
+            //    loggerObject.OperationContext, displayColors));
         }
 
         public static void Log(ILoggerClientErrorObject loggerErrorObject)

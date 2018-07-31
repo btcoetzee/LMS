@@ -24,9 +24,9 @@
             try
             {
                 var phoneNumberValue = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber)?.Value;
-                if ((phoneNumberValue == null) || (String.IsNullOrEmpty(phoneNumberValue.ToString())))
+                if ((phoneNumberValue == null) || (phoneNumberValue == String.Empty))
                 {
-                    errorStr += "PhoneNumber Invalid or Not In Properties of LeadEntityObject\n";
+                    errorStr += "PhoneNumber Not In Properties of LeadEntityObject\n";
                 }
                 
                 var ageValue = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age)?.Value;

@@ -318,13 +318,13 @@ namespace LMS.ConsoleApp
 
    
             };
-            _leadDirectory[6] = "Valid Lead";
+            _leadDirectory[6] = "Valid Lead - No POP";
             leadEntities[6] = new MyLeads
             {
 
                 Context = new IContext[]
                 {
-                    new MyContext(ContextKeys.ActivityGuidKey, null),
+                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
@@ -334,7 +334,7 @@ namespace LMS.ConsoleApp
                 Properties = new IProperty[]
                 {
                     new MyProperty(PropertyKeys.PriorBIKey,priorBi),
-                    new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+                    new MyProperty(PropertyKeys.PriorInsuranceKey,"false"),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
                     new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
