@@ -13,6 +13,8 @@ namespace LMS.LeadCollector.UnitTests
     using LMS.Validator.Interface;
     using LMS.Publisher.Interface;
     using LMS.LoggerClient.Interface;
+    using LMS.LeadEntity.Components;
+    using LMS.LeadCollector.Implementation;
 
     [TestClass]
     public class LeadCollectorUnitTests
@@ -24,6 +26,7 @@ namespace LMS.LeadCollector.UnitTests
         private Mock<IPublisher> _publisher;
         private Mock<IDecorator> _decorator;
         private Mock<ILoggerClient> _loggingClient;
+        private ILeadEntity _testLeadEntity;
 
         [TestInitialize]
         public void Initialize()
@@ -39,6 +42,48 @@ namespace LMS.LeadCollector.UnitTests
                 .AddSingleton(typeof(IPublisher), _publisher.Object)
                 .AddSingleton(typeof(IDecorator), _decorator.Object)
                 .AddSingleton(typeof(ILoggerClient), _loggingClient.Object).BuildServiceProvider();
+
+            CreateLeadEntity();
+        }
+
+        /// <summary>
+        /// Create an Instance of the LeadEntity
+        /// </summary>
+        private class TestLeadEntityClass : ILeadEntity
+        {
+
+            public IContext[] Context { get; set; }
+            public IProperty[] Properties { get; set; }
+            public ISegment[] Segments { get; set; }
+            public IResultCollection ResultCollection { get; set; }
+        }
+
+        //struct TestLeadEntityResultClass : IResult
+        //{
+        //    public TestLeadEntityResultClass(string id, object value)
+        //    {
+        //        Id = id;
+        //        Value = value;
+        //    }
+
+        //    public string Id { get; private set; }
+
+        //    public object Value { get; private set; }
+        //}
+
+        void CreateLeadEntity()
+        {
+            _testLeadEntity = new TestLeadEntityClass()
+            {
+                Context = new IContext[]
+                    {},
+                Properties = new IProperty[]
+                    {},
+                Segments = new ISegment[]
+                    {},
+                ResultCollection = new DefaultResultCollection()
+            };
+
         }
 
         [TestCleanup]
@@ -57,6 +102,8 @@ namespace LMS.LeadCollector.UnitTests
             _loggingClient.VerifyAll();
             _loggingClient = null;
         }
+
+        #region ConstructorTests
 
         /// <summary>
         /// Test that the ValidateLead function call is invoked as expected.
@@ -163,11 +210,134 @@ namespace LMS.LeadCollector.UnitTests
             new Implementation.LeadCollector(null, null, null, null);
         }
 
+        /// <summary>
+        /// Mocked the parameter lead collector constructor test.
+        /// </summary>
         [TestMethod]
         public void MockedParamLeadCollectorConstructorTest()
         {
             new Implementation.LeadCollector(_serviceProvider.GetService<IValidator>(), _serviceProvider.GetService<IDecorator>(),
                 _serviceProvider.GetService<IPublisher>(), _serviceProvider.GetService<ILoggerClient>());
         }
+
+        /// <summary>
+        /// Mocked the parameter lead collector constructor test. 
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentNullException))]
+        public void MockedParamLeadCollectorConstructorNullValidatorTest()
+        {
+            new Implementation.LeadCollector(null, _serviceProvider.GetService<IDecorator>(),
+                _serviceProvider.GetService<IPublisher>(), _serviceProvider.GetService<ILoggerClient>());
+        }
+
+        /// <summary>
+        /// Mocked the parameter lead collector constructor test.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentNullException))]
+        public void MockedParamLeadCollectorConstructorNullDecoratorTest()
+        {
+            new Implementation.LeadCollector(_serviceProvider.GetService<IValidator>(), null,
+                _serviceProvider.GetService<IPublisher>(), _serviceProvider.GetService<ILoggerClient>());
+        }
+
+        /// <summary>
+        /// Mocked the parameter lead collector constructor test.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentNullException))]
+        public void MockedParamLeadCollectorConstructorNullPublisherTest()
+        {
+            new Implementation.LeadCollector(_serviceProvider.GetService<IValidator>(), _serviceProvider.GetService<IDecorator>(),
+                null, _serviceProvider.GetService<ILoggerClient>());
+        }
+
+        /// <summary>
+        /// Mocked the parameter lead collector constructor test.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentNullException))]
+        public void MockedParamLeadCollectorConstructorNullLoggerClientTest()
+        {
+            new Implementation.LeadCollector(_serviceProvider.GetService<IValidator>(), _serviceProvider.GetService<IDecorator>(),
+                _serviceProvider.GetService<IPublisher>(), null);
+        }
+
+        /// <summary>
+        /// Mocked the parameter lead collector constructor test.
+        /// </summary>
+        [TestMethod]
+        public void CollectLeadNullLeadEntityTest()
+        {
+            try
+            {
+                var collectLead = new LeadCollector(_serviceProvider.GetService<IValidator>(), _serviceProvider.GetService<IDecorator>(),
+             _serviceProvider.GetService<IPublisher>(), _serviceProvider.GetService<ILoggerClient>());
+
+                collectLead.CollectLead(null);
+
+            }
+            catch (Exception ex)
+            {
+
+                Assert.AreEqual(typeof(ArgumentNullException), ex.GetType());
+                Assert.AreEqual("Value cannot be null. Parameter name: leadEntity", ex.Message.Replace(Environment.NewLine, " "));
+            }
+         
+        }
+
+        /// <summary>
+        /// Mocked the parameter lead collector constructor test.
+        /// </summary>
+        [TestMethod]
+        public void CollectLeadLeadEntityInvalidTest()
+        {
+            var collectLead = new LeadCollector(_serviceProvider.GetService<IValidator>(), _serviceProvider.GetService<IDecorator>(),
+                _serviceProvider.GetService<IPublisher>(), _serviceProvider.GetService<ILoggerClient>());
+
+            var validator = _serviceProvider.GetService<IValidator>();
+            bool expectedValue = false;
+
+            // Mock the ValidateLead Function and verify that it was called as expected.
+            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(expectedValue);
+
+
+            collectLead.CollectLead(_testLeadEntity);
+        }
+
+        /// <summary>
+        /// Mocked the parameter lead collector constructor test.
+        /// </summary>
+        [TestMethod]
+        public void CollectLeadLeadEntityValidTest()
+        {
+            var collectLead = new LeadCollector(_serviceProvider.GetService<IValidator>(), _serviceProvider.GetService<IDecorator>(),
+                _serviceProvider.GetService<IPublisher>(), _serviceProvider.GetService<ILoggerClient>());
+
+            var validator = _serviceProvider.GetService<IValidator>();
+            bool expectedValue = true;
+
+            var publisher = _serviceProvider.GetService<IPublisher>();
+
+            // Mock the ValidateLead Function and verify that it was called as expected.
+            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(expectedValue);
+            _publisher.Setup(p => p.PublishLead(It.IsAny<ILeadEntity>()));
+
+
+            collectLead.CollectLead(_testLeadEntity);
+        }
+
+
+        //// Set up return values when the validator is invoked
+        //_validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => {
+        //        if (s == null)
+        //            return false;
+        //        else
+        //            return true;
+        //     });
+
+
     }
 }
+#endregion
