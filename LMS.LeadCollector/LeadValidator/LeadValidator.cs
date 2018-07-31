@@ -35,8 +35,10 @@
 
             var errorStr = string.Empty;
 
-            if (lead.Context.Length < 0)
-                    errorStr += "Context Length is Zero \n";
+            if ((lead.Context == null) || (lead.Context.Length < 0))
+            {
+                errorStr += "Context Length is Zero \n";
+            }
 
             // Check the value here.
             // try tryParse on guid to see if valid guid.

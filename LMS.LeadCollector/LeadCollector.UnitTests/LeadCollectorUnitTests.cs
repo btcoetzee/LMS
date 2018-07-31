@@ -1,10 +1,8 @@
-using System.Collections.Generic;
-
 namespace LMS.LeadCollector.UnitTests
 {
 
     using System;
-    using System.IO;
+    using System.Collections.Generic;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
@@ -324,20 +322,8 @@ namespace LMS.LeadCollector.UnitTests
             _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(expectedValue);
             _publisher.Setup(p => p.PublishLead(It.IsAny<ILeadEntity>()));
 
-
             collectLead.CollectLead(_testLeadEntity);
         }
-
-
-        //// Set up return values when the validator is invoked
-        //_validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntity>(s => {
-        //        if (s == null)
-        //            return false;
-        //        else
-        //            return true;
-        //     });
-
-
     }
 }
 #endregion
