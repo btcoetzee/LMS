@@ -111,6 +111,9 @@
     <Reference Include="LMS.Resolution.Interface">
       <HintPath>..\..\lib\LMS.Resolution.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.Rule.Interface">
+      <HintPath>..\..\lib\LMS.Rule.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.Validator.Interface">
       <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
     </Reference>

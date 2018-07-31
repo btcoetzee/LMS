@@ -5,8 +5,7 @@
 
     public interface IRule
     {
-
         //  Accept Lead and Process
-        void ValidateForRule(ILeadEntityImmutable lead);
+        bool ValidateForRule(ILeadEntityImmutable leadEntity);
     }
 }

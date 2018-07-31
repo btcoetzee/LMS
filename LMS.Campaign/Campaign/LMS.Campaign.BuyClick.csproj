@@ -14,6 +14,7 @@
     <ProjectReference Include="..\Campaign.Interface\LMS.Campaign.Interface.csproj" />
     <ProjectReference Include="..\Filter.Interface\LMS.Filter.Interface.csproj" />
     <ProjectReference Include="..\LMS.CampaignValidator.Interface\LMS.CampaignValidator.Interface.csproj" />
+    <ProjectReference Include="..\Rules.UnitTests\LMS.Rule.UnitTests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

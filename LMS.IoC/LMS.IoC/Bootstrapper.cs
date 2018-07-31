@@ -43,6 +43,8 @@ namespace LMS.IoC
     using LMS.Campaign.Prospect.Validator;
     using LMS.Filter.Interface;
     using LMS.Campaign.BuyClick.Filter;
+    using LMS.Rule.Interface;
+    using LMS.Campaign.BuyClick.Rule;
 
     public static class Bootstrapper
     {
@@ -66,7 +68,8 @@ namespace LMS.IoC
                 .AddCampaignManagerPublisher()
                 .AddCampaignManager()
                 .AddCampaignValidator()
-                .AddCampaignFilter();
+                .AddCampaignFilter()
+                .AddCampaignRule(); 
 
                 
 
@@ -231,6 +234,7 @@ namespace LMS.IoC
                     // Custom color logging
                     new BuyClickCampaign(provider.GetServices<ICampaignValidator>().FirstOrDefault(validator => validator is BuyClickValidator),
                                             provider.GetRequiredService<IFilter>(),
+                                            provider.GetRequiredService<IRule>(),
                                             new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),ColorSet.ErrorLoggingColors)),
                     
                     new ProspectCampaign(provider.GetServices<ICampaignValidator>().FirstOrDefault(validator => validator is ProspectValidator),
@@ -282,6 +286,17 @@ namespace LMS.IoC
                 new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),
                     ColorSet.ErrorLoggingColors)));
             
+            return container;
+        }
+
+        public static IServiceCollection AddCampaignRule(this IServiceCollection container)
+        {
+
+            // Custom color logging
+            container.AddSingleton<IRule>(provider => new BuyClickRule(
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
+
             return container;
         }
         //public static IServiceCollection AddCampaignValidators(this IServiceCollection container)
