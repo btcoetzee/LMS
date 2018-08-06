@@ -1,3 +1,5 @@
+using LMS.LeadEntity.Interface.Constants;
+
 namespace LMS.CampaignManager.UnitTests
 {
 
@@ -34,7 +36,33 @@ namespace LMS.CampaignManager.UnitTests
         private Mock<ILoggerClient> _loggerClient;
         private static readonly string[] EmptyResultArray = new string[] { };
         private ILeadEntity _testLleadEntity;
+        private List<IResult> _testCampaignResultList;
+        /// <summary>
+        /// Create an Instance of the LeadEntity
+        /// </summary>
+        private class TestLeadEntityClass : ILeadEntity
+        {
 
+            public IContext[] Context { get; set; }
+            public IProperty[] Properties { get; set; }
+            public ISegment[] Segments { get; set; }
+            public IResultCollection ResultCollection { get; set; }
+        }
+
+        struct TestCampaingResult : IResult
+        {
+            public TestCampaingResult(string id, object value)
+            {
+                Id = id;
+                Value = value;
+            }
+
+            public string Id { get; set; }
+
+            public object Value { get;  set; }
+        }
+
+  
 
         /// <summary>
         /// Initializes this instance.
@@ -65,33 +93,8 @@ namespace LMS.CampaignManager.UnitTests
 
             // Create a leadEntity
             CreateLeadEntity();
+            CreateACampaignResult();
         }
-
-        /// <summary>
-        /// Create an Instance of the LeadEntity
-        /// </summary>
-        private class TestLeadEntityClass : ILeadEntity
-        {
-    
-            public IContext[] Context { get; set; }
-            public IProperty[] Properties { get; set; }
-            public ISegment[] Segments { get; set; }
-            public IResultCollection ResultCollection { get; set; }
-        }
-
-        struct TestLeadEntityResultClass : IResult
-        {
-            public TestLeadEntityResultClass(string id, object value)
-            {
-                Id = id;
-                Value = value;
-            }
-
-            public string Id { get; private set; }
-
-            public object Value { get; private set; }
-        }
-
         void CreateLeadEntity()
         {
             _testLleadEntity = new TestLeadEntityClass()
@@ -107,18 +110,27 @@ namespace LMS.CampaignManager.UnitTests
 
         }
 
+        void CreateACampaignResult() => _testCampaignResultList = new List<IResult>()
+            {
+                new TestCampaingResult{Id = ResultKeys.CampaignKeys.LeadSuccessStatusKey.ToString(),Value = ResultKeys.ResultKeysStatusEnum.Processed.ToString()
+                }
+            };
+
         /// <summary>
         /// Cleanups this instance.
         /// </summary>
         [TestCleanup]
         public void Cleanup()
         {
+
             _campaignManagerSubscriber.VerifyAll();
             _campaignManagerSubscriber = null;
             _campaignCollection.VerifyAll();
             _campaignCollection = null;
             _campaignManagerValidatorCollection.VerifyAll();
             _campaignManagerValidatorCollection = null;
+            _campaignManagerDecorator.VerifyAll();
+            _campaignManagerDecorator = null;
             _campaignManagerResolver.VerifyAll();
             _campaignManagerResolver = null;
             _campaignManagerPublisher.VerifyAll();
@@ -242,65 +254,187 @@ namespace LMS.CampaignManager.UnitTests
         /// CampaignManager Test with a No Campaigns.
         /// </summary>
         [TestMethod]
-        public void CampaignManagerProcessEmptyCampaignTest()
+        public void CampaignManagerDriverTestWithNullLeadEntityObject()
         {
-            // No Campaigns set up, so result list should be empty
+            // No Campaigns set up, not necessary to mock other components
             var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                 _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
                 _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-            var resultList = campaignManager.ProcessCampaigns(_testLleadEntity);
-            Assert.AreEqual(resultList.Length, 0);
+
+            try
+            {
+                campaignManager.CampaignManagerDriver(null);
+            }
+            catch (Exception exception)
+            {
+
+                Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
+                Assert.AreEqual("Value cannot be null. Parameter name: leadEntity",
+                    exception.Message.Replace(Environment.NewLine, " "));
+  
+            }
+        }
+        /// <summary>
+        /// CampaignManager Test with a No Campaigns.
+        /// </summary>
+        [TestMethod]
+        public void CampaignManagerDriverEmptyCampaignTest()
+        {
+            // No Campaigns set up, so do not have to mock other components
+            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
+                _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
+                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
+           campaignManager.CampaignManagerDriver(_testLleadEntity);
+
         }
 
         /// <summary>
-        /// Execute the Campaign Manager with multiple campaigns.
+        /// Set up Multiple Campaigns to be managed.  The Validator Collection 
+        /// contains a validator that return false;
         /// </summary>
         [TestMethod]
-        public void CampaignManagerProcessMultipleCampaignTest()
+        public void CampaignManagerDriverMultipleCampaignsWithValidatorReturningFalseTest()
         {
-            //const string testMessage = "Hello from Milo! :-)";
-            //const string responseFormat = "Campaign {0} complete.";
 
-            //const int campaignCount = 3;
-            //var testCampaignCollection = new ICampaign[campaignCount];
-
-            //for (var campaignIndex = 0; campaignIndex < campaignCount; campaignIndex++)
-            //{
-            //    var id = campaignIndex;
-            //    var mock = new Mock<ICampaign>();
+            // Mock the Campaign Manager Validator Collection where the first validator returns false
+            var testValidator = new Mock<ICampaignManagerValidator>();
+            testValidator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(false);
+            _campaignManagerValidatorCollection.Object.Add(testValidator.Object);
 
 
-            //    // Changing this for now - but chang it to be a ILeadEntity in the end.
-            //    mock.Setup(campaign => campaign.ProcessLead(It.Is<ILeadEntity>(_testLeadEntity)))
-            //        .Returns(string.Format(responseFormat, id));
+            // The resolver and publisher should not be called
+            // The decorator should be called when the lead is classified as not valid.
+            _campaignManagerResolver.Verify(c => c.ResolveLeads(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>[]>()),Times.Never());
+            _campaignManagerDecorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
+            _campaignManagerPublisher.Verify(c => c.PublishLead(It.IsAny<ILeadEntity>()), Times.Never());
 
-            //    //mock.Setup(campaign => campaign.ProcessLead(It.Is<String>(s => s != String.Empty)))
-            //    //    .Returns(string.Format(responseFormat, id));
 
+            // Set up 3 Campaigns
+            const int testCampaignCnt = 3;
+            var testCampaignCollection = new ICampaign[testCampaignCnt];
 
-            //    // TODO - put this back and use ILeadEntity instead of strings
-            //    //mock.Setup(campaign => campaign.ProcessLead((It.IsIn(testMessage))))
-            //    //    .Returns(string.Format(responseFormat, id));
+            for (var campaignIndex = 0; campaignIndex < testCampaignCnt; campaignIndex++)
+            {
+                var id = campaignIndex;
+                var mock = new Mock<ICampaign>();
+                mock.Setup(campaign => campaign.ProcessLead(It.IsAny<ILeadEntity>()))
+                    //.Callback(() => Thread.Sleep(random.Next(minSleepInMs, maxSleepInMs)))
+                    .Returns(_testCampaignResultList);
 
-            //    testCampaignCollection[campaignIndex] = mock.Object;
-            //}
+                testCampaignCollection[id] = mock.Object;
+            }
 
-            //var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-            //    testCampaignCollection, _campaignManagerValidatorCollection.Object.ToArray(),
-            //    _campaignManagerResolver.Object, _loggerClient.Object);
-            //var results = campaignManager.ProcessCampaigns(_testLleadEntity);
+            // Intitialize the CampaignManager with the mocked testCampaignCollection
+            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
+               testCampaignCollection, _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
+                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
+            campaignManager.CampaignManagerDriver(_testLleadEntity);
 
-            //// Check that results were created
-            //Assert.IsNotNull(results);
-
-            //// Check for expected result message
-            //var campaignIx = 2;
-            //Assert.AreEqual(results[campaignIx], string.Format(responseFormat, campaignIx));
-
-            //// Check for expected number of results
-            //Assert.AreEqual(campaignCount, results.Length);
+           
         }
 
+        /// <summary>
+        /// Set up Multiple Campaigns to be managed.
+        /// </summary>
+        [TestMethod]
+        public void CampaignManagerDriverMultipleCampaignTest()
+        {
+
+            // Mock the Campaign Manager Resolver, Decorator and Publisher - If these are executed
+            // it means that campaign manager executed the Campaign tasks successfully.
+            _campaignManagerResolver.Setup(c => c.ResolveLeads(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>[]>())).Verifiable();
+            _campaignManagerDecorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
+            _campaignManagerPublisher.Setup(c => c.PublishLead(It.IsAny<ILeadEntity>())).Verifiable();
+
+            var random = new Random();
+            const int minSleepInMs = 1000;
+            const int maxSleepInMs = 5000;
+
+            // Set up 3 Campaigns
+            const int testCampaignCnt = 3;
+            var testCampaignCollection = new ICampaign[testCampaignCnt];
+
+            for (var campaignIndex = 0; campaignIndex < testCampaignCnt; campaignIndex++)
+            {
+                var id = campaignIndex;
+                var mock = new Mock<ICampaign>();
+                mock.Setup(campaign => campaign.ProcessLead(It.IsAny<ILeadEntity>()))
+                    //.Callback(() => Thread.Sleep(random.Next(minSleepInMs, maxSleepInMs)))
+                    .Returns(_testCampaignResultList);
+
+                testCampaignCollection[id] = mock.Object;
+            }
+
+            // Intitialize the CampaignManager with the mocked testCampaignCollection
+            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
+               testCampaignCollection, _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
+                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
+            campaignManager.CampaignManagerDriver(_testLleadEntity);
+
+            // A sleep here - not a great solution - to wait for the campaign tasks to finish and ensure that
+            // the resolver, publisher and decorator are called in the CampaignManagerProcessResults() function
+            // which is set up via ContinueWith() of the Campaign Task.
+            Thread.Sleep(1000);
+        }
+
+
+        /// <summary>
+        /// Set up Multiple Campaigns to be managed.
+        /// </summary>
+        [TestMethod]
+        public void CampaignManagerDriverMultipleCampaignTestWithResolverException()
+        {
+
+            // Mock the Campaign Manager Resolver, Decorator and Publisher - If these are executed
+            // it means that campaign manager executed the Campaign tasks successfully.
+            // The Resolver throws exception, so the Publisher should not execute
+            _campaignManagerResolver.Setup(c => c.ResolveLeads(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>[]>())).Throws(new ArgumentNullException(
+                $"ResolveLeads"));
+            _campaignManagerDecorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
+            _campaignManagerPublisher.Verify(c => c.PublishLead(It.IsAny<ILeadEntity>()), Times.Never()); 
+
+            var random = new Random();
+            const int minSleepInMs = 1000;
+            const int maxSleepInMs = 5000;
+
+            // Set up 3 Campaigns
+            const int testCampaignCnt = 3;
+            var testCampaignCollection = new ICampaign[testCampaignCnt];
+
+            for (var campaignIndex = 0; campaignIndex < testCampaignCnt; campaignIndex++)
+            {
+                var id = campaignIndex;
+                var mock = new Mock<ICampaign>();
+                mock.Setup(campaign => campaign.ProcessLead(It.IsAny<ILeadEntity>()))
+                    //.Callback(() => Thread.Sleep(random.Next(minSleepInMs, maxSleepInMs)))
+                    .Returns(_testCampaignResultList);
+
+                testCampaignCollection[id] = mock.Object;
+            }
+
+            // Intitialize the CampaignManager with the mocked testCampaignCollection
+            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
+               testCampaignCollection, _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
+                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
+
+            try
+            {
+                campaignManager.CampaignManagerDriver(_testLleadEntity);
+            }
+            catch (Exception exception)
+            {
+                // A sleep here - not a great solution - to wait for the campaign tasks to finish and ensure that
+                // the resolver thows exception and the decorator are called in the CampaignManagerProcessResults() function
+                // which is set up via ContinueWith() of the Campaign Task.
+               // Thread.Sleep(10000);
+                Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
+                Assert.AreEqual("Value cannot be null. Parameter name: ResolveLeads",
+                    exception.Message.Replace(Environment.NewLine, " "));
+            }
+
+
+        }
+         
         public Expression<Func<ILeadEntity, bool>> _testLeadEntity { get; private set; }
 
         /// <summary>

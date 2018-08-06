@@ -25,11 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.CampaignManager.Decorat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.CampaignManager.Decorator.Interface", "LMS.CampaignManager.Decorator.Interface\LMS.CampaignManager.Decorator.Interface.csproj", "{D91E1D90-BCC0-4D1F-97E0-AAEB58DED1CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.CampaignManager.Publisher.Interface", "LMS.CampaignManager.Publisher.Interface\LMS.CampaignManager.Publisher.Interface.csproj", "{ED54A5DE-DAAC-402A-856A-B6D91F61D526}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.CampaignManager.Publisher.Interface", "LMS.CampaignManager.Publisher.Interface\LMS.CampaignManager.Publisher.Interface.csproj", "{ED54A5DE-DAAC-402A-856A-B6D91F61D526}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.CampaignManager.Publisher.Implementation", "LMS.CampaignManager.Publisher.Implementation\LMS.CampaignManager.Publisher.Implementation.csproj", "{C4F1239E-8E90-48D7-9D07-6ADD059F27E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.CampaignManager.Publisher.Implementation", "LMS.CampaignManager.Publisher.Implementation\LMS.CampaignManager.Publisher.Implementation.csproj", "{C4F1239E-8E90-48D7-9D07-6ADD059F27E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.CampaignManager.Validator.Interface", "LMS.CampaignManager.Validator.Interface\LMS.CampaignManager.Validator.Interface.csproj", "{5100CB2F-0304-4034-B6AF-8AE021E00F7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.CampaignManager.Validator.Interface", "LMS.CampaignManager.Validator.Interface\LMS.CampaignManager.Validator.Interface.csproj", "{5100CB2F-0304-4034-B6AF-8AE021E00F7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.CampaignManager.Decorator.UnitTests", "LMS.CampaignManager.Decorator.UnitTests\LMS.CampaignManager.Decorator.UnitTests.csproj", "{2F1BFC87-C0DA-4511-86EA-9BEBC13BA3A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{5100CB2F-0304-4034-B6AF-8AE021E00F7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5100CB2F-0304-4034-B6AF-8AE021E00F7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5100CB2F-0304-4034-B6AF-8AE021E00F7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F1BFC87-C0DA-4511-86EA-9BEBC13BA3A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F1BFC87-C0DA-4511-86EA-9BEBC13BA3A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F1BFC87-C0DA-4511-86EA-9BEBC13BA3A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F1BFC87-C0DA-4511-86EA-9BEBC13BA3A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
