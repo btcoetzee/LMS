@@ -27,7 +27,7 @@
 
                 _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Decorating the Lead", ProcessContext = processContext, SolutionContext = solutionContext });
 
-                // Create LeadCollector Results
+                // The Results Collection was not created yet - shouldn't happen
                 if (leadEntity.ResultCollection == null)
                     leadEntity.ResultCollection = new DefaultResultCollection();
 

@@ -1,5 +1,3 @@
-using LMS.LeadEntity.Interface.Constants;
-
 namespace LMS.CampaignManager.UnitTests
 {
 
@@ -13,7 +11,7 @@ namespace LMS.CampaignManager.UnitTests
     using CampaignManager.Implementation;
     using LMS.Campaign.Interface;
     using LMS.LoggerClient.Interface;
-
+    using LMS.LeadEntity.Interface.Constants;
     using LMS.CampaignManager.Resolver.Interface;
     using LMS.CampaignManager.Subscriber.Interface;
     using LMS.LeadEntity.Interface;
@@ -35,35 +33,10 @@ namespace LMS.CampaignManager.UnitTests
         private Mock<ICampaignManagerPublisher> _campaignManagerPublisher;
         private Mock<ILoggerClient> _loggerClient;
         private static readonly string[] EmptyResultArray = new string[] { };
-        private ILeadEntity _testLleadEntity;
-        private List<IResult> _testCampaignResultList;
-        /// <summary>
-        /// Create an Instance of the LeadEntity
-        /// </summary>
-        private class TestLeadEntityClass : ILeadEntity
-        {
-
-            public IContext[] Context { get; set; }
-            public IProperty[] Properties { get; set; }
-            public ISegment[] Segments { get; set; }
-            public IResultCollection ResultCollection { get; set; }
-        }
-
-        struct TestCampaingResult : IResult
-        {
-            public TestCampaingResult(string id, object value)
-            {
-                Id = id;
-                Value = value;
-            }
-
-            public string Id { get; set; }
-
-            public object Value { get;  set; }
-        }
-
-  
-
+        private DefaultLeadEntity _testLeadEntity;
+        private List<IResult> _testCampaignManagerResultList;
+        private readonly int _testMultiThreadedWaitTime = 200;
+ 
         /// <summary>
         /// Initializes this instance.
         /// </summary>
@@ -97,23 +70,19 @@ namespace LMS.CampaignManager.UnitTests
         }
         void CreateLeadEntity()
         {
-            _testLleadEntity = new TestLeadEntityClass()
+            _testLeadEntity = new DefaultLeadEntity()
             {
-                Context = new IContext[]
-                    {},
-                Properties = new IProperty[]
-                    {},
-                Segments = new ISegment[]
-                    {},
+                Context = new IContext[] { },
+                Properties = new IProperty[] { },
+                Segments = new ISegment[] { },
                 ResultCollection = new DefaultResultCollection()
             };
-
         }
 
-        void CreateACampaignResult() => _testCampaignResultList = new List<IResult>()
+        void CreateACampaignResult() => _testCampaignManagerResultList = new List<IResult>()
             {
-                new TestCampaingResult{Id = ResultKeys.CampaignKeys.LeadSuccessStatusKey.ToString(),Value = ResultKeys.ResultKeysStatusEnum.Processed.ToString()
-                }
+                new DefaultResult(ResultKeys.CampaignKeys.LeadSuccessStatusKey.ToString(), ResultKeys.ResultKeysStatusEnum.Processed.ToString())
+                
             };
 
         /// <summary>
@@ -284,7 +253,7 @@ namespace LMS.CampaignManager.UnitTests
             var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                 _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
                 _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-           campaignManager.CampaignManagerDriver(_testLleadEntity);
+           campaignManager.CampaignManagerDriver(_testLeadEntity);
 
         }
 
@@ -318,8 +287,7 @@ namespace LMS.CampaignManager.UnitTests
                 var id = campaignIndex;
                 var mock = new Mock<ICampaign>();
                 mock.Setup(campaign => campaign.ProcessLead(It.IsAny<ILeadEntity>()))
-                    //.Callback(() => Thread.Sleep(random.Next(minSleepInMs, maxSleepInMs)))
-                    .Returns(_testCampaignResultList);
+                    .Returns(_testCampaignManagerResultList);
 
                 testCampaignCollection[id] = mock.Object;
             }
@@ -328,7 +296,7 @@ namespace LMS.CampaignManager.UnitTests
             var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                testCampaignCollection, _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
                 _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-            campaignManager.CampaignManagerDriver(_testLleadEntity);
+            campaignManager.CampaignManagerDriver(_testLeadEntity);
 
            
         }
@@ -346,10 +314,6 @@ namespace LMS.CampaignManager.UnitTests
             _campaignManagerDecorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
             _campaignManagerPublisher.Setup(c => c.PublishLead(It.IsAny<ILeadEntity>())).Verifiable();
 
-            var random = new Random();
-            const int minSleepInMs = 1000;
-            const int maxSleepInMs = 5000;
-
             // Set up 3 Campaigns
             const int testCampaignCnt = 3;
             var testCampaignCollection = new ICampaign[testCampaignCnt];
@@ -359,8 +323,7 @@ namespace LMS.CampaignManager.UnitTests
                 var id = campaignIndex;
                 var mock = new Mock<ICampaign>();
                 mock.Setup(campaign => campaign.ProcessLead(It.IsAny<ILeadEntity>()))
-                    //.Callback(() => Thread.Sleep(random.Next(minSleepInMs, maxSleepInMs)))
-                    .Returns(_testCampaignResultList);
+                    .Returns(_testCampaignManagerResultList);
 
                 testCampaignCollection[id] = mock.Object;
             }
@@ -369,12 +332,12 @@ namespace LMS.CampaignManager.UnitTests
             var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                testCampaignCollection, _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
                 _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-            campaignManager.CampaignManagerDriver(_testLleadEntity);
+            campaignManager.CampaignManagerDriver(_testLeadEntity);
 
             // A sleep here - not a great solution - to wait for the campaign tasks to finish and ensure that
             // the resolver, publisher and decorator are called in the CampaignManagerProcessResults() function
             // which is set up via ContinueWith() of the Campaign Task.
-            Thread.Sleep(1000);
+            Thread.Sleep(_testMultiThreadedWaitTime);
         }
 
 
@@ -407,7 +370,7 @@ namespace LMS.CampaignManager.UnitTests
                 var mock = new Mock<ICampaign>();
                 mock.Setup(campaign => campaign.ProcessLead(It.IsAny<ILeadEntity>()))
                     //.Callback(() => Thread.Sleep(random.Next(minSleepInMs, maxSleepInMs)))
-                    .Returns(_testCampaignResultList);
+                    .Returns(_testCampaignManagerResultList);
 
                 testCampaignCollection[id] = mock.Object;
             }
@@ -419,14 +382,15 @@ namespace LMS.CampaignManager.UnitTests
 
             try
             {
-                campaignManager.CampaignManagerDriver(_testLleadEntity);
-            }
-            catch (Exception exception)
-            {
+                campaignManager.CampaignManagerDriver(_testLeadEntity);
                 // A sleep here - not a great solution - to wait for the campaign tasks to finish and ensure that
                 // the resolver thows exception and the decorator are called in the CampaignManagerProcessResults() function
                 // which is set up via ContinueWith() of the Campaign Task.
-               // Thread.Sleep(10000);
+                Thread.Sleep(_testMultiThreadedWaitTime);
+            }
+            catch (Exception exception)
+            {
+   
                 Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
                 Assert.AreEqual("Value cannot be null. Parameter name: ResolveLeads",
                     exception.Message.Replace(Environment.NewLine, " "));
@@ -435,7 +399,7 @@ namespace LMS.CampaignManager.UnitTests
 
         }
          
-        public Expression<Func<ILeadEntity, bool>> _testLeadEntity { get; private set; }
+//        public Expression<Func<ILeadEntity, bool>> _testLeadEntity { get; private set; }
 
         /// <summary>
         /// Campaign Manager SetupAddOnReceiveActionToChannel Test
@@ -444,7 +408,7 @@ namespace LMS.CampaignManager.UnitTests
         public void CampaignManagerSubscriberAddOnReceiveActionToChannel()
         {
             _campaignManagerSubscriber.Setup(svc => svc.SetupAddOnReceiveActionToChannel(It.IsAny<Action<ILeadEntity>>()))
-                .Callback((Action<ILeadEntity> action) => action(_testLleadEntity));
+                .Callback((Action<ILeadEntity> action) => action(_testLeadEntity));
 
             var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
                 _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,

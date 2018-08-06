@@ -198,7 +198,7 @@
                 _loggerClient.Log(new DefaultLoggerClientErrorObject() { OperationContext = "Exception occurred within CampaignManager.ResolveLeads.", ProcessContext = processContext, SolutionContext = SolutionContext, ErrorContext = exception.Message, Exception = exception});
                 _campaignManagerResultList.Add(new DefaultResult(ResultKeys.ResolverResultCountKey, ResultKeys.ResultKeysStatusEnum.Failed));
                 _campaignManagerDecorator.DecorateLead(leadEntity, _campaignManagerResultList);
-                throw exception;
+                throw;
             }
 
             // Decorate the lead with the CampaignManager logs
