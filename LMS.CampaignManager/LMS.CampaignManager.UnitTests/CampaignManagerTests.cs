@@ -111,7 +111,7 @@ namespace LMS.CampaignManager.UnitTests
         #region ConstructorTests
 
         /// <summary>
-        /// Campaing Constructor Test
+        /// Campaign Manager Constructor Test
         /// </summary>
         [TestMethod]
         public void CampaignManagerConstructorTest()
@@ -122,7 +122,48 @@ namespace LMS.CampaignManager.UnitTests
         }
 
         /// <summary>
-        /// Campaing Constructor Test with a Null CampaignManagerSubscriber.
+        /// Campaign Manager Constructor Test With Null Publisher
+        /// </summary>
+        [TestMethod]
+        public void CampaignManagerConstructorNullPublisherTest()
+        {
+            try
+            {
+                var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
+                    _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
+                    _campaignManagerResolver.Object, null, _loggerClient.Object);
+                Assert.Fail("An Argument Null Exception is expected when the campaignManagerPublisher is null");
+            }
+            catch (Exception exception)
+            {
+                Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
+                Assert.AreEqual("Value cannot be null. Parameter name: campaignManagerPublisher", exception.Message.Replace(Environment.NewLine, " "));
+            }
+        }
+
+        /// <summary>
+        /// Campaign Manager Constructor Test With Null Decorator
+        /// </summary>
+        [TestMethod]
+        public void CampaignManagerConstructorNullDecoratorTest()
+        {
+           
+            try
+            {
+                var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
+                    _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), null,
+                    _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
+                Assert.Fail("An Argument Null Exception is expected when the campaignManagerDecorator is null");
+            }
+            catch (Exception exception)
+            {
+                Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
+                Assert.AreEqual("Value cannot be null. Parameter name: campaignManagerDecorator", exception.Message.Replace(Environment.NewLine, " "));
+            }
+        }
+
+        /// <summary>
+        /// Campaign Manager Constructor Test with a Null CampaignManagerSubscriber.
         /// </summary>
         [TestMethod]
         public void CampaignManagerConstructorNullCampaignSubscriberTest()
@@ -143,7 +184,7 @@ namespace LMS.CampaignManager.UnitTests
         }
 
         /// <summary>
-        /// Campaing Constructor Test with a Null Campaign List.
+        /// Campaign Manager Constructor Test with a Null Campaign List.
         /// </summary>
         [TestMethod]
         public void CampaignManagerConstructorNullCampaignListTest()
@@ -162,7 +203,7 @@ namespace LMS.CampaignManager.UnitTests
             }
         }
         /// <summary>
-        /// Campaing Constructor Test with a Null CampaignValidatorCollection.
+        /// Campaign Manager Constructor Test with a Null CampaignValidatorCollection.
         /// This is an optional parameter - so also test other constructor
         /// </summary>
         [TestMethod]
@@ -178,7 +219,7 @@ namespace LMS.CampaignManager.UnitTests
         }
 
         /// <summary>
-        /// Campaing Constructor Test with a Null CampaignManagerResolver.
+        /// Campaign Manager Constructor Test with a Null CampaignManagerResolver.
         /// </summary>
         [TestMethod]
         public void CampaignManagerConstructorNullCampaignManagerResolver()
@@ -199,7 +240,7 @@ namespace LMS.CampaignManager.UnitTests
         }
 
         /// <summary>
-        /// Campaing Constructor Test with a Null LoggerClient.
+        /// Campaign Manager Constructor Test with a Null LoggerClient.
         /// </summary>
         [TestMethod]
         public void CampaignManagerConstructorNullLoggerClientTest()
@@ -220,7 +261,7 @@ namespace LMS.CampaignManager.UnitTests
         #endregion
 
         /// <summary>
-        /// CampaignManager Test with a No Campaigns.
+        /// Campaign Manager Driver Test with a No Campaigns and Null LeadEntity.
         /// </summary>
         [TestMethod]
         public void CampaignManagerDriverTestWithNullLeadEntityObject()
@@ -244,7 +285,7 @@ namespace LMS.CampaignManager.UnitTests
             }
         }
         /// <summary>
-        /// CampaignManager Test with a No Campaigns.
+        /// Campaign Manager Driver Test with a No Campaigns.
         /// </summary>
         [TestMethod]
         public void CampaignManagerDriverEmptyCampaignTest()
@@ -342,7 +383,7 @@ namespace LMS.CampaignManager.UnitTests
 
 
         /// <summary>
-        /// Set up Multiple Campaigns to be managed.
+        /// Set up Multiple Campaigns to be managed and the Resolver that throws an exception
         /// </summary>
         [TestMethod]
         public void CampaignManagerDriverMultipleCampaignTestWithResolverException()

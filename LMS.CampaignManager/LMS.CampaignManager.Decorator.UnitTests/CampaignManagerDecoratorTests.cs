@@ -78,7 +78,7 @@ namespace LMS.CampaignManager.Decorator.UnitTests
         #region ConstructorTests
 
         /// <summary>
-        /// Campaing Manager Decorator Constructor Test
+        /// Campaign Manager Decorator Constructor Test
         /// </summary>
         [TestMethod]
         public void CampaignManagerDecoratorConstructorTest()
@@ -141,9 +141,9 @@ namespace LMS.CampaignManager.Decorator.UnitTests
         [TestMethod]
         public void CampaignManagerDecoratorTestWithDataInResultList()
         {
-            var testCampaingCnt = 2;
+            var testCampaignCnt = 2;
             var decorator = new CampaignManagerDecorator(_loggerClient.Object);
-            _testCampaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey, testCampaingCnt));
+            _testCampaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey, testCampaignCnt));
             _testCampaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignsProcessedStatusKey, ResultKeys.ResultKeysStatusEnum.Processed));
             var expectedResultListCount = _testCampaignManagerResultList.Count + 2; // 2 more elements added in Decorator
             decorator.DecorateLead(_testLeadEntity, _testCampaignManagerResultList);
@@ -152,7 +152,7 @@ namespace LMS.CampaignManager.Decorator.UnitTests
             Assert.IsNotNull(_testLeadEntity.ResultCollection.CampaignManagerCollection);
             Assert.AreEqual(expectedResultListCount, _testLeadEntity.ResultCollection.CampaignManagerCollection.Length);
             var actualCampaignCnt = _testLeadEntity.ResultCollection.CampaignManagerCollection.SingleOrDefault(item => item.Id == ResultKeys.CampaignManagerKeys.CampaignCountKey)?.Value;
-            Assert.AreEqual(testCampaingCnt, actualCampaignCnt);
+            Assert.AreEqual(testCampaignCnt, actualCampaignCnt);
         }
 
         /// <summary>
@@ -164,9 +164,9 @@ namespace LMS.CampaignManager.Decorator.UnitTests
         {
             // If there was no results collection - the results collection should be created
             _testLeadEntity.ResultCollection = null;
-            var testCampaingCnt = 2;
+            var testCampaignCnt = 2;
             var decorator = new CampaignManagerDecorator(_loggerClient.Object);
-            _testCampaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey, testCampaingCnt));
+            _testCampaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey, testCampaignCnt));
             _testCampaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignsProcessedStatusKey, ResultKeys.ResultKeysStatusEnum.Processed));
             var expectedResultListCount = _testCampaignManagerResultList.Count + 2; // 2 more elements added in Decorator
             decorator.DecorateLead(_testLeadEntity, _testCampaignManagerResultList);
@@ -175,7 +175,7 @@ namespace LMS.CampaignManager.Decorator.UnitTests
             Assert.IsNotNull(_testLeadEntity.ResultCollection.CampaignManagerCollection);
             Assert.AreEqual(expectedResultListCount, _testLeadEntity.ResultCollection.CampaignManagerCollection.Length);
             var actualCampaignCnt = _testLeadEntity.ResultCollection.CampaignManagerCollection.SingleOrDefault(item => item.Id == ResultKeys.CampaignManagerKeys.CampaignCountKey)?.Value;
-            Assert.AreEqual(testCampaingCnt, actualCampaignCnt);
+            Assert.AreEqual(testCampaignCnt, actualCampaignCnt);
         }
 
         /// <summary>
@@ -195,9 +195,9 @@ namespace LMS.CampaignManager.Decorator.UnitTests
             Assert.AreEqual(expectedCount, _testLeadEntity.ResultCollection.CampaignManagerCollection.Length);
 
             // Now the rest should work the same and the element above should not be overwritten
-            var testCampaingCnt = 2;
+            var testCampaignCnt = 2;
             var decorator = new CampaignManagerDecorator(_loggerClient.Object);
-            _testCampaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey, testCampaingCnt));
+            _testCampaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey, testCampaignCnt));
             var expectedResultListCount = _testLeadEntity.ResultCollection.CampaignManagerCollection.Length + _testCampaignManagerResultList.Count + 2; // 2 more elements added in Decorator
             decorator.DecorateLead(_testLeadEntity, _testCampaignManagerResultList);
 
@@ -206,7 +206,7 @@ namespace LMS.CampaignManager.Decorator.UnitTests
             Assert.AreEqual(expectedResultListCount, _testLeadEntity.ResultCollection.CampaignManagerCollection.Length);
             var actualCampaignCnt = _testLeadEntity.ResultCollection.CampaignManagerCollection
                 .SingleOrDefault(item => item.Id == ResultKeys.CampaignManagerKeys.CampaignCountKey)?.Value;
-            Assert.AreEqual(testCampaingCnt, actualCampaignCnt);
+            Assert.AreEqual(testCampaignCnt, actualCampaignCnt);
 
             // Check that the initialized value are still in the _tetLeadEntity.ResultCollection.CampaignManagerCollection
             var expectedValue = _testLeadEntity.ResultCollection.CampaignManagerCollection.SingleOrDefault(item =>

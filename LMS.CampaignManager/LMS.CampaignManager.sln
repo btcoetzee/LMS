@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.CampaignManager.Validat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.CampaignManager.Decorator.UnitTests", "LMS.CampaignManager.Decorator.UnitTests\LMS.CampaignManager.Decorator.UnitTests.csproj", "{2F1BFC87-C0DA-4511-86EA-9BEBC13BA3A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.CampaignManager.Publisher.UnitTests", "LMS.CampaignManager.Publisher.UnitTests\LMS.CampaignManager.Publisher.UnitTests.csproj", "{2D17706F-8CA5-424F-87C1-44C120C6A837}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{2F1BFC87-C0DA-4511-86EA-9BEBC13BA3A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F1BFC87-C0DA-4511-86EA-9BEBC13BA3A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F1BFC87-C0DA-4511-86EA-9BEBC13BA3A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D17706F-8CA5-424F-87C1-44C120C6A837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D17706F-8CA5-424F-87C1-44C120C6A837}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D17706F-8CA5-424F-87C1-44C120C6A837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D17706F-8CA5-424F-87C1-44C120C6A837}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

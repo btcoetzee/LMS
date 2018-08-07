@@ -59,7 +59,7 @@
                                        throw new ArgumentNullException(nameof(campaignManagerPublisher));
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
 
-            // When the subscriber receives a lead, invoke the CampaingManagerDriver
+            // When the subscriber receives a lead, invoke the CampaignManagerDriver
             _campaignManagerSubscriber.SetupAddOnReceiveActionToChannel(CampaignManagerDriver);
         }
 

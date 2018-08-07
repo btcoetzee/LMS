@@ -21,7 +21,7 @@
         }
         
         /// <summary>
-        /// When a lead is received on the Notification Channel, the Campaing Manager 
+        /// When a lead is received on the Notification Channel, the Campaign Manager 
         /// process will be executed.  See Campaign Manager constructor.
         /// </summary>
         /// <param name="receiveAction"></param>
