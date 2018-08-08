@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="Moq" Version="4.9.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LMS.CampaignManager.Publisher.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Publisher.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Publisher.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Publisher.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadEntity.Components">
+      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadEntity.Interface">
+      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClient.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

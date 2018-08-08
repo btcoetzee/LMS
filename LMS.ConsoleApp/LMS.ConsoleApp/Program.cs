@@ -56,16 +56,17 @@ namespace LMS.ConsoleApp
             while (leadChoice >= 1 && leadChoice <= leadEntities.Length)
             {
                 leadChoice--; //Since array indices start at 0
+                WriteToConsole("\n_______________________________________________________________________________________________________________________________\n\n", LogColors);
                 WriteToConsole($"Processing Activity ID {leadEntities[leadChoice].Context.First(ctx => ctx.Id == ContextKeys.ActivityGuidKey).Value}", LogColors);
                 WriteToConsole(JsonConvert.SerializeObject(leadEntities[leadChoice], Formatting.Indented), ObjectLogColors);
                 leadCollector.CollectLead(leadEntities[leadChoice]);
-                WriteToConsole("Lead was Handed Off .\n", LogColors);
                 Console.ReadLine();
                 WriteToConsole($"{GetLeadDirectory()}Select a lead [1-{leadEntities.Length}] to process: ", LogColors);
                 int.TryParse(Console.ReadLine(), out leadChoice);
+
             }
 
-           
+
             //loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "ConsoleApp.Main End",ProcessContext = processContext,SolutionContext = SolutionContext});
 
             //loggerClient.Log(new DefaultLoggerClientErrorObject{OperationContext = "Ending. Press any key to continue...",ProcessContext = processContext,SolutionContext = SolutionContext});
@@ -125,16 +126,15 @@ namespace LMS.ConsoleApp
             const int pni_Age = 28;
 
             var leadEntities = new ILeadEntity[7];
-
             _leadDirectory = new string[7];
-            _leadDirectory[0] = "Valid Lead - Phone #, PNI Age";
+
+            _leadDirectory[0] = "Lead - NO IdentityGUID";
             leadEntities[0] = new MyLeads
             {
 
                 Context = new IContext[]
                 {
                     new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
                     new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
@@ -157,9 +157,11 @@ namespace LMS.ConsoleApp
                     new MySegment(SegementKeys.HomeownerKey)
                 },
 
- 
+
+
             };
-            _leadDirectory[1] = "Valid Lead - NO Phone #, PNI Age";
+
+            _leadDirectory[1] = "Lead - Phone #, PNI Age";
             leadEntities[1] = new MyLeads
             {
 
@@ -179,6 +181,38 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
                     new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
+                },
+
+                Segments = new ISegment[]
+                {
+                    new MySegment(SegementKeys.HighPOPKey),
+                    new MySegment(SegementKeys.HomeownerKey)
+                },
+
+ 
+            };
+            _leadDirectory[2] = "Lead - NO Phone #, PNI Age";
+            leadEntities[2] = new MyLeads
+            {
+
+                Context = new IContext[]
+                {
+                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
+                },
+
+                Properties = new IProperty[]
+                {
+                    new MyProperty(PropertyKeys.PriorBIKey,priorBi),
+                    new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+                    new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+                    new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
                     new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
@@ -190,8 +224,8 @@ namespace LMS.ConsoleApp
 
 
             };
-            _leadDirectory[2] = "Valid Lead - Phone #, NO PNI Age";
-            leadEntities[2] = new MyLeads
+            _leadDirectory[3] = "Lead - Phone #, NO PNI Age";
+            leadEntities[3] = new MyLeads
             {
 
                 Context = new IContext[]
@@ -223,8 +257,8 @@ namespace LMS.ConsoleApp
  
             };
 
-            _leadDirectory[3] = "Valid Lead - NO Phone #, NO PNI Age";
-            leadEntities[3] = new MyLeads
+            _leadDirectory[4] = "Lead - NO Phone #, NO PNI Age";
+            leadEntities[4] = new MyLeads
             {
 
                 Context = new IContext[]
@@ -254,39 +288,8 @@ namespace LMS.ConsoleApp
   
             };
 
-            _leadDirectory[4] = "Valid Lead - NO IdentityGUID";
-            leadEntities[4] = new MyLeads
-            {
-
-                Context = new IContext[]
-                {
-                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new IProperty[]
-                {
-                    new MyProperty(PropertyKeys.PriorBIKey,priorBi),
-                    new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
-                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
-                },
-
-                Segments = new ISegment[]
-                {
-                    new MySegment(SegementKeys.HighPOPKey),
-                    new MySegment(SegementKeys.HomeownerKey)
-                },
-
-          
-
-            };
-            _leadDirectory[5] = "Valid Lead - BF526BAF-F860-4530-BAA5-A205E285881A";
+ 
+            _leadDirectory[5] = "Lead - BF526BAF-F860-4530-BAA5-A205E285881A - Notification sent previously";
             leadEntities[5] = new MyLeads
             {
 
@@ -318,7 +321,7 @@ namespace LMS.ConsoleApp
 
    
             };
-            _leadDirectory[6] = "Valid Lead - No POP";
+            _leadDirectory[6] = "Lead - No POP";
             leadEntities[6] = new MyLeads
             {
 

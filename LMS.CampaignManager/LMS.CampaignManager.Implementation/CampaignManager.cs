@@ -27,7 +27,7 @@
         private readonly ICampaignManagerValidator[] _campaignManagerValidatorCollection;
         private readonly ICampaign[] _campaignCollection;
         private readonly ILoggerClient _loggerClient;
-        private static readonly List<IResult>[] EmptyResultArray = new List<IResult>[] { };
+       // private static readonly List<IResult>[] EmptyResultArray = new List<IResult>[] { };
         private const string SolutionContext = "CampaignManager";
         private List<IResult> _campaignManagerResultList;
 
@@ -59,7 +59,7 @@
                                        throw new ArgumentNullException(nameof(campaignManagerPublisher));
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
 
-            // When the subscriber receives a lead, invoke the CampaingManagerDriver
+            // When the subscriber receives a lead, invoke the CampaignManagerDriver
             _campaignManagerSubscriber.SetupAddOnReceiveActionToChannel(CampaignManagerDriver);
         }
 
@@ -89,18 +89,15 @@
             if (leadEntity == null) throw new ArgumentNullException(nameof(leadEntity));
 
             var processContext = "CampaignManagerDriver";
-
-            _loggerClient.Log(new DefaultLoggerClientObject
+            _campaignManagerResultList = new List<IResult> { new DefaultResult(ResultKeys.DiagnosticKeys.TimeStampStartKey, DateTime.Now) };
+            // Check that there are Campaigns to be Managed
+            if (_campaignCollection?.Any() != true)
             {
-                OperationContext = "Validating Lead Within the Campaign Manager.",
-                ProcessContext = processContext,
-                SolutionContext = SolutionContext
-            });
-            _campaignManagerResultList = new List<IResult>
-            {
-                new DefaultResult(ResultKeys.DiagnosticKeys.TimeStampStartKey, DateTime.Now)
-            };
+                _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "There are no Campaigns to be Managed.", ProcessContext = processContext, SolutionContext = SolutionContext });
+                _campaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey, 0));
+            }
 
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Validating Lead Within the Campaign Manager.",ProcessContext = processContext,SolutionContext = SolutionContext});
             bool validForTheseCampaigns = true;
             // Validate the Lead to see if it should be sent through campaigns
             if (_campaignManagerValidatorCollection != null)
@@ -109,7 +106,6 @@
                 {
                     if (!validator.ValidLead(leadEntity))
                     {
-
                         // Do some logging & decorating?
                         validForTheseCampaigns = false;
                         break;
@@ -139,36 +135,13 @@
         public List<IResult>[] ProcessCampaigns(ILeadEntity leadEntity)
         {
             var processContext = "ProcessCampaigns";
-            _loggerClient.Log(new DefaultLoggerClientObject
-            {
-                OperationContext = "Checking for Campaigns to be Managed.",
-                ProcessContext = processContext,
-                SolutionContext = SolutionContext
-            });
-            // Check that there are Campaigns to be Managed
-            if (_campaignCollection?.Any() != true)
-            {
-                _loggerClient.Log(new DefaultLoggerClientObject
-                {
-                    OperationContext = "There are no Campaigns to be Managed.",
-                    ProcessContext = processContext,
-                    SolutionContext = SolutionContext
-                });
-                _campaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey, 0));
-                return EmptyResultArray;
-            }
-
-
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Checking for Campaigns to be Managed.",ProcessContext = processContext,SolutionContext = SolutionContext});
+     
             // Start the various Campaigns as Tasks
             var campaignCnt = _campaignCollection.Length;
             _campaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey,
                 campaignCnt));
-            _loggerClient.Log(new DefaultLoggerClientObject
-            {
-                OperationContext = $"There are {campaignCnt} Campaigns to be Managed.",
-                ProcessContext = processContext,
-                SolutionContext = SolutionContext
-            });
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = $"There are {campaignCnt} Campaigns to be Managed.",ProcessContext = processContext,SolutionContext = SolutionContext});
             var processCampaignsTask = new Task<List<IResult>[]>(() =>
             {
                 var campaignResults = new List<IResult>[campaignCnt];
@@ -177,14 +150,15 @@
                 for (var ix = 0; ix < campaignCnt; ix++)
                 {
                     var ixClosure = ix;
-                    campaignTasks[ix] =
+                    campaignTasks[ixClosure] =
                         new Task<List<IResult>>(() => _campaignCollection[ixClosure].ProcessLead(leadEntity));
-                    campaignTasks[ix].Start();
+                    campaignTasks[ixClosure].Start();
                 }
 
                 for (var i = 0; i < campaignCnt; i++)
                 {
-                    campaignResults[i] = campaignTasks[i].Result;
+                    var ixClosure = i;
+                    campaignResults[ixClosure] = campaignTasks[ixClosure].Result;
                 }
 
                 return campaignResults;
@@ -212,8 +186,24 @@
         /// <param name="campaignResultCollection"></param>
         public void CampaignManagerProcessResults(ILeadEntity leadEntity, List<IResult>[] campaignResultCollection)
         {
-            _campaignManagerResolver.ResolveLeads(leadEntity, campaignResultCollection);
+            var processContext = "CampaignManagerProcessResults";
+            // Resolve the results collection from the Campaigns
+            try
+            {
+                _campaignManagerResolver.ResolveLeads(leadEntity, campaignResultCollection);
+
+            }
+            catch (Exception exception)
+            {
+                _loggerClient.Log(new DefaultLoggerClientErrorObject() { OperationContext = "Exception occurred within CampaignManager.ResolveLeads.", ProcessContext = processContext, SolutionContext = SolutionContext, ErrorContext = exception.Message, Exception = exception});
+                _campaignManagerResultList.Add(new DefaultResult(ResultKeys.ResolverResultCountKey, ResultKeys.ResultKeysStatusEnum.Failed));
+                _campaignManagerDecorator.DecorateLead(leadEntity, _campaignManagerResultList);
+                throw;
+            }
+
+            // Decorate the lead with the CampaignManager logs
             _campaignManagerDecorator.DecorateLead(leadEntity, _campaignManagerResultList);
+            
             // Publish the lead to POE
             _campaignManagerPublisher.PublishLead(leadEntity);
         }

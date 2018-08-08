@@ -87,7 +87,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
 
      #region ConstructorTests
         /// <summary>
-        /// Campaing Constructor Test
+        /// Campaign Manager Subscriber Constructor Test
         /// </summary>
         [TestMethod]
         public void CampaignManagerSubscriberConstructorTest()
@@ -96,7 +96,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         }
 
         /// <summary>
-        /// Campaing Constructor Test with a Null NotificationSubscriber.
+        /// Campaign Manager Subscriber Constructor Test with a Null NotificationSubscriber.
         /// </summary>
         [TestMethod]
         // [ExpectedException(typeof(ArgumentNullException))]
@@ -115,7 +115,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         }
 
         /// <summary>
-        /// Campaing Constructor Test with a Null LoggerClient.
+        /// Campaign Manager Subscriber Constructor Test with a Null LoggerClient.
         /// </summary>
         [TestMethod]
         public void CampaignManagerSubscriberConstructorNullLoggerClientTest()
@@ -134,75 +134,42 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
 
         #endregion
 
-        #region ReceiveLeadTests
+ #region SetupAddOnReceiveActionToChannel
 
         /// <summary>
-        /// Campaign Manager AddOnReceiveActionToChannel Test
+        /// Campaign Manager Subscriber AddOnReceiveActionToChannel Test
         /// </summary>
-        //[TestMethod]
-        //public void CampaignManagerSubscriberAddOnReceiveActionToChannel()
-        //{
-        //    EventArgs 
-        //    var campaignManagerSubscriber = new Mock<ICampaignManagerSubscriber>();
+        [TestMethod]
+        public void CampaignManagerSubscriberAddOnReceiveActionToChannel()
+        {
 
-        //    campaignManagerSubscriber.Setup(svc => svc.SetupAddOnReceiveActionToChannel(It.IsAny<Action<ILeadEntity>>()))
-        //        .Callback((Action<ILeadEntity> action) => action(_testLleadEntity));
-        //    _notificationSubscriber.Raise(x => x.S);
-            
-          
-     
+            var testNotificationChannel = new InProcNotificationChannel<ILeadEntity>(new Mock<ILogger>().Object);
+            var testNotificationPublisher =
+                new Publisher<ILeadEntity>(new INotificationChannel<ILeadEntity>[] {testNotificationChannel}, true);
+            var testNotificationSubscriber = new Subscriber<ILeadEntity>(testNotificationChannel, true);
 
-        //}
+            // Set up the action to be invoked when a leadEntity is received
+            bool actionWasInvoked = false;
+            Action<ILeadEntity> leadEntityReceiveAction = campaignManagerDriver => actionWasInvoked = true;
 
-        //const string testMessage = "This is a Lead";
-        //    string[] campaignOutputArray = new string[]
-        //        {"Campaign 1 processed Lead", "Campaign 2 processed Lead", "Campaign 3 processed Lead"};
-        //    _campaignManager.Setup(cm => cm.ProcessCampaigns((It.IsIn(testMessage))))
-        //        .Returns(campaignOutputArray);
-        //    var campaignManagerSubscriber = new CampaignManagerSubscriber(_notificationSubscriber.Object,
-        //        _campaignManager.Object, _loggerClient.Object);
-        //    campaignManagerSubscriber.AddOnReceiveActionToChannel();.ReceiveLead(testMessage);
-        //}
+            // Setup the Subscriber to execute the action when invoked
+            var campaignManagerSubscriber =
+                new CampaignManagerSubscriber(testNotificationSubscriber, _loggerClient.Object);
+            campaignManagerSubscriber.SetupAddOnReceiveActionToChannel(leadEntityReceiveAction);
 
-        //[TestMethod]
-        //public void CampaignManagerProcessMultipleCampaignTest()
-        //{
-        //    #region Notification Setup
+            // Let the Notification Publisher broadcast a leadEntity
+            testNotificationPublisher.BroadcastMessage(_testLleadEntity);
 
-        //    INotificationChannel<string> channel = new InProcNotificationChannel<string>(new Mock<ILogger>().Object);
-        //    var publisher = new Publisher<string>(new[] { channel }, true);
-        //    var subscriber = new Subscriber<string>(channel, true);
+            // Sleep a little while for the Notification Channel to pick up the LeadEntity
+            Thread.Sleep(5);
 
-        //    #endregion
+            // The subscriber should now have executed the action
+            Assert.AreEqual(true, actionWasInvoked);
 
-        //    var random = new Random();
-        //    const int minSleepInMs = 1000;
-        //    const int maxSleepInMs = 5000;
+        }
 
-        //    const string testMessage = "Hello from Milo! :-)";
-        //    const string responseFormat = "Campaign {0} complete.";
-
-        //    const int campaignCount = 3;
-        //    var campaignSubscribers = new ICampaignSubscriber[campaignCount];
-
-        //    for (var i = 0; i < campaignCount; i++)
-        //    {
-        //        var id = i;
-        //        var mock = new Mock<ICampaignSubscriber>();
-        //        mock.Setup(campaign => campaign.ReceiveLead(It.IsIn(testMessage)))
-        //            .Callback(() => Thread.Sleep(random.Next(minSleepInMs, maxSleepInMs)))
-        //            .Returns(string.Format(responseFormat, id));
-        //        campaignSubscribers[i] = mock.Object;
-        //    }
-
-        //    var campaignManager = new CampaignManager(subscriber, campaignSubscribers, new Mock<ILoggerClient>().Object);
-
-        //    var results = campaignManager.ProcessCampaigns("TestMessage");
-        //}
-
-     
-     #endregion
+#endregion
 
 
-    }
+        }
 }
