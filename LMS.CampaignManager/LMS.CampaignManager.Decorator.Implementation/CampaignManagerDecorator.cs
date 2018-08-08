@@ -17,7 +17,11 @@
         {
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
         }
-
+        /// <summary>
+        /// Decorate the Lead by adding the Campaign Manager Results List to the Results Collection
+        /// </summary>
+        /// <param name="leadEntity"></param>
+        /// <param name="campaignManagerResultList"></param>
         public void DecorateLead(ILeadEntity leadEntity, List<IResult> campaignManagerResultList)
         {
             if (leadEntity == null) throw new ArgumentNullException(nameof(leadEntity));

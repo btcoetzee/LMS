@@ -260,6 +260,8 @@ namespace LMS.CampaignManager.UnitTests
         }
         #endregion
 
+        #region CampaignManagerDriverTests
+
         /// <summary>
         /// Campaign Manager Driver Test with a No Campaigns and Null LeadEntity.
         /// </summary>
@@ -439,25 +441,10 @@ namespace LMS.CampaignManager.UnitTests
 
 
         }
-         
-//        public Expression<Func<ILeadEntity, bool>> _testLeadEntity { get; private set; }
+        #endregion
 
-        /// <summary>
-        /// Campaign Manager SetupAddOnReceiveActionToChannel Test
-        /// </summary>
-        [TestMethod]
-        public void CampaignManagerSubscriberAddOnReceiveActionToChannel()
-        {
-            _campaignManagerSubscriber.Setup(svc => svc.SetupAddOnReceiveActionToChannel(It.IsAny<Action<ILeadEntity>>()))
-                .Callback((Action<ILeadEntity> action) => action(_testLeadEntity));
+        //        public Expression<Func<ILeadEntity, bool>> _testLeadEntity { get; private set; }
 
-            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-                _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-
-            // TODO complete!
-
-        }
 
     }
 }

@@ -69,6 +69,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
                     {},
                 ResultCollection = new DefaultResultCollection()
             };
+ 
 
         }
 
@@ -85,7 +86,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
             _campaignManagerSubscriberServiceProvider = null;
         }
 
-     #region ConstructorTests
+ #region ConstructorTests
         /// <summary>
         /// Campaign Manager Subscriber Constructor Test
         /// </summary>
@@ -132,7 +133,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
             }
         }
 
-        #endregion
+#endregion
 
  #region SetupAddOnReceiveActionToChannel
 
@@ -167,9 +168,8 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
             Assert.AreEqual(true, actionWasInvoked);
 
         }
-
 #endregion
 
 
-        }
+    }
 }
