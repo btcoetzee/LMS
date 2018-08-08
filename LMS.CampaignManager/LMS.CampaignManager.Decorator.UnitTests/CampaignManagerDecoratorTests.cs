@@ -76,7 +76,6 @@ namespace LMS.CampaignManager.Decorator.UnitTests
         }
 
         #region ConstructorTests
-
         /// <summary>
         /// Campaign Manager Decorator Constructor Test
         /// </summary>
@@ -106,6 +105,8 @@ namespace LMS.CampaignManager.Decorator.UnitTests
         }
         #endregion
 
+        #region DecorateTests
+  
         /// <summary>
         /// Invoke DecoratorLead with null leadEntity
         /// </summary>
@@ -213,6 +214,6 @@ namespace LMS.CampaignManager.Decorator.UnitTests
                 item.Id == ResultKeys.CampaignManagerKeys.SubscriberStatusKey)?.Value;
             Assert.AreEqual(expectedValue.ToString(), ResultKeys.ResultKeysStatusEnum.Processed.ToString());
         }
-
+        #endregion
     }
 }
