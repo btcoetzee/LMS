@@ -12,16 +12,59 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using LMS.Decorator.Interface;
     using LMS.LeadDecorator.Implementation;
+    using LMS.LeadEntity.Interface;
+    using LMS.LeadEntity.Components;
+    using Moq;
+    using LMS.Publisher.Interface;
+    using StackExchange.Redis;
+    using LMS.CampaignManager.Subscriber.Implementation;
 
     [TestClass]
     public class BootstrapperExtensionsTests
     {
         private IServiceCollection _container;
+        private ILeadEntity _testLeadEntity;
+        private Mock<ILoggerClient> _loggingClient;
+        private Mock<IValidator> _validator;
+        private Mock<IPublisher> _publisher;
+        private Mock<IDecorator> _decorator;
+        private Mock<ISubscriber> _subscriber;
 
         [TestInitialize]
         public void Initialize()
         {
-            _container = new ServiceCollection();
+            _container = new ServiceCollection().AddLoggerClient();
+            _loggingClient = new Mock<ILoggerClient>();
+            _validator = new Mock<IValidator>();
+            _publisher = new Mock<IPublisher>();
+            _decorator = new Mock<IDecorator>();
+            _subscriber = new Mock<ISubscriber>();
+
+            CreateTestLeadEntity();
+        }
+
+        void CreateTestLeadEntity()
+        {
+            _testLeadEntity = new DefaultLeadEntity()
+            {
+                Context = new IContext[] { },
+                Properties = new IProperty[] { },
+                Segments = new ISegment[] { }
+            };
+
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            _validator.VerifyAll();
+            _validator = null;
+            _publisher.VerifyAll();
+            _publisher = null;
+            _decorator.VerifyAll();
+            _decorator = null;
+            _loggingClient.VerifyAll();
+            _loggingClient = null;
         }
 
         [TestMethod]
@@ -38,12 +81,12 @@
         {
             var provider = _container.AddNotificationChannel().BuildServiceProvider();
 
-            INotificationChannel<string> channel;
+            INotificationChannel<ILeadEntity> channel;
 
             try
             {
                 //Can't build without the dependencies.
-                channel = provider.GetService<INotificationChannel<string>>();
+                channel = provider.GetService<INotificationChannel<ILeadEntity>>();
             }
             catch (InvalidOperationException ioe)
             {
@@ -53,7 +96,7 @@
             //Add dependencies.
             provider = _container.AddLogger().BuildServiceProvider();
 
-            channel = provider.GetService<INotificationChannel<string>>();
+            channel = provider.GetService<INotificationChannel<ILeadEntity>>();
             Assert.IsNotNull(channel);
         }
 
@@ -62,12 +105,12 @@
         {
             var provider = _container.AddNotificationSubscriber().BuildServiceProvider();
 
-            ISubscriber<string> subscriber;
+            ISubscriber<ILeadEntity> subscriber;
 
             try
             {
                 //Can't build without the dependencies.
-                subscriber = provider.GetService<ISubscriber<string>>();
+                subscriber = provider.GetService<ISubscriber<ILeadEntity>>();
             }
             catch (InvalidOperationException ioe)
             {
@@ -80,7 +123,7 @@
                 .AddNotificationChannel()
                 .BuildServiceProvider();
 
-            subscriber = provider.GetService<ISubscriber<string>>();
+            subscriber = provider.GetService<ISubscriber<ILeadEntity>>();
             Assert.IsNotNull(subscriber);
         }
 
@@ -89,12 +132,12 @@
         {
             var provider = _container.AddNotificationPublisher().BuildServiceProvider();
 
-            IPublisher<string> publisher;
+            IPublisher<ILeadEntity> publisher;
 
             try
             {
                 //Can't build without the dependencies.
-                publisher = provider.GetService<IPublisher<string>>();
+                publisher = provider.GetService<IPublisher<ILeadEntity>>();
             }
             catch (ArgumentException ae)
             {
@@ -109,22 +152,22 @@
                 .AddNotificationChannel()
                 .BuildServiceProvider();
 
-            publisher = provider.GetService<IPublisher<string>>();
+            publisher = provider.GetService<IPublisher<ILeadEntity>>();
             Assert.IsNotNull(publisher);
             Assert.AreEqual(1, publisher.ChannelCount);
         }
 
-        [TestMethod]
-        public void AddLeadCollectorTest()
-        {
-            var provider = _container.AddLeadValidator().AddLeadDecorator().AddLeadPublisher().AddLeadCollector()
-                .BuildServiceProvider();
+        //[TestMethod]
+        //public void AddLeadCollectorTest()
+        //{
+        //    var provider = _container.AddLeadValidator().AddLeadDecorator().AddLeadPublisher().AddLeadCollector()
+        //        .BuildServiceProvider();
 
-            var collector = provider.GetService<ILeadCollector>();
+        //    var collector = provider.GetService<ILeadCollector>();
 
-            //For now, we can just check to make sure that it's made.
-            Assert.IsNotNull(collector);
-        }
+        //    //For now, we can just check to make sure that it's made.
+        //    Assert.IsNotNull(collector);
+        //}
 
         [TestMethod]
         public void AddLoggerClientTest()
@@ -160,6 +203,18 @@
             Assert.IsNotNull(decorator);
             //This instance type will need to be updated if it changes in the future.
             Assert.IsInstanceOfType(decorator, typeof(LeadDecorator));
+        }
+
+        [TestMethod]
+        public void AddAddCampaignManagerSubscriberTest()
+        {
+            var provider = _container.AddCampaignManagerSubscriber().BuildServiceProvider();
+
+            var campaignManagerSubscriber = provider.GetRequiredService<ISubscriber<ILeadEntity>>();
+
+            Assert.IsNotNull(campaignManagerSubscriber);
+            //This instance type will need to be updated if it changes in the future.
+            Assert.IsInstanceOfType(campaignManagerSubscriber, typeof(CampaignManagerSubscriber));
         }
     }
 }

@@ -22,6 +22,8 @@ namespace LMS.Campaign.UnitTests.Campaign
     using LMS.Campaign.BuyClick.Filter;
     using LMS.Campaign.BuyClick.Validator;
     using LMS.Campaign.BuyClick.Rule;
+    using LMS.LeadEntity.Interface.Constants;
+    using System.Linq;
 
 
 
@@ -38,9 +40,8 @@ namespace LMS.Campaign.UnitTests.Campaign
         private Mock<IFilter> _filter;
         private Mock<IRule> _rule;
         private Mock<ILoggerClient> _loggingClient;
-        private ILeadEntityImmutable _testLeadEntity;
+        private ILeadEntity _testLeadEntity;
         private List<IResult> _campaignResultList;
-        
 
         #region Initializer
         /// <summary>
@@ -66,50 +67,19 @@ namespace LMS.Campaign.UnitTests.Campaign
                 .AddSingleton(typeof(IRule), _rule.Object)
                 .AddSingleton(typeof(ILoggerClient), _loggingClient.Object)
                 .BuildServiceProvider();
-
-            CreateLeadEntity();
+            CreateTestLeadEntity();
         }
 
-        /// <summary>
-        /// Create an Instance of the LeadEntity
-        /// </summary>
-        private class TestLeadEntityClass : ILeadEntity
+        void CreateTestLeadEntity()
         {
-
-            public IContext[] Context { get; set; }
-            public IProperty[] Properties { get; set; }
-            public ISegment[] Segments { get; set; }
-            public IResultCollection ResultCollection { get; set; }
-        }
-
-        //struct TestLeadEntityResultClass : IResult
-        //{
-        //    public TestLeadEntityResultClass(string id, object value)
-        //    {
-        //        Id = id;
-        //        Value = value;
-        //    }
-
-        //    public string Id { get; private set; }
-
-        //    public object Value { get; private set; }
-        //}
-
-        void CreateLeadEntity()
-        {
-            _testLeadEntity = new TestLeadEntityClass()
+            _testLeadEntity = new DefaultLeadEntity()
             {
-                Context = new IContext[]
-                    {},
-                Properties = new IProperty[]
-                    {},
-                Segments = new ISegment[]
-                    {},
-                ResultCollection = new DefaultResultCollection()
+                Context = new IContext[] { },
+                Properties = new IProperty[] { },
+                Segments = new ISegment[] { }
             };
 
         }
-
         /// <summary>
         /// Cleanups this instance.
         /// </summary>
@@ -118,8 +88,6 @@ namespace LMS.Campaign.UnitTests.Campaign
         {
             _campaign.VerifyAll();
             _campaign = null;
-         
-   
             _campaignServiceProvider = null;
             _campaignValidator.VerifyAll();
             _campaignValidator = null;
@@ -133,25 +101,7 @@ namespace LMS.Campaign.UnitTests.Campaign
         #endregion
 
         #region BuyClickCampaignTest
-        /// <summary>
-        /// Tests the ProcessLead in Campaign Interface.
-        /// </summary>
-        [TestMethod]
-        public void TestIfLeadProcessedInCampaignCall()
-        {
-            var campaign = _campaignServiceProvider.GetService<ICampaign>();
-            const string expectedMessage = "Lead was processed";
-            string actualMessage = "";
 
-            //TBD - Uncomment when change string --> ILEadEntity
-             //Mock the ProcessLead function to update the message
-            _campaign.Setup(c => c.ProcessLead(It.IsAny<ILeadEntity>())).Callback(() =>
-            {
-                actualMessage = expectedMessage;
-            });
-            campaign.ProcessLead(_leadEntity.Object);
-
-        }
         /// <summary>
         /// Tests the campaign lead validation with leads.
         /// </summary>
@@ -160,20 +110,24 @@ namespace LMS.Campaign.UnitTests.Campaign
         {
             // The process lead function adds results to the Campaign Results list
             var expecteResultsIfValidatorReturnsFalse = 5;
+          
             // A campaign
             var campaign = new BuyClickCampaign(_campaignServiceProvider.GetService<ICampaignValidator>(), _campaignServiceProvider.GetService<IFilter>(),
          _campaignServiceProvider.GetService<IRule>(), _campaignServiceProvider.GetService<ILoggerClient>());
 
-           
-
-            // Set up return values when the validator is invoked
+            // Setting up the validator to return false
             _campaignValidator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(false);
    
             // Send a valid stream parameter
             _campaignResultList = campaign.ProcessLead(_testLeadEntity);
 
-            //// Send a null value parameter
+            //// Evaluate if the number of results in results list is as expected
             Assert.AreEqual(expecteResultsIfValidatorReturnsFalse, _campaignResultList.Count);
+
+            // looks in the results collection to see if the validator said the lead failed
+            var expectedValue = _campaignResultList.SingleOrDefault(item =>
+               item.Id == ResultKeys.ValidatorStatusKey)?.Value;
+            Assert.AreEqual(expectedValue.ToString(), ResultKeys.ResultKeysStatusEnum.Failed.ToString());
         }
 
         /// <summary>
@@ -190,14 +144,19 @@ namespace LMS.Campaign.UnitTests.Campaign
 
 
 
-            // Set up return values when the validator is invoked
+            // Setting up the validator to return true
             _campaignValidator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
 
             // Send a valid stream parameter
             _campaignResultList = campaign.ProcessLead(_testLeadEntity);
 
-            //// Send a null value parameter
+            // Evaluate if the number of results in results list is as expected
             Assert.AreEqual(expecteResultsIfValidatorReturnsTrue, _campaignResultList.Count);
+
+            // looks in the results collection to see if the validator said the lead processed
+            var expectedValue = _campaignResultList.SingleOrDefault(item =>
+               item.Id == ResultKeys.ValidatorStatusKey)?.Value;
+            Assert.AreEqual(expectedValue.ToString(), ResultKeys.ResultKeysStatusEnum.Processed.ToString());
         }
 
         /// <summary>
@@ -214,17 +173,23 @@ namespace LMS.Campaign.UnitTests.Campaign
 
 
 
-            // Set up return values when the validator is invoked
+            // Setting up the validator to return true
             _campaignValidator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
 
+            // Setting up the filter to return true
             _filter.Setup(v => v.ClearedFilter(It.IsAny<ILeadEntity>())).Returns(true);
             
 
             // Send a valid stream parameter
             _campaignResultList = campaign.ProcessLead(_testLeadEntity);
 
-            //// Send a null value parameter
+            // Evaluate if the number of results in results list is as expected
             Assert.AreEqual(expecteResultsIfFilterReturnsTrue, _campaignResultList.Count);
+
+            // looks in the results collection to see if the validator said the lead processed
+            var expectedValue = _campaignResultList.SingleOrDefault(item =>
+               item.Id == ResultKeys.ValidatorStatusKey)?.Value;
+            Assert.AreEqual(expectedValue.ToString(), ResultKeys.ResultKeysStatusEnum.Processed.ToString());
         }
 
         /// <summary>
@@ -241,19 +206,26 @@ namespace LMS.Campaign.UnitTests.Campaign
 
 
 
-            // Set up return values when the validator is invoked
+            // Setting up the validator to return true
             _campaignValidator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
 
+            // Setting up the filter to return true
             _filter.Setup(v => v.ClearedFilter(It.IsAny<ILeadEntity>())).Returns(true);
 
+            // Setting up the rule to return true
             _rule.Setup(v => v.ValidateForRule(It.IsAny<ILeadEntity>())).Returns(true);
 
 
             // Send a valid stream parameter
             _campaignResultList = campaign.ProcessLead(_testLeadEntity);
 
-            //// Send a null value parameter
+            // Evaluate if the number of results in results list is as expected
             Assert.AreEqual(expecteResultsIfRuleReturnsTrue, _campaignResultList.Count);
+
+            // looks in the results collection to see if the validator said the lead processed
+            var expectedValue = _campaignResultList.SingleOrDefault(item =>
+               item.Id == ResultKeys.ValidatorStatusKey)?.Value;
+            Assert.AreEqual(expectedValue.ToString(), ResultKeys.ResultKeysStatusEnum.Processed.ToString());
         }
 
         // <summary>
