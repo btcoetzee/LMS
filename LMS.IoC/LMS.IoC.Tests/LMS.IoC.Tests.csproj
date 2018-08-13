@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-
+    <DebugType>Full</DebugType>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="LMS.CampaignManager.Subscriber.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Subscriber.Implementation.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.CampaignValidator.Interface">
       <HintPath>..\..\lib\LMS.CampaignValidator.Interface.dll</HintPath>
     </Reference>
@@ -32,6 +35,12 @@
     <Reference Include="LMS.LeadDecorator.Implementation">
       <HintPath>..\..\lib\LMS.LeadDecorator.Implementation.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.LeadEntity.Components">
+      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadEntity.Interface">
+      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.LeadValidator.Implementation">
       <HintPath>..\..\lib\LMS.LeadValidator.Implementation.dll</HintPath>
     </Reference>
@@ -40,6 +49,9 @@
     </Reference>
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.Publisher.Interface">
+      <HintPath>..\..\lib\LMS.Publisher.Interface.dll</HintPath>
     </Reference>
     <Reference Include="LMS.Rule.Interface">
       <HintPath>..\..\lib\LMS.Rule.Interface.dll</HintPath>
