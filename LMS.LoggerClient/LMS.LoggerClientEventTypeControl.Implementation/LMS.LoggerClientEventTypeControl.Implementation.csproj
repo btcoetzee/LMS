@@ -4,14 +4,12 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LMS.LoggerClientEventTypeControl.Interface\LMS.LoggerClientEventTypeControl.Interface.csproj" />
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
   </Target>
-
-  <ItemGroup>
-    <Reference Include="LMS.LoggerClientEventTypeControl.Interface">
-      <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Interface.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
 </Project>

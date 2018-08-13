@@ -8,10 +8,4 @@
     <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
   </Target>
 
-  <ItemGroup>
-    <Reference Include="LMS.LoggerClientEventTypeControl.Interface">
-      <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Interface.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

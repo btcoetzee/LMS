@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LMS.LoggerClient.Interface
+﻿namespace LMS.LoggerClient.Interface
 {
+    using LMS.LoggerClientEventTypeControl.Interface.Constants;
+
     public interface ILoggerClientObject
     {
        // Name of Soluction
@@ -15,5 +13,8 @@ namespace LMS.LoggerClient.Interface
         // Operation being logged
         string OperationContext { get; set; }
 
+        // EventType being logged
+        LoggerClientEventType.LoggerClientEventTypes EventType { get; set; }
     }
+
 }

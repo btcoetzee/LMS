@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using LMS.LoggerClient.Interface;
+using LMS.LoggerClientEventTypeControl.Interface;
+using LMS.LoggerClientEventTypeControl.Interface.Constants;
 
 namespace LMS.LoggerClient.Console
 {
-    public class CustomColorLoggerClient : ILoggerClient
+    public class CustomColorLoggerClient : ILoggerClient 
     {
         private readonly ColorSet _standardLoggingColors;
         private readonly ColorSet _errorLoggingColors;
@@ -26,5 +28,7 @@ namespace LMS.LoggerClient.Console
         {
             ConsoleExtensions.Log(loggerErrorObject, _errorLoggingColors);
         }
+
+   
     }
 }

@@ -44,7 +44,6 @@ namespace LMS.CampaignManager.Resolver.Implementation
             // Check that there are Leads to Resolve 
             if (campaignResultCollectionList.Any())
             {
-
                 // Choose the campaign info with the highest priority
                 var ix = 0;
                 var priorityIx = 0;
@@ -77,7 +76,6 @@ namespace LMS.CampaignManager.Resolver.Implementation
                                 }
                             }
                         }
-
                     }
                     ix++;
                 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using LMS.LoggerClientEventTypeControl.Interface.Constants;
 
 namespace LMS.LoggerClient.Interface
 {
@@ -11,5 +12,6 @@ namespace LMS.LoggerClient.Interface
         public string OperationContext { get; set; }
         public string ErrorContext { get; set; }
         public Exception Exception { get; set; }
+        public LoggerClientEventType.LoggerClientEventTypes EventType { get; set; }
     }
 }

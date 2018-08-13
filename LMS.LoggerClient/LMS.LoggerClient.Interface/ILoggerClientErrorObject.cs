@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LMS.LoggerClient.Interface
+﻿namespace LMS.LoggerClient.Interface
 {
+    using System;
+    using LMS.LoggerClientEventTypeControl.Interface.Constants;
+
     public interface ILoggerClientErrorObject
     {
  
@@ -22,6 +21,8 @@ namespace LMS.LoggerClient.Interface
         // Exeception
         Exception Exception { get; set; }
 
+        // EventType being logged
+        LoggerClientEventType.LoggerClientEventTypes EventType { get; set; }
 
     }
 }

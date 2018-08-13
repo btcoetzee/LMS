@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LoggerClient.Interface"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LoggerClient.File", "LMS.LoggerClient.File\LMS.LoggerClient.File.csproj", "{1078CB77-8326-458D-82D0-78C7BCAACCF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.LoggerClient.Console", "LMS.LoggerClient.Console\LMS.LoggerClient.Console.csproj", "{15156F1C-60E3-4344-8B41-C22F02A09BDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.LoggerClient.Console", "LMS.LoggerClient.Console\LMS.LoggerClient.Console.csproj", "{15156F1C-60E3-4344-8B41-C22F02A09BDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.LoggerClientEventTypeControl.Interface", "LMS.LoggerClientEventTypeControl.Interface\LMS.LoggerClientEventTypeControl.Interface.csproj", "{B8A6082F-AF99-4D26-851B-13F1B8E52A13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.LoggerClientEventTypeControl.Implementation", "LMS.LoggerClientEventTypeControl.Implementation\LMS.LoggerClientEventTypeControl.Implementation.csproj", "{5F092CDE-90C3-4924-BF9B-1B55F7ACEC91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{15156F1C-60E3-4344-8B41-C22F02A09BDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15156F1C-60E3-4344-8B41-C22F02A09BDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15156F1C-60E3-4344-8B41-C22F02A09BDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8A6082F-AF99-4D26-851B-13F1B8E52A13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8A6082F-AF99-4D26-851B-13F1B8E52A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8A6082F-AF99-4D26-851B-13F1B8E52A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8A6082F-AF99-4D26-851B-13F1B8E52A13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F092CDE-90C3-4924-BF9B-1B55F7ACEC91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F092CDE-90C3-4924-BF9B-1B55F7ACEC91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F092CDE-90C3-4924-BF9B-1B55F7ACEC91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F092CDE-90C3-4924-BF9B-1B55F7ACEC91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

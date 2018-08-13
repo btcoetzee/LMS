@@ -8,6 +8,9 @@
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.LoggerClientEventTypeControl.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Interface.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

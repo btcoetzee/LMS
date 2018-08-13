@@ -8,4 +8,10 @@
     <ProjectReference Include="..\LMS.LoggerClient.Interface\LMS.LoggerClient.Interface.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="LMS.LoggerClientEventTypeControl.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Interface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
