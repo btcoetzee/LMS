@@ -18,6 +18,7 @@ namespace LMS.ConsoleApp
     using LMS.LoggerClient.Console;
     using LMS.LoggerClient.Interface;
     using LMS.CampaignManager.Interface;
+    using LMS.LoggerClientEventTypeControl.Interface;
 
     public class Program
     {
@@ -32,7 +33,7 @@ namespace LMS.ConsoleApp
             const string processContext = "Main";
 
             // Create the logger cliet for this program
-            var loggerClient = new ConsoleLoggerClient();
+            var loggerClient = new LoggerClientEventTypeControl.Implementation.LoggerClientEventTypeControl();
             //loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "ConsoleApp.Main Start",ProcessContext = processContext,SolutionContext = SolutionContext});
 
             var provider = new ServiceCollection()
@@ -45,6 +46,7 @@ namespace LMS.ConsoleApp
             // Set up the Campaign Manager
             var campaignManager = provider.GetService<ICampaignManager>();
 
+            var loggerClientEventTypeControl = provider.GetService<ILoggerClientEventTypeControl>();
             // Mock leads to be sent through
             var leadEntities = CreateLeads();
 
