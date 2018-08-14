@@ -17,7 +17,7 @@
         public bool ValidLead(ILeadEntity lead)
         {
             var processContext = "ValidLead";
-            _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Validating the lead.", ProcessContext = processContext, SolutionContext = SolutionContext });
+            _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Validating the lead.", ProcessContext = processContext, SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
             return true;
 
         }

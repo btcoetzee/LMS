@@ -29,7 +29,7 @@
             {
                 string processContext = "DecorateLead";
 
-                _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Decorating the Lead", ProcessContext = processContext, SolutionContext = solutionContext });
+                _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Decorating the Lead", ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
 
                 // The Results Collection was not created yet - shouldn't happen
                 if (leadEntity.ResultCollection == null)

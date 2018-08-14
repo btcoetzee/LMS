@@ -28,7 +28,8 @@
             {
                 OperationContext = "Publishing the Lead",
                 ProcessContext = processContext,
-                SolutionContext = solutionContext
+                SolutionContext = solutionContext,
+                EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information
             });
 
             _leadEntity = leadEntity;

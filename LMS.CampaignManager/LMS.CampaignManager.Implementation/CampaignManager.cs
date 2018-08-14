@@ -93,11 +93,11 @@
             // Check that there are Campaigns to be Managed
             if (_campaignCollection?.Any() != true)
             {
-                _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "There are no Campaigns to be Managed.", ProcessContext = processContext, SolutionContext = SolutionContext });
+                _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "There are no Campaigns to be Managed.", ProcessContext = processContext, SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
                 _campaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey, 0));
             }
 
-            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Validating Lead Within the Campaign Manager.",ProcessContext = processContext,SolutionContext = SolutionContext});
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Validating Lead Within the Campaign Manager.",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
             bool validForTheseCampaigns = true;
             // Validate the Lead to see if it should be sent through campaigns
             if (_campaignManagerValidatorCollection != null)
@@ -117,7 +117,7 @@
             {
                 _campaignManagerResultList.Add(new DefaultResult(ResultKeys.ValidatorStatusKey,
                     ResultKeys.ResultKeysStatusEnum.Processed.ToString()));
-                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Lead is valid for these Campaigns - Start Campaigns.",ProcessContext = processContext,SolutionContext = SolutionContext});
+                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Lead is valid for these Campaigns - Start Campaigns.",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
 
                 // Kick off all the campaigns with a task and then resolve following.
                 ProcessCampaigns(leadEntity);
@@ -126,7 +126,7 @@
             {
                 _campaignManagerResultList.Add(new DefaultResult(ResultKeys.ValidatorStatusKey,
                     ResultKeys.ResultKeysStatusEnum.Failed.ToString()));
-                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Lead is not valid for these Campaigns.",ProcessContext = processContext,SolutionContext = SolutionContext});
+                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Lead is not valid for these Campaigns.",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
                 _campaignManagerDecorator.DecorateLead(leadEntity, _campaignManagerResultList);
             }
 
@@ -135,13 +135,13 @@
         public List<IResult>[] ProcessCampaigns(ILeadEntity leadEntity)
         {
             var processContext = "ProcessCampaigns";
-            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Checking for Campaigns to be Managed.",ProcessContext = processContext,SolutionContext = SolutionContext});
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Checking for Campaigns to be Managed.",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
      
             // Start the various Campaigns as Tasks
             var campaignCnt = _campaignCollection.Length;
             _campaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignCountKey,
                 campaignCnt));
-            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = $"There are {campaignCnt} Campaigns to be Managed.",ProcessContext = processContext,SolutionContext = SolutionContext});
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = $"There are {campaignCnt} Campaigns to be Managed.",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
             var processCampaignsTask = new Task<List<IResult>[]>(() =>
             {
                 var campaignResults = new List<IResult>[campaignCnt];
@@ -195,7 +195,7 @@
             }
             catch (Exception exception)
             {
-                _loggerClient.Log(new DefaultLoggerClientErrorObject() { OperationContext = "Exception occurred within CampaignManager.ResolveLeads.", ProcessContext = processContext, SolutionContext = SolutionContext, ErrorContext = exception.Message, Exception = exception});
+                _loggerClient.Log(new DefaultLoggerClientErrorObject() { OperationContext = "Exception occurred within CampaignManager.ResolveLeads.", ProcessContext = processContext, SolutionContext = SolutionContext, ErrorContext = exception.Message, Exception = exception, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Error });
                 _campaignManagerResultList.Add(new DefaultResult(ResultKeys.ResolverResultCountKey, ResultKeys.ResultKeysStatusEnum.Failed));
                 _campaignManagerDecorator.DecorateLead(leadEntity, _campaignManagerResultList);
                 throw;

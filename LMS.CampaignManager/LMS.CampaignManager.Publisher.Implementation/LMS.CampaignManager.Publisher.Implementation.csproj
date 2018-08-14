@@ -20,6 +20,12 @@
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.LoggerClientEventTypeControl.Implementation">
+      <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LoggerClientEventTypeControl.Interface">
+      <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\9.0.1\lib\netstandard1.0\Newtonsoft.Json.dll</HintPath>
     </Reference>

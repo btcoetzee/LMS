@@ -28,10 +28,10 @@
         public void SetupAddOnReceiveActionToChannel(Action<ILeadEntity> receiveAction)
         {
             var processContext = "SetupAddOnReceiveActionToChannel";
-            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Setting up the function to call when subscriber receives a message.",ProcessContext = processContext,SolutionContext = SolutionContext});
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Setting up the function to call when subscriber receives a message.",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
 
             _notificationSubscriber.AddOnReceiveActionToChannel(receiveAction);
-            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Finished setting up the function to call when subscriber receives a message.",ProcessContext = processContext,SolutionContext = SolutionContext});
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Finished setting up the function to call when subscriber receives a message.",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
         }
 
 }
