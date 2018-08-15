@@ -45,6 +45,7 @@ namespace LMS.IoC
     using LMS.Campaign.BuyClick.Filter;
     using LMS.Rule.Interface;
     using LMS.Campaign.BuyClick.Rule;
+    using LMS.LoggerClientEventTypeControl.Interface;
 
     public static class Bootstrapper
     {
@@ -53,6 +54,7 @@ namespace LMS.IoC
             container
                 .AddLogger()
                 .AddLoggerClient()
+                .AddLoggerClientEventTypeControl()
                 .AddNotificationChannel()
                 .AddNotificationPublisher()
                 .AddNotificationSubscriber()
@@ -84,6 +86,15 @@ namespace LMS.IoC
             };
 
             container.AddSingleton<ILogger>(logger);
+
+            return container;
+        }
+
+        public static IServiceCollection AddLoggerClientEventTypeControl(this IServiceCollection container)
+        {
+            var logger = new LoggerClientEventTypeControl.Implementation.LoggerClientEventTypeControl();
+
+            container.AddSingleton<ILoggerClientEventTypeControl>(logger);
 
             return container;
         }

@@ -9,7 +9,6 @@ namespace LMS.CampaignManager.UnitTests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using CampaignManager.Implementation;
-    using LMS.Campaign.Interface;
     using LMS.LoggerClient.Interface;
     using LMS.LeadEntity.Interface.Constants;
     using LMS.CampaignManager.Resolver.Interface;
@@ -19,6 +18,7 @@ namespace LMS.CampaignManager.UnitTests
     using LMS.CampaignManager.Decorator.Interface;
     using LMS.CampaignManager.Validator.Interface;
     using LMS.CampaignManager.Publisher.Interface;
+    using LMS.Campaign.Interface;
 
     [TestClass]
     public class CampaignManagerTests

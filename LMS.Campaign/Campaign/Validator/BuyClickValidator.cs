@@ -19,7 +19,7 @@
         {
             string processContext = "ValidLead";
 
-            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Validating the Lead",ProcessContext = processContext,SolutionContext = solutionContext});
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Validating the Lead",ProcessContext = processContext,SolutionContext = solutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
             var errorStr = string.Empty;
             try
             {
@@ -37,13 +37,13 @@
             }
             catch (Exception ex)
             {
-                _loggerClient.Log(new DefaultLoggerClientErrorObject{OperationContext = "\nValidating Phone Number and PNI Age",ProcessContext = processContext,SolutionContext = solutionContext,Exception = ex,ErrorContext = ex.Message});
+                _loggerClient.Log(new DefaultLoggerClientErrorObject{OperationContext = "\nValidating Phone Number and PNI Age",ProcessContext = processContext,SolutionContext = solutionContext,Exception = ex,ErrorContext = ex.Message, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Error});
                 return false;
             }
 
             if (errorStr != String.Empty)
             {
-                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext =errorStr,ProcessContext = processContext,SolutionContext = solutionContext});
+                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext =errorStr,ProcessContext = processContext,SolutionContext = solutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
                 return false;
             }
             return true;

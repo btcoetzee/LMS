@@ -35,11 +35,11 @@ namespace LMS.CampaignManager.Resolver.Implementation
             if (campaignResultCollectionList?.Any() != true)
             {
                 _campaignManagerResultList = new List<IResult> { new DefaultResult(ResultKeys.DiagnosticKeys.TimeStampStartKey, DateTime.Now) };
-                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "There are no Leads to resolve",ProcessContext = processContext,SolutionContext = SolutionContext});
+                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "There are no Leads to resolve",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
                 return;
             }
 
-            _loggerClient.Log(new DefaultLoggerClientObject {OperationContext = "Resolving the campaign results list",ProcessContext = processContext,SolutionContext = SolutionContext});
+            _loggerClient.Log(new DefaultLoggerClientObject {OperationContext = "Resolving the campaign results list",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
 
             // Check that there are Leads to Resolve 
             if (campaignResultCollectionList.Any())
@@ -86,13 +86,13 @@ namespace LMS.CampaignManager.Resolver.Implementation
                     leadEntity.ResultCollection.PreferredCampaignCollection = leadEntity.ResultCollection.CampaignCollection[priorityIx];
                     var campaignName = leadEntity.ResultCollection.PreferredCampaignCollection.SingleOrDefault(r => r.Id == ResultKeys.CampaignKeys.CampaignNameKey)
                         ?.Value;
-                    _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = $"Lead selected is coming from Campaign: {campaignName} ", ProcessContext = processContext, SolutionContext = SolutionContext });
+                    _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = $"Lead selected is coming from Campaign: {campaignName} ", ProcessContext = processContext, SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
 
                 }
             }
             else
             {
-                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "There are no Leads to Resolve.",ProcessContext = processContext,SolutionContext = SolutionContext});
+                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "There are no Leads to Resolve.",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
             }
 
         }
