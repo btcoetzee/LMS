@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.Control.Validators", "LMS.Control.Validators\LMS.Control.Validators.csproj", "{13A22CFE-1825-4A91-8C56-3893E8093CAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13A22CFE-1825-4A91-8C56-3893E8093CAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13A22CFE-1825-4A91-8C56-3893E8093CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13A22CFE-1825-4A91-8C56-3893E8093CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13A22CFE-1825-4A91-8C56-3893E8093CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16CACFFD-1800-4119-8F2E-3C18ABBF9B92}
+	EndGlobalSection
+EndGlobal
