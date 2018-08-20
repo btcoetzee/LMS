@@ -4,4 +4,67 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="LMS.Campaign.BuyClick">
+      <HintPath>..\..\lib\LMS.Campaign.BuyClick.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.Campaign.Interface">
+      <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.Campaign.Prospect">
+      <HintPath>..\..\lib\LMS.Campaign.Prospect.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Decorator.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Decorator.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Decorator.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Decorator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Publisher.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Publisher.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Publisher.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Publisher.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Resolver.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Resolver.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Resolver.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Resolver.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Subscriber.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Subscriber.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Subscriber.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Subscriber.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Validator.Implementation">
+      <HintPath>..\..\lib\LMS.CampaignManager.Validator.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.CampaignManager.Validator.Interface">
+      <HintPath>..\..\lib\LMS.CampaignManager.Validator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadCollector.Implementation">
+      <HintPath>..\..\lib\LMS.LeadCollector.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadCollector.Interface">
+      <HintPath>..\..\lib\LMS.LeadCollector.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadEntity.Components">
+      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadEntity.Interface">
+      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadEntity.JSON">
+      <HintPath>..\..\lib\LMS.LeadEntity.JSON.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
