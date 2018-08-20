@@ -35,6 +35,22 @@
         /// <returns></returns>
         public const string AdditionalProductKey = "AdditionalProducts";
 
+        /// <summary>
+        /// Session Request Sequence Key
+        /// </summary>
+        /// <returns></returns>
+        public const string SessionRequestSeqKey = "SessionRequestSeq";
+        /// <summary>
+        /// Site ID Key
+        /// </summary>
+        /// <returns></returns>
+        public const string SiteIDKey = "SiteID";
+
+        /// <summary>
+        /// Environment Key
+        /// </summary>
+        /// <returns></returns>
+        public const string EnvironmentKey = "Environment";
 
     }
 }
