@@ -150,5 +150,104 @@
             return true;
         }
 
+        public bool hasSessionRequestSeq(ILeadEntity leadEntity)
+        {
+            var sessionRequestSeqValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.SessionRequestSeqKey)?.Value;
+            if ((sessionRequestSeqValue == null) || (!Int32.TryParse(sessionRequestSeqValue.ToString(), out int sessionRequestSeq)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasSiteID(ILeadEntity leadEntity)
+        {
+            var siteIDValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.SiteIDKey)?.Value;
+            if ((siteIDValue == null) || (!Int32.TryParse(siteIDValue.ToString(), out int siteId)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasEnvironment(ILeadEntity leadEntity)
+        {
+            var environmentValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.EnvironmentKey)?.Value;
+            if ((environmentValue == null) || (!Int32.TryParse(environmentValue.ToString(), out int environment)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasEmailAddress(ILeadEntity leadEntity)
+        {
+            var emailAddressValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.EmailAddressKey)?.Value;
+            if ((emailAddressValue == null) || (!Int32.TryParse(emailAddressValue.ToString(), out int emailAddress)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasState(ILeadEntity leadEntity)
+        {
+            var stateValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.StateKey)?.Value;
+            if ((stateValue == null) || (!Int32.TryParse(stateValue.ToString(), out int state)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasFullName(ILeadEntity leadEntity)
+        {
+            var fullNameValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.FullNameKey)?.Value;
+            if ((fullNameValue == null) || (!Int32.TryParse(fullNameValue.ToString(), out int fullName)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasAddress(ILeadEntity leadEntity)
+        {
+            var addressValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.AddressKey)?.Value;
+            if ((addressValue == null) || (!Int32.TryParse(addressValue.ToString(), out int address)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasLowPOP(ILeadEntity leadEntity)
+        {
+            var lowPOPValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.SegementKeys.LowPOPKey)?.Value;
+            if ((lowPOPValue == null) || (!Int32.TryParse(lowPOPValue.ToString(), out int lowPOP)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasRenter(ILeadEntity leadEntity)
+        {
+            var renterValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.SegementKeys.RenterKey)?.Value;
+            if ((renterValue == null) || (!Int32.TryParse(renterValue.ToString(), out int renter)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }

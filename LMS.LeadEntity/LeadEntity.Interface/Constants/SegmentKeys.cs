@@ -17,6 +17,18 @@
         /// <returns></returns>
         public const string HomeownerKey = "Homeowner";
 
+        /// <summary>
+        /// Low POP
+        /// </summary>
+        /// <returns></returns>
+        public const string LowPOPKey = "LowPOP";
+
+        /// <summary>
+        /// Renter
+        /// </summary>
+        /// <returns></returns>
+        public const string RenterKey = "Renter";
+
     }
 }
 
