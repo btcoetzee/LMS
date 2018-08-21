@@ -1,10 +1,9 @@
-﻿using LMS.LeadEntity.Interface;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LMS.LeadEntity.Components
+﻿namespace LMS.LeadEntity.Components
 {
+    using LMS.LeadEntity.Interface;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     public struct DefaultResult : IResult
     {
         public string Id { get; }

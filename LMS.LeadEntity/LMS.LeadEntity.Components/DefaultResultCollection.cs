@@ -1,10 +1,10 @@
-﻿using LMS.LeadEntity.Interface;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LMS.LeadEntity.Components
+﻿namespace LMS.LeadEntity.Components
 {
+    using LMS.LeadEntity.Interface;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     public struct DefaultResultCollection : IResultCollection
     {
         public DefaultResultCollection(IResult[] leadCollectorCollection, IResult[] campaignManagerCollection,
