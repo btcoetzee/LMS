@@ -48,6 +48,30 @@
         /// <returns></returns>
         public const string PNI_Age = "PNI_Age";
 
+        /// <summary>
+        /// Email Address Key
+        /// </summary>
+        /// <returns></returns>
+        public const string EmailAddressKey = "EmailAddress";
+
+        /// <summary>
+        /// State Key 
+        /// </summary>
+        /// <returns></returns>
+        public const string StateKey = "State";
+
+        /// <summary>
+        /// Full Name Key 
+        /// </summary>
+        /// <returns></returns>
+        public const string FullNameKey = "FullName";
+
+        /// <summary>
+        /// Address Key 
+        /// </summary>
+        /// <returns></returns>
+        public const string AddressKey = "Address";
+
 
     }
 }

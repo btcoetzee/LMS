@@ -8,6 +8,7 @@
     {
         string CampaignName { get; }
         int CampaignPriority { get; }
+       int CampaignId { get; }
 
         //  Accept Lead and Process and return the list of results
         /// <summary>

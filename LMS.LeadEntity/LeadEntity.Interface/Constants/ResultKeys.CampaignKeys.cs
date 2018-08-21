@@ -38,6 +38,11 @@
             /// <returns></returns>
             public const string LeadSuccessStatusKey = "LeadSuccessStatus";
 
+            /// <summary>
+            /// The campaign identifier key
+            /// </summary>
+            public const string CampaignIdKey = "CampaignId";
+
 
         }
     }

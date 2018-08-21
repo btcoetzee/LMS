@@ -21,6 +21,7 @@
         private static string solutionContext = "BuyClickCampaign";
         const string ThisCampaignName = "BuyClick Campaign";
         private const int ThisCampaignPriority = 1;
+        private const int ThisCampaignId = 1;
 
         public BuyClickCampaign(ICampaignValidator buyClickValidator, IFilter buyClickFilter, IRule buyClickRule, ILoggerClient loggerClient)
         {
@@ -33,6 +34,8 @@
         public string CampaignName => ThisCampaignName;
         public int CampaignPriority => ThisCampaignPriority;
 
+        public int CampaignId => ThisCampaignId;
+
         public List<IResult> ProcessLead(ILeadEntityImmutable leadEntity)
         {
             if (leadEntity == null) throw new ArgumentNullException(nameof(leadEntity));
@@ -42,6 +45,7 @@
             _campaignResultList = new List<IResult> { new DefaultResult(ResultKeys.DiagnosticKeys.TimeStampStartKey, DateTime.Now) };
             _campaignResultList.Add(new DefaultResult(ResultKeys.CampaignKeys.CampaignNameKey, CampaignName));
             _campaignResultList.Add(new DefaultResult(ResultKeys.CampaignKeys.CampaignPriorityKey, CampaignPriority));
+            _campaignResultList.Add(new DefaultResult(ResultKeys.CampaignKeys.CampaignIdKey, CampaignId));
             _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = $"Validating the Lead for {CampaignName} ", ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
             if (_buyClickValidator.ValidLead(leadEntity).Equals(true))
             {

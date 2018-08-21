@@ -30,6 +30,9 @@
        // private static readonly List<IResult>[] EmptyResultArray = new List<IResult>[] { };
         private const string SolutionContext = "CampaignManager";
         private List<IResult> _campaignManagerResultList;
+        private const int ThisCampaignId = 1;
+
+        public int CampaignManagerId => ThisCampaignId;
 
         /// <summary>
         /// Constructor
@@ -117,6 +120,7 @@
             {
                 _campaignManagerResultList.Add(new DefaultResult(ResultKeys.ValidatorStatusKey,
                     ResultKeys.ResultKeysStatusEnum.Processed.ToString()));
+                _campaignManagerResultList.Add(new DefaultResult(ResultKeys.CampaignManagerKeys.CampaignManagerIdKey, CampaignManagerId));
                 _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Lead is valid for these Campaigns - Start Campaigns.",ProcessContext = processContext,SolutionContext = SolutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
 
                 // Kick off all the campaigns with a task and then resolve following.
