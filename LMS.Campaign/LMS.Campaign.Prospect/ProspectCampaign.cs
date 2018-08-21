@@ -18,6 +18,7 @@ namespace LMS.Campaign.Prospect
         private static string solutionContext = "ProspectCampaign";
         const string ThisCampaignName = "Prospective Campaign";
         private const int ThisCampaignPriority = 2;
+        private const int ThisCampaignId = 1;
 
         public ProspectCampaign(ICampaignValidator prospectClickValidator, ILoggerClient loggerClient)
         {
@@ -27,6 +28,9 @@ namespace LMS.Campaign.Prospect
 
         public string CampaignName => ThisCampaignName;
         public int CampaignPriority => ThisCampaignPriority;
+
+        public int CampaignId => ThisCampaignId;
+
         public List<IResult> ProcessLead(ILeadEntityImmutable leadEntity)
         {
             if (leadEntity == null) throw new ArgumentNullException(nameof(leadEntity));
@@ -36,6 +40,7 @@ namespace LMS.Campaign.Prospect
             _campaignResultList = new List<IResult> { new DefaultResult(ResultKeys.DiagnosticKeys.TimeStampStartKey, DateTime.Now) };
             _campaignResultList.Add(new DefaultResult(ResultKeys.CampaignKeys.CampaignNameKey, CampaignName));
             _campaignResultList.Add(new DefaultResult(ResultKeys.CampaignKeys.CampaignPriorityKey, CampaignPriority));
+            _campaignResultList.Add(new DefaultResult(ResultKeys.CampaignKeys.CampaignIdKey, CampaignId));
             _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = $"Validating the Lead for {CampaignName} ", ProcessContext = processContext, SolutionContext = solutionContext });
             if (_prospectClickValidator.ValidLead(leadEntity).Equals(true))
             {

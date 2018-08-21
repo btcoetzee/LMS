@@ -6,6 +6,8 @@ namespace LMS.CampaignManager.Interface
 
     public interface ICampaignManager
     {
+
+        int CampaignManagerId { get; }
         // Manage the Campaign
         void CampaignManagerDriver(ILeadEntity leadEntity);
 

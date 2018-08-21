@@ -26,6 +26,11 @@
             /// <returns></returns>
             public const string CampaignsProcessedStatusKey = "CampaignsProcessedStatus";
 
+            /// <summary>
+            /// The campaign manager identifier key
+            /// </summary>
+            public const string CampaignManagerIdKey = "CampaignManagerId"; 
+
 
         }
     }
