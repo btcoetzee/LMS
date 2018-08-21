@@ -249,5 +249,104 @@
             return true;
         }
 
+        public bool hasQuoteRef(ILeadEntity leadEntity)
+        {
+            var quoteRefValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.QuoteReferenceKey)?.Value;
+            if ((quoteRefValue == null) || (!Int32.TryParse(quoteRefValue.ToString(), out int quoteRef)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasAnnualPremium(ILeadEntity leadEntity)
+        {
+            var annualPremiumValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.AnnualPremiumKey)?.Value;
+            if ((annualPremiumValue == null) || (!Int32.TryParse(annualPremiumValue.ToString(), out int annualPremium)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasDownPayment(ILeadEntity leadEntity)
+        {
+            var downPaymentValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.DownPaymentKey)?.Value;
+            if ((downPaymentValue == null) || (!Int32.TryParse(downPaymentValue.ToString(), out int downPayment)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasMonthlyInstallment(ILeadEntity leadEntity)
+        {
+            var monthlyInstallmentValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.MonthlyInstallmentKey)?.Value;
+            if ((monthlyInstallmentValue == null) || (!Int32.TryParse(monthlyInstallmentValue.ToString(), out int monthlyInstallment)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasRequote(ILeadEntity leadEntity)
+        {
+            var requoteValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.RequoteKey)?.Value;
+            if ((requoteValue == null) || (!Int32.TryParse(requoteValue.ToString(), out int requote)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasBuyOnlineClick(ILeadEntity leadEntity)
+        {
+            var buyOnlineClickValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.BuyOnlineClickKey)?.Value;
+            if ((buyOnlineClickValue == null) || (!Int32.TryParse(buyOnlineClickValue.ToString(), out int buyOnlineClick)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasBuyOnlineBrand(ILeadEntity leadEntity)
+        {
+            var buyOnlineBrandValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.BuyOnlineBrandKey)?.Value;
+            if ((buyOnlineBrandValue == null) || (!Int32.TryParse(buyOnlineBrandValue.ToString(), out int buyOnlineBrand)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasBuyByPhoneClick(ILeadEntity leadEntity)
+        {
+            var buyByPhoneClickValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.BuyByPhoneClickKey)?.Value;
+            if ((buyByPhoneClickValue == null) || (!Int32.TryParse(buyByPhoneClickValue.ToString(), out int buyByPhoneClick)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool hasBuyByPhoneBrand(ILeadEntity leadEntity)
+        {
+            var buyByPhoneBrandValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.BuyByPhoneBrandKey)?.Value;
+            if ((buyByPhoneBrandValue == null) || (!Int32.TryParse(buyByPhoneBrandValue.ToString(), out int buyByPhoneBrand)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }
