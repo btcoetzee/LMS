@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    public class ValidatorCollection
+    public class ValidatorCollectionStaticFunc
     {
 
         public static bool HasValidActivityGuid(ILeadEntity leadEntity)

@@ -6,9 +6,14 @@
  
     public class ResolutionValidator : IValidator
     {
+
         public bool ValidLead(ILeadEntity lead)
         {
             throw new NotImplementedException();
         }
+
+        public string ErrorMessage { get; }
+
+  
     }
 }

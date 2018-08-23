@@ -10,5 +10,6 @@
         public IProperty[] Properties { get; set; }
         public ISegment[] Segments { get; set; }
         public IResultCollection ResultCollection { get; set; }
+        public List<string> ErrorList { get; set; }
     }
 }

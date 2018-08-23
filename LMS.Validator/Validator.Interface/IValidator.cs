@@ -1,6 +1,5 @@
 ﻿namespace LMS.Validator.Interface
 {
- 
     using System;
     using LMS.LeadEntity.Interface;
 
@@ -8,5 +7,6 @@
     {
         // Check if lead is Valid for Processing
         bool ValidLead(ILeadEntity lead);
+ 
     }
 }

@@ -11,7 +11,7 @@
     using LMS.LeadEntity.Interface.Constants;
     using System.Linq;
 
-    public class ValidatorHandler
+    public class ValidatorHandlerStaticFunc
     {
         // Validator Class Name
         static readonly string validatorClassName = "ValidatorCollection";
@@ -21,7 +21,7 @@
                                             from type in assemblies.GetTypes()
                                             where type.IsClass && type.Name == validatorClassName
                                             select type).Single();
-        public ValidatorHandler()
+        public ValidatorHandlerStaticFunc()
         {
 
         }
@@ -37,8 +37,10 @@
 
             // Select all the validators from the database
             var validatorMethodName = String.Empty;
+ 
             using (var db = new ValidatorContext())
             {
+
                 foreach (var validator in db.Validators)
                 {
                     validatorMethodName = validator.MethodName;

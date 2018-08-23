@@ -2,77 +2,49 @@
 {
     using System.Linq;
     using System;
-    using LMS.Validator.Interface;
+    using System.Collections.Generic;
     using LMS.LoggerClient.Interface;
     using LMS.Decorator.Interface;
     using LMS.LeadEntity.Interface;
+    using LMS.ValidatorCollection.Interface;
 
-    public class LeadValidator : IValidator
+    public class LeadValidator : IValidatorCollection
     {
 
         public DefaultLoggerClientObject DefaultLoggerClientObject;
-
         readonly ILoggerClient _loggerClient;
+        private readonly IValidatorCollectionHandler _validatorCollectionHandler;
         private static string solutionContext = "LeadValidator";
+        private string _errorMessage;
+        private List<string> _validatorClassNameList;
 
-        public LeadValidator(ILoggerClient loggerClient)
+
+        public LeadValidator(/*IValidatorCollectionHandler validatorCollectionHandler, */ILoggerClient loggerClient)
         {          
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
+            //_validatorCollectionHandler = validationCollectionHandler;
+            _errorMessage = String.Empty;
+     
+            _validatorClassNameList = ValidatorCollectionClassNameList();
 
         }
 
-        //public bool ValidLead(LMS.LeadEntity.Interface.ILeadEntity lead)
-        public bool ValidLead(ILeadEntity lead)
+        public string ErrorMessage => _errorMessage;
+
+
+        public bool ValidLead(ILeadEntity leadEntity)
         {          
             string processContext = "ValidLead";
-
-            _loggerClient.Log(new DefaultLoggerClientObject
-            {
-                OperationContext = "Validating the Lead",
-                ProcessContext = processContext,
-                SolutionContext = solutionContext
-            });
-
-            var errorStr = string.Empty;
-
-            if ((lead.Context == null) || (lead.Context.Length < 0))
-            {
-                errorStr += "Context Length is Zero \n";
-            }
-
-            // Check the value here.
-            // try tryParse on guid to see if valid guid.
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Validating the Lead",ProcessContext = processContext,SolutionContext = solutionContext});
             try
             {
-                var activityGuidValue = lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey)?.Value;
-                if ((activityGuidValue == null) || (!Guid.TryParse(activityGuidValue.ToString(), out Guid activityGuid)))
+                var valid = _validatorCollectionHandler.Execute(leadEntity, _validatorClassNameList);
+                if (!valid)
                 {
-                    errorStr += "ActivityGuid Invalid or Not In Context \n";
+                    _errorMessage = _validatorCollectionHandler.ErrorMessage();
+                    _loggerClient.Log(new DefaultLoggerClientErrorObject { OperationContext = "Validation failed", ProcessContext = processContext, SolutionContext = solutionContext, ErrorContext = _errorMessage, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Error });
+                    return false;
                 }
-
-
-                var IdentityGuidValue = lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey)?.Value;
-                if ((IdentityGuidValue == null) || (!Guid.TryParse(IdentityGuidValue.ToString(), out Guid identityGuid)))
-                {
-                    errorStr += "IdentityGuid Invalid or Not In Context \n";
-                }
-
-
-                var SessionGuidValue = lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey)?.Value;
-                if ((SessionGuidValue == null) || (!Guid.TryParse(SessionGuidValue.ToString(), out Guid sessionGuid)))
-                {
-                    errorStr += "SessionGuid Invalid or Not In Context \n";
-                }
-
-
-                var quotedProductKeyValue = lead.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey)?.Value;
-                if ((quotedProductKeyValue == null) || (!int.TryParse(quotedProductKeyValue.ToString(), out int quotedProduct)))
-                {
-                    errorStr += "QuotedProductKey Invalid or Not In Context \n";
-                }
-                
-
-
             }
             catch (Exception ex)
             {
@@ -82,19 +54,44 @@
                 });
                 return false;
             }
-           
-
-            if (errorStr != String.Empty)
-            {
-                _loggerClient.Log(new DefaultLoggerClientErrorObject{OperationContext = "Validation failed",ProcessContext = processContext,SolutionContext = solutionContext,ErrorContext = errorStr, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Error});
-
-
-                return false;
-            }
 
             return true;
 
         }
-    
+
+        /// <summary>
+        /// Provide the ClassNames for the LeadCollector
+        /// </summary>
+        /// <returns></returns>
+        public List<string> ValidatorCollectionClassNameList()
+        {
+
+            var classNameList = new List<String>();
+
+            // Create the className List
+            using (var context = _validatorCollectionHandler.GetValidatorContext())
+            {
+
+                foreach (var leadCollectorValidator in context.LeadCollectorValidators)
+                {
+                    // Select the validator
+                    var validator = context.Validators.FirstOrDefault(v => v.ValidatorId == leadCollectorValidator.ValidatorId);
+                    // var className = context.Validators.Where(v => v.ValidatorId == leadCollectorValidator.ValidatorId).Select(v => v.ClassName).ToString();
+                    //var className = context.Validators.Where(v => v.ValidatorId == leadCollectorValidator.ValidatorId).Select(v => new { ClassName = v.ClassName}).ToString();
+
+                    if (validator != null)
+                    {
+                        //                        classNameList.Add(validator.ClassName);
+                        classNameList.Add(validator.ClassName);
+
+                    }
+
+                }
+                return classNameList;
+
+            }
+
+        }
+
     }
 }

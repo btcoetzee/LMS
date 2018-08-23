@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.DataProvider", "LMS.DataProvider\LMS.DataProvider.csproj", "{DD7A02C8-4A97-4951-8627-00750D6928EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.DataProvider", "LMS.DataProvider\LMS.DataProvider.csproj", "{DD7A02C8-4A97-4951-8627-00750D6928EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.ControlTester", "LMS.ControlTester\LMS.ControlTester.csproj", "{5791E7F5-9454-44C3-9F32-2A8C748F5DC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.ControlTester", "LMS.ControlTester\LMS.ControlTester.csproj", "{5791E7F5-9454-44C3-9F32-2A8C748F5DC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.ValidatorCollectionHandler.Interface", "LMS.ValidatorCollectionHandler.Interface\LMS.ValidatorCollectionHandler.Interface.csproj", "{E31FFC2E-9F49-4A7F-9644-1EAAF9094A69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5791E7F5-9454-44C3-9F32-2A8C748F5DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5791E7F5-9454-44C3-9F32-2A8C748F5DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5791E7F5-9454-44C3-9F32-2A8C748F5DC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E31FFC2E-9F49-4A7F-9644-1EAAF9094A69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E31FFC2E-9F49-4A7F-9644-1EAAF9094A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E31FFC2E-9F49-4A7F-9644-1EAAF9094A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E31FFC2E-9F49-4A7F-9644-1EAAF9094A69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

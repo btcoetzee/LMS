@@ -21,8 +21,8 @@
     <Reference Include="LMS.LoggerClientEventTypeControl.Interface">
       <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Interface.dll</HintPath>
     </Reference>
-    <Reference Include="LMS.Validator.Interface">
-      <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
+    <Reference Include="LMS.ValidatorCollection.Interface">
+      <HintPath>..\..\lib\LMS.ValidatorCollection.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

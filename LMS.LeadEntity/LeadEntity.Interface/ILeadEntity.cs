@@ -1,6 +1,7 @@
 ﻿namespace LMS.LeadEntity.Interface
 {
     using System;
+    using System.Collections.Generic;
 
     // The Contex, Property and Segment Members can be set
     public interface ILeadEntity: ILeadEntityImmutable
@@ -12,6 +13,8 @@
         new ISegment[] Segments { get; set; }
 
         IResultCollection ResultCollection { get; set; }
+
+        List<string> ErrorList { get; set; }
 
     }
 }
