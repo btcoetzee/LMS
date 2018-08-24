@@ -7,39 +7,38 @@
     using LMS.LeadEntity.Interface;
     using LMS.Validator.Interface;
 
-    public class ActivityGuidValidator : IValidator
+    public class IdentityGuidValidator : IValidator
     {
-        /// <summary>
-        /// Constructor - Required for Activator
-        /// </summary>
-        public ActivityGuidValidator() { }
 
         /// <summary>
-        /// Validate the Lead by checking that the Lead has a non empty/null and valid ActitivityGuid
+        /// Constructor
+        /// </summary>
+        public IdentityGuidValidator() { }
+
+        /// <summary>
+        /// Validate the Lead by checking that the Lead has a non empty/null and valid IdentityGuid
         /// </summary>
         /// <param name="leadEntity"></param>
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var activityGuidValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey)?.Value;
-            if (activityGuidValue == null)
+            var identityGuidValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey)?.Value;
+            if (identityGuidValue == null)
             {
                 if (leadEntity.ErrorList == null)
                     leadEntity.ErrorList = new List<string>();
-                leadEntity.ErrorList.Add("ActivityGuid Not In Context.\n");
+                leadEntity.ErrorList.Add("IdentityGuid Not In Context.\n");
                 return false;
             }
-            
-            if (!Guid.TryParse(activityGuidValue.ToString(), out Guid activityGuid))
+
+            if (!Guid.TryParse(identityGuidValue.ToString(), out Guid identityGuid))
             {
                 if (leadEntity.ErrorList == null)
                     leadEntity.ErrorList = new List<string>();
-                leadEntity.ErrorList.Add("ActivityGuid Invalid.\n");
+                leadEntity.ErrorList.Add("IdentityGuid Invalid.\n");
                 return false;
             }
             return true;
         }
-
-
     }
 }
