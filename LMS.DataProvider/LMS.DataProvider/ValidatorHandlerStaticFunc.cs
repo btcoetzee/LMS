@@ -69,7 +69,6 @@
 
             string tmp = "";
             var listOfTypes = new List<Type>();
-            int j = 0;
 
             for (int i = 0; i < argumentTypeInputStr.Length; i++)
             {

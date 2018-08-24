@@ -6,42 +6,55 @@
     using LMS.LoggerClient.Interface;
     using LMS.Decorator.Interface;
     using LMS.LeadEntity.Interface;
-    using LMS.ValidatorCollection.Interface;
+    using LMS.ValidatorFactory.Interface;
+    using LMS.Validator.Interface;
 
-    public class LeadValidator : IValidatorCollection
+    public class LeadValidator : IValidator
     {
 
         public DefaultLoggerClientObject DefaultLoggerClientObject;
         readonly ILoggerClient _loggerClient;
-        private readonly IValidatorCollectionHandler _validatorCollectionHandler;
+        private readonly IValidatorFactory _validatorFactory;
         private static string solutionContext = "LeadValidator";
-        private string _errorMessage;
-        private List<string> _validatorClassNameList;
+        private readonly List<IValidator> _leadCollectorValidators;
 
-
-        public LeadValidator(/*IValidatorCollectionHandler validatorCollectionHandler, */ILoggerClient loggerClient)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="validatorFactory"></param>
+        /// <param name="loggerClient"></param>
+        public LeadValidator(IValidatorFactory validatorFactory, ILoggerClient loggerClient)
         {          
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
-            //_validatorCollectionHandler = validationCollectionHandler;
-            _errorMessage = String.Empty;
-     
-            _validatorClassNameList = ValidatorCollectionClassNameList();
+            _validatorFactory = validatorFactory ?? throw new ArgumentNullException(nameof(validatorFactory));
+            _leadCollectorValidators = _validatorFactory.BuildLeadCollectorValidators();
 
         }
 
-        public string ErrorMessage => _errorMessage;
-
-
+        /// <summary>
+        /// Validate the lead using the Collection of Validators
+        /// </summary>
+        /// <param name="leadEntity"></param>
+        /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {          
             string processContext = "ValidLead";
+            bool allValid = true;
             _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Validating the Lead",ProcessContext = processContext,SolutionContext = solutionContext});
             try
             {
-                var valid = _validatorCollectionHandler.Execute(leadEntity, _validatorClassNameList);
-                if (!valid)
+                // Validate the lead using the collection of validators
+                // Process all validators before returning.
+                foreach (var validator in _leadCollectorValidators)
                 {
-                    _errorMessage = _validatorCollectionHandler.ErrorMessage();
+                    var valid = validator.ValidLead(leadEntity);
+                    if (!valid)
+                    {
+                        allValid = false;
+                    }
+                }
+                if (!allValid)
+                {
                     _loggerClient.Log(new DefaultLoggerClientErrorObject { OperationContext = "Validation failed", ProcessContext = processContext, SolutionContext = solutionContext, ErrorContext = _errorMessage, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Error });
                     return false;
                 }
@@ -58,40 +71,5 @@
             return true;
 
         }
-
-        /// <summary>
-        /// Provide the ClassNames for the LeadCollector
-        /// </summary>
-        /// <returns></returns>
-        public List<string> ValidatorCollectionClassNameList()
-        {
-
-            var classNameList = new List<String>();
-
-            // Create the className List
-            using (var context = _validatorCollectionHandler.GetValidatorContext())
-            {
-
-                foreach (var leadCollectorValidator in context.LeadCollectorValidators)
-                {
-                    // Select the validator
-                    var validator = context.Validators.FirstOrDefault(v => v.ValidatorId == leadCollectorValidator.ValidatorId);
-                    // var className = context.Validators.Where(v => v.ValidatorId == leadCollectorValidator.ValidatorId).Select(v => v.ClassName).ToString();
-                    //var className = context.Validators.Where(v => v.ValidatorId == leadCollectorValidator.ValidatorId).Select(v => new { ClassName = v.ClassName}).ToString();
-
-                    if (validator != null)
-                    {
-                        //                        classNameList.Add(validator.ClassName);
-                        classNameList.Add(validator.ClassName);
-
-                    }
-
-                }
-                return classNameList;
-
-            }
-
-        }
-
     }
 }

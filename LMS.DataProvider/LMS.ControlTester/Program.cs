@@ -52,10 +52,27 @@ namespace LMS.ControlTester
 
             };
 
-            var validatorHandler = new ValidatorCollectionHandler();
-            var classNameList = GetLeadValidatorClassNameList();
-            validatorHandler.Execute(_testLeadEntity, classNameList);
+            var validatorDataProvider = new ValidatorDataProvider();
 
+            var validatorFactory = new ValidatorFactory(validatorDataProvider);
+            var classNameList = GetLeadValidatorClassNameList();
+            // this is no longer how it all works!!
+            var validators = validatorFactory.BuildLeadCollectorValidators();
+            bool allValid = true;
+            // Process all validators before returning.
+            foreach (var validator in validators)
+            {
+                var valid = validator.ValidLead(_testLeadEntity);
+                if (!valid)
+                {
+                    allValid = false;
+                }
+            }
+            if (!allValid)
+            {
+            
+               Console.WriteLine("Not All Valid");
+            }
             Console.ReadKey();
 
 

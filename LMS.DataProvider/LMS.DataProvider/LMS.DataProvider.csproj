@@ -10,6 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LMS.ValidatorDataProvider.Interface\LMS.ValidatorDataProvider.Interface.csproj" />
+    <ProjectReference Include="..\LMS.ValidatorFactory.Interface\LMS.ValidatorFactory.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="LMS.LeadEntity.Components">
       <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
     </Reference>
