@@ -65,6 +65,9 @@
     <Reference Include="LMS.CampaignValidator.Interface">
       <HintPath>..\..\lib\LMS.CampaignValidator.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.DataProvider">
+      <HintPath>..\..\lib\LMS.DataProvider.dll</HintPath>
+    </Reference>
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
     </Reference>
@@ -109,6 +112,15 @@
     </Reference>
     <Reference Include="LMS.Validator.Interface">
       <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.ValidatorCollection.Interface">
+      <HintPath>..\..\lib\LMS.ValidatorCollection.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.ValidatorDataProvider.Interface">
+      <HintPath>..\..\lib\LMS.ValidatorDataProvider.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.ValidatorFactory.Interface">
+      <HintPath>..\..\lib\LMS.ValidatorFactory.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

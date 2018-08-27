@@ -2,6 +2,7 @@
 namespace LMS.LeadPublisher.UnitTests
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using Admiral.Components.Instrumentation.Contract;
     using Compare.Components.Notification.Channels.InProc;
@@ -95,6 +96,7 @@ namespace LMS.LeadPublisher.UnitTests
         public IProperty[] Properties { get; set; }
         public ISegment[] Segments { get; set; }
         public IResultCollection ResultCollection { get; set; }
+        public List<string> ErrorList { get; set; }
     }
 
     internal struct TestProperty : IProperty

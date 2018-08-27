@@ -30,6 +30,9 @@
     <Reference Include="LMS.Validator.Interface">
       <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="LMS.ValidatorFactory.Interface">
+      <HintPath>..\..\lib\LMS.ValidatorFactory.Interface.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -12,6 +12,8 @@
     <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
     <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.2" />
     <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="Moq" Version="4.8.3" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
@@ -65,6 +67,9 @@
     </Reference>
     <Reference Include="LMS.CampaignValidator.Interface">
       <HintPath>..\..\lib\LMS.CampaignValidator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.DataProvider">
+      <HintPath>..\..\lib\LMS.DataProvider.dll</HintPath>
     </Reference>
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
@@ -122,6 +127,12 @@
     </Reference>
     <Reference Include="LMS.Validator.Interface">
       <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.ValidatorDataProvider.Interface">
+      <HintPath>..\..\lib\LMS.ValidatorDataProvider.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.ValidatorFactory.Interface">
+      <HintPath>..\..\lib\LMS.ValidatorFactory.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

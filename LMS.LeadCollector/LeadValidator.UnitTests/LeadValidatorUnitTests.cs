@@ -11,6 +11,8 @@ namespace LeadValidator.UnitTests
     using LMS.LeadEntity.Components;
     using LMS.LoggerClient.Interface;
     using System.Linq;
+    using System.Collections.Generic;
+    using LMS.ValidatorFactory.Interface;
 
     [TestClass]
     public class LeadValidatorUnitTests
@@ -19,6 +21,7 @@ namespace LeadValidator.UnitTests
         private Mock<IValidator> _validator;
         private Mock<ILeadEntity> _leadEntity;
         private Mock<ILoggerClient> _loggingClient;
+        private Mock<IValidatorFactory> _validatorFactory;
         private ILeadEntity _testLeadEntity;
 
         string activityId = LMS.LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey;
@@ -33,6 +36,7 @@ namespace LeadValidator.UnitTests
         {
             _validator = new Mock<IValidator>();
             _leadEntity = new Mock<ILeadEntity>();
+            _validatorFactory = new Mock<IValidatorFactory>();
             _loggingClient = new Mock<ILoggerClient>();
             _serviceProvider = new ServiceCollection().AddSingleton(typeof(IValidator), _validator.Object).BuildServiceProvider();
 
@@ -50,6 +54,7 @@ namespace LeadValidator.UnitTests
             public IProperty[] Properties { get; set; }
             public ISegment[] Segments { get; set; }
             public IResultCollection ResultCollection { get; set; }
+            public List<string> ErrorList { get; set; }
         }
 
         //struct TestLeadEntityResultClass : IResult
@@ -87,6 +92,8 @@ namespace LeadValidator.UnitTests
             _leadEntity = null;
             _validator.VerifyAll();
             _validator = null;
+            _validatorFactory.VerifyAll();
+            _validatorFactory = null;
             _loggingClient.VerifyAll();
             _loggingClient = null;
         }
@@ -190,7 +197,7 @@ namespace LeadValidator.UnitTests
         [ExpectedException(typeof(System.ArgumentNullException))]
         public void MockedParamLeadvalidatorConstructorNullLoggerClientTest()
         {
-            var validator = new LeadValidator(null);
+            var validator = new LeadValidator(null, null);
         }
 
         /// <summary>
@@ -199,7 +206,7 @@ namespace LeadValidator.UnitTests
         [TestMethod]
         public void ValidLeadWithEmptyContextTest()
         {
-            var validator = new LeadValidator(_loggingClient.Object);
+            var validator = new LeadValidator(_validatorFactory.Object,_loggingClient.Object);
 
             _testLeadEntity.Context = null;
             bool expectedValue = false;
@@ -216,7 +223,7 @@ namespace LeadValidator.UnitTests
         [TestMethod]
         public void ValidLeadWithEmptyContextKeysTest()
         {
-            var validator = new LeadValidator(_loggingClient.Object);
+            var validator = new LeadValidator(_validatorFactory.Object,_loggingClient.Object);
 
             activityId = null;
             identityId = null;
@@ -236,7 +243,7 @@ namespace LeadValidator.UnitTests
         [TestMethod]
         public void InvalidLeadTest()
         {
-            var validator = new LeadValidator(_loggingClient.Object);
+            var validator = new LeadValidator(_validatorFactory.Object, _loggingClient.Object);
             _testLeadEntity.Context = new IContext[] { new DefaultContext ( LMS.LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString() ) ,
                                                        new DefaultContext ( LMS.LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey, Guid.NewGuid().ToString() )  ,
                                                        new DefaultContext ( LMS.LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString() ) ,

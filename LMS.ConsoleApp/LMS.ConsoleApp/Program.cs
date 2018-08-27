@@ -19,6 +19,8 @@ namespace LMS.ConsoleApp
     using LMS.LoggerClient.Interface;
     using LMS.CampaignManager.Interface;
     using LMS.LoggerClientEventTypeControl.Interface;
+    using LMS.DataProvider;
+    using LMS.ValidatorFactory.Interface;
 
     public class Program
     {
@@ -49,6 +51,8 @@ namespace LMS.ConsoleApp
             var loggerClientEventTypeControl = provider.GetService<ILoggerClientEventTypeControl>();
             // Mock leads to be sent through
             var leadEntities = CreateLeads();
+
+            var validatorFactory = provider.GetService<IValidatorFactory>();
 
             // Ask for user to select a lead to process
             WriteToConsole($"{GetLeadDirectory()}Select a lead [1-{leadEntities.Length}] to process: ", LogColors);
@@ -367,6 +371,7 @@ namespace LMS.ConsoleApp
         public IProperty[] Properties { get; set; }
         public ISegment[] Segments { get; set; }
         public IResultCollection ResultCollection { get; set; }
+        public List<string> ErrorList { get; set; }
     }
 
     struct MyContext : IContext

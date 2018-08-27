@@ -55,7 +55,7 @@
                 }
                 if (!allValid)
                 {
-                    _loggerClient.Log(new DefaultLoggerClientErrorObject { OperationContext = "Validation failed", ProcessContext = processContext, SolutionContext = solutionContext, ErrorContext = _errorMessage, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Error });
+                    _loggerClient.Log(new DefaultLoggerClientErrorObject { OperationContext = "Validation failed", ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Error });
                     return false;
                 }
             }

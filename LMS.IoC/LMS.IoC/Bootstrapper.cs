@@ -46,6 +46,9 @@ namespace LMS.IoC
     using LMS.Rule.Interface;
     using LMS.Campaign.BuyClick.Rule;
     using LMS.LoggerClientEventTypeControl.Interface;
+    using LMS.ValidatorFactory.Interface;
+    using LMS.DataProvider;
+    using LMS.ValidatorDataProvider.Interface;
 
     public static class Bootstrapper
     {
@@ -62,6 +65,8 @@ namespace LMS.IoC
                 .AddLeadDecorator()
                 .AddLeadPublisher()
                 .AddLeadCollector()
+                .AddValidatorFactory()
+                .AddDataProvider()
                 .AddCampaignManagerSubscriber()
                 .AddCampaignCollection()
                 .AddCampaignManagerValidatorCollection()
@@ -70,6 +75,7 @@ namespace LMS.IoC
                 .AddCampaignManagerPublisher()
                 .AddCampaignManager()
                 .AddCampaignValidator()
+                .AddCampaignManagerValidatorCollection()
                 .AddCampaignFilter()
                 .AddCampaignRule(); 
 
@@ -98,6 +104,7 @@ namespace LMS.IoC
 
             return container;
         }
+
         public static IServiceCollection AddNotificationChannel(this IServiceCollection container)
         {
             container.AddSingleton<INotificationChannel<ILeadEntity>>(provider =>
@@ -127,7 +134,7 @@ namespace LMS.IoC
            // container.AddSingleton<IValidator, LeadValidator>();
 
             // Custom color
-            container.AddSingleton<IValidator>(provider => new LeadValidator(
+            container.AddSingleton<IValidator>(provider => new LeadValidator(provider.GetRequiredService<IValidatorFactory>(),
                 new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkYellow, ConsoleColor.Black),
                     ColorSet.ErrorLoggingColors)));
 
@@ -172,6 +179,22 @@ namespace LMS.IoC
 
             return container;
         }
+
+        public static IServiceCollection AddDataProvider(this IServiceCollection container)
+        {
+            container.AddSingleton<IValidatorDataProvider>(provider => new ValidatorDataProvider());
+
+            return container;
+        }
+
+        public static IServiceCollection AddValidatorFactory(this IServiceCollection container)
+        {
+            container.AddSingleton<IValidatorFactory>(provider => new ValidatorFactory(
+                provider.GetRequiredService<IValidatorDataProvider>()));
+
+            return container;
+        }
+
         public static IServiceCollection AddLoggerClient(this IServiceCollection container)
         {
             //The registered type can be changed in the future.
@@ -263,7 +286,7 @@ namespace LMS.IoC
                
                 //new CampaignManagerValidator(provider.GetRequiredService<ILoggerClient>())
                 // Custom color logging
-                new CampaignManagerValidator(new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
+                new LMS.CampaignManager.Validator.Implementation.CampaignManagerValidator(new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
                 ColorSet.ErrorLoggingColors))
         });
 

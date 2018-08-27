@@ -9,6 +9,7 @@ namespace LMS.LeadDecorator.UnitTests
     using LMS.LeadDecorator.Implementation;
     using LMS.LoggerClient.Interface;
     using LMS.LeadEntity.Components;
+    using System.Collections.Generic;
 
     [TestClass]
     public class LeadDecoratorUnitTests
@@ -40,6 +41,7 @@ namespace LMS.LeadDecorator.UnitTests
             public IProperty[] Properties { get; set; }
             public ISegment[] Segments { get; set; }
             public IResultCollection ResultCollection { get; set; }
+            public List<string> ErrorList { get; set; }
         }
 
         //struct TestLeadEntityResultClass : IResult
