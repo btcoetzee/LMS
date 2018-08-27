@@ -101,7 +101,7 @@ namespace LMS.ControlTester
                     if (validator != null)
                     {
                         //                        classNameList.Add(validator.ClassName);
-                        classNameList.Add(validator.MethodName);
+                        classNameList.Add(validator.ClassName);
 
                     }
 
