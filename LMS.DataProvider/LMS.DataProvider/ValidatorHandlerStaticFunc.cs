@@ -43,8 +43,8 @@
 
                 foreach (var validator in db.Validators)
                 {
-                    validatorMethodName = validator.MethodName;
-                    Console.WriteLine($"{validatorMethodName} | {validator.MethodName}");
+                    validatorMethodName = validator.ClassName;
+                    Console.WriteLine($"{validatorMethodName} | {validator.ClassName}");
                     //Invoke the Method within the Class
                     var valid = (bool)classType.InvokeMember(validatorMethodName, BindingFlags.InvokeMethod, null, null, argObjects);
                     Console.WriteLine($"Returned {valid}");
