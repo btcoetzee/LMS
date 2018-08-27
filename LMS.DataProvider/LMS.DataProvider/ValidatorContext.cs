@@ -36,7 +36,6 @@
         public int ValidatorId { get; set; }
         public string Description { get; set; }
         public bool Enabled { get; set; }
-        public string MethodName { get; set; }
         public string ClassName { get; set; }
     }
 
