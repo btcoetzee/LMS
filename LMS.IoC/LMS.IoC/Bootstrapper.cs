@@ -190,7 +190,8 @@ namespace LMS.IoC
         public static IServiceCollection AddValidatorFactory(this IServiceCollection container)
         {
             container.AddSingleton<IValidatorFactory>(provider => new ValidatorFactory(
-                provider.GetRequiredService<IValidatorDataProvider>()));
+                provider.GetRequiredService<IValidatorDataProvider>(),
+                provider.GetRequiredService<ILoggerClient>()));
 
             return container;
         }
