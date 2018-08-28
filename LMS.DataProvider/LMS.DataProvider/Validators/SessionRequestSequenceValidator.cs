@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LMS.DataProvider.Validators
 {
-    class SessionRequestSequenceValidator : IValidator
+    public class SessionRequestSequenceValidator : IValidator
     {
         public SessionRequestSequenceValidator() { }
 
