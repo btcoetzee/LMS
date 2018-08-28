@@ -3,16 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <DebugType>Full</DebugType>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="Moq" Version="4.9.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LMS.ValidatorDataProvider.Interface\LMS.ValidatorDataProvider.Interface.csproj" />
-    <ProjectReference Include="..\LMS.ValidatorFactory.Interface\LMS.ValidatorFactory.Interface.csproj" />
+    <ProjectReference Include="..\LMS.DataProvider\LMS.DataProvider.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,9 +28,5 @@
       <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
-  </Target>
 
 </Project>

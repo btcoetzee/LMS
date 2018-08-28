@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.ValidatorFactory.Interf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.ValidatorDataProvider.Interface", "LMS.ValidatorDataProvider.Interface\LMS.ValidatorDataProvider.Interface.csproj", "{1A33A351-391B-4354-A1D0-289B34B2A108}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.DataProviderUnitTest", "LMS.DataProviderUnitTest\LMS.DataProviderUnitTest.csproj", "{DDF7CEFA-6873-4F85-992B-1E31BB27C4BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1A33A351-391B-4354-A1D0-289B34B2A108}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A33A351-391B-4354-A1D0-289B34B2A108}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A33A351-391B-4354-A1D0-289B34B2A108}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDF7CEFA-6873-4F85-992B-1E31BB27C4BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDF7CEFA-6873-4F85-992B-1E31BB27C4BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDF7CEFA-6873-4F85-992B-1E31BB27C4BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDF7CEFA-6873-4F85-992B-1E31BB27C4BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
