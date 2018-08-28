@@ -400,8 +400,8 @@ namespace LMS.CampaignManager.UnitTests
             _campaignManagerPublisher.Verify(c => c.PublishLead(It.IsAny<ILeadEntity>()), Times.Never()); 
 
             var random = new Random();
-            const int minSleepInMs = 1000;
-            const int maxSleepInMs = 5000;
+            //const int minSleepInMs = 1000;
+            //const int maxSleepInMs = 5000;
 
             // Set up 3 Campaigns
             const int testCampaignCnt = 3;

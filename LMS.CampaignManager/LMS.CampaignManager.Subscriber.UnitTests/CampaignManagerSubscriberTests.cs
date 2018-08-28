@@ -25,7 +25,7 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
         private static IServiceProvider _campaignManagerSubscriberServiceProvider;
         private Mock<ISubscriber<ILeadEntity>> _notificationSubscriber;
         private Mock<ILoggerClient> _loggerClient;
-        private ILeadEntity _testLleadEntity;
+        private ILeadEntity _testLleadEntity = new DefaultLeadEntity();
 
         /// <summary>
         /// Initializes this instance.
@@ -43,35 +43,35 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
                 .AddSingleton(typeof(ILoggerClient), _loggerClient.Object)
                 .BuildServiceProvider();
             // Create a leadEntity
-            CreateLeadEntity();
+            //CreateLeadEntity();
         }
 
-        /// <summary>
-        /// Create an Instance of the LeadEntity
-        /// </summary>
-        private class TestLeadEntityClass : ILeadEntity
-        {
+        ///// <summary>
+        ///// Create an Instance of the LeadEntity
+        ///// </summary>
+        //private class TestLeadEntityClass : ILeadEntity
+        //{
  
-            public IContext[] Context { get; set; }
-            public IProperty[] Properties { get; set; }
-            public ISegment[] Segments { get; set; }
-            public IResultCollection ResultCollection { get; set; }
-        }
-        void CreateLeadEntity()
-        {
-            _testLleadEntity = new TestLeadEntityClass()
-            {
-                Context = new IContext[]
-                    {},
-                Properties = new IProperty[]
-                    {},
-                Segments = new ISegment[]
-                    {},
-                ResultCollection = new DefaultResultCollection()
-            };
+        //    public IContext[] Context { get; set; }
+        //    public IProperty[] Properties { get; set; }
+        //    public ISegment[] Segments { get; set; }
+        //    public IResultCollection ResultCollection { get; set; }
+        //}
+        //void CreateLeadEntity()
+        //{
+        //    _testLleadEntity = new TestLeadEntityClass()
+        //    {
+        //        Context = new IContext[]
+        //            {},
+        //        Properties = new IProperty[]
+        //            {},
+        //        Segments = new ISegment[]
+        //            {},
+        //        ResultCollection = new DefaultResultCollection()
+        //    };
  
 
-        }
+        //}
 
         /// <summary>
         /// Cleanups this instance.

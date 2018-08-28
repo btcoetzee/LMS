@@ -53,10 +53,7 @@ namespace LMS.ControlTester
             };
 
             var validatorDataProvider = new ValidatorDataProvider();
-
             var validatorFactory = new ValidatorFactory(validatorDataProvider);
-            var classNameList = GetLeadValidatorClassNameList();
-            // this is no longer how it all works!!
             var validators = validatorFactory.BuildLeadCollectorValidators();
             bool allValid = true;
             // Process all validators before returning.
@@ -78,38 +75,38 @@ namespace LMS.ControlTester
 
         }
 
-        public static List<string> GetLeadValidatorClassNameList()
-        {
+        //public static List<string> GetLeadValidatorClassNameList()
+        //{
 
-            var classNameList = new List<String>();
+        //    var classNameList = new List<String>();
 
-            classNameList.Add("ValidateActivityGuid");
-            classNameList.Add("ValidateIdentityGuid");
+        //    classNameList.Add("ValidateActivityGuid");
+        //    classNameList.Add("ValidateIdentityGuid");
 
-            return classNameList;
-            using (var context = new ValidatorContext())
-            {
+        //    return classNameList;
+        //    using (var context = new ValidatorContext())
+        //    {
 
-                foreach (var leadCollectorValidator in context.LeadCollectorValidators)
-                {
-                    // Select the validator
-                    var validator =
-                        context.Validators.FirstOrDefault(v => v.ValidatorId == leadCollectorValidator.ValidatorId);
-                    // var className = context.Validators.Where(v => v.ValidatorId == leadCollectorValidator.ValidatorId).Select(v => v.ClassName).ToString();
-                    //var className = context.Validators.Where(v => v.ValidatorId == leadCollectorValidator.ValidatorId).Select(v => new { ClassName = v.ClassName}).ToString();
+        //        foreach (var leadCollectorValidator in context.LeadCollectorValidators)
+        //        {
+        //            // Select the validator
+        //            var validator =
+        //                context.Validators.FirstOrDefault(v => v.ValidatorId == leadCollectorValidator.ValidatorId);
+        //            // var className = context.Validators.Where(v => v.ValidatorId == leadCollectorValidator.ValidatorId).Select(v => v.ClassName).ToString();
+        //            //var className = context.Validators.Where(v => v.ValidatorId == leadCollectorValidator.ValidatorId).Select(v => new { ClassName = v.ClassName}).ToString();
 
-                    if (validator != null)
-                    {
-                        //                        classNameList.Add(validator.ClassName);
-                        classNameList.Add(validator.ClassName);
+        //            if (validator != null)
+        //            {
+        //                //                        classNameList.Add(validator.ClassName);
+        //                classNameList.Add(validator.ClassName);
 
-                    }
+        //            }
 
-                }
+        //        }
 
-                return classNameList;
+        //        return classNameList;
 
-            }
-        }
+        //    }
+        //}
     }
 }
