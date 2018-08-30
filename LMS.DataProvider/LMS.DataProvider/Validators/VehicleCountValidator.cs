@@ -18,7 +18,7 @@ namespace LMS.DataProvider.Validators
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var vehicleCountValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.VehicleCountKey)?.Value;
+            var vehicleCountValue = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.VehicleCountKey)?.Value;
             if (vehicleCountValue == null)
             {
                 if (leadEntity.ErrorList == null)

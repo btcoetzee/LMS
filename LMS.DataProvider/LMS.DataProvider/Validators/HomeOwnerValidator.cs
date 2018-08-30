@@ -18,7 +18,7 @@ namespace LMS.DataProvider.Validators
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var homeOwnerValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.SegementKeys.HomeownerKey)?.Value;
+            var homeOwnerValue = leadEntity.Segments.SingleOrDefault(item => item.type == LeadEntity.Interface.Constants.SegementKeys.HomeownerKey);
             if (homeOwnerValue == null)
             {
                 if (leadEntity.ErrorList == null)

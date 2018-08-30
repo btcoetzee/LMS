@@ -18,7 +18,7 @@ namespace LMS.DataProvider.Validators
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var emailAddressValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.EmailAddressKey)?.Value;
+            var emailAddressValue = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.EmailAddressKey)?.Value;
             if (emailAddressValue == null)
             {
                 if (leadEntity.ErrorList == null)

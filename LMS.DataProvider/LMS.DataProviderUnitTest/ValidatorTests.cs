@@ -75,37 +75,6 @@ namespace LMS.DataProviderUnitTest
         #endregion
 
         #region ValidatorTest
-        [TestMethod]
-        public void ActivityGuidValidator()
-        {
-            var validator = _serviceProvider.GetService<IValidator>();
-            _testLeadEntity.Context = new IContext[] { new DefaultContext(LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()) };
-            var activityGuid = new ActivityGuidValidator();
-
-            activityGuid.ValidLead(_testLeadEntity);
-
-            bool expectedValue = false;
-
-            var actualValue = validator.ValidLead(_testLeadEntity);
-
-            Assert.AreEqual(expectedValue, actualValue);
-        }
-
-        [TestMethod]
-        public void AdditionalProductsValidator()
-        {
-            var validator = _serviceProvider.GetService<IValidator>();
-            _testLeadEntity.Context = new IContext[] { new DefaultContext(LeadEntity.Interface.Constants.ContextKeys.AdditionalProductKey, 101) };
-            var additonalProducts = new AdditionalProductsValidator();
-
-            additonalProducts.ValidLead(_testLeadEntity);
-
-            bool expectedValue = false;
-
-            var actualValue = validator.ValidLead(_testLeadEntity);
-
-            Assert.AreEqual(expectedValue, actualValue);
-        }
 
         [TestMethod]
         public void AddressValidator()
@@ -129,22 +98,6 @@ namespace LMS.DataProviderUnitTest
             var validator = _serviceProvider.GetService<IValidator>();
             _testLeadEntity.Properties = new IProperty[] { new DefaultProperty(LeadEntity.Interface.Constants.PropertyKeys.EmailAddressKey, "google@gmail.com") };
             var address = new EmailAddressValidator();
-
-            address.ValidLead(_testLeadEntity);
-
-            bool expectedValue = false;
-
-            var actualValue = validator.ValidLead(_testLeadEntity);
-
-            Assert.AreEqual(expectedValue, actualValue);
-        }
-
-        [TestMethod]
-        public void EnvironmentValidator()
-        {
-            var validator = _serviceProvider.GetService<IValidator>();
-            _testLeadEntity.Context = new IContext[] { new DefaultContext(LeadEntity.Interface.Constants.ContextKeys.EnvironmentKey, "PT") };
-            var address = new EnvironmentValidator();
 
             address.ValidLead(_testLeadEntity);
 
@@ -204,22 +157,6 @@ namespace LMS.DataProviderUnitTest
         }
 
         [TestMethod]
-        public void IdentityGuidValidator()
-        {
-            var validator = _serviceProvider.GetService<IValidator>();
-            _testLeadEntity.Context = new IContext[] { new DefaultContext(LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()) };
-            var identityGuid = new IdentityGuidValidator();
-
-            identityGuid.ValidLead(_testLeadEntity);
-
-            bool expectedValue = false;
-
-            var actualValue = validator.ValidLead(_testLeadEntity);
-
-            Assert.AreEqual(expectedValue, actualValue);
-        }
-
-        [TestMethod]
         public void LowPOPValidator()
         {
             var validator = _serviceProvider.GetService<IValidator>();
@@ -268,38 +205,6 @@ namespace LMS.DataProviderUnitTest
         }
 
         [TestMethod]
-        public void PriorBIValidator()
-        {
-            var validator = _serviceProvider.GetService<IValidator>();
-            _testLeadEntity.Properties = new IProperty[] { new DefaultProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorBIKey, "25/50") };
-            var priorBI = new PriorBIValidator();
-
-            priorBI.ValidLead(_testLeadEntity);
-
-            bool expectedValue = false;
-
-            var actualValue = validator.ValidLead(_testLeadEntity);
-
-            Assert.AreEqual(expectedValue, actualValue);
-        }
-
-        [TestMethod]
-        public void PriorInsuranceValidator()
-        {
-            var validator = _serviceProvider.GetService<IValidator>();
-            _testLeadEntity.Properties = new IProperty[] { new DefaultProperty(LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey, true) };
-            var priorInsurance = new PriorInsuranceValidator();
-
-            priorInsurance.ValidLead(_testLeadEntity);
-
-            bool expectedValue = false;
-
-            var actualValue = validator.ValidLead(_testLeadEntity);
-
-            Assert.AreEqual(expectedValue, actualValue);
-        }
-
-        [TestMethod]
         public void QuotedBIValidator()
         {
             var validator = _serviceProvider.GetService<IValidator>();
@@ -307,22 +212,6 @@ namespace LMS.DataProviderUnitTest
             var quotedBI = new QuotedBIValidator();
 
             quotedBI.ValidLead(_testLeadEntity);
-
-            bool expectedValue = false;
-
-            var actualValue = validator.ValidLead(_testLeadEntity);
-
-            Assert.AreEqual(expectedValue, actualValue);
-        }
-
-        [TestMethod]
-        public void QuotedProductValidator()
-        {
-            var validator = _serviceProvider.GetService<IValidator>();
-            _testLeadEntity.Context = new IContext[] { new DefaultContext(LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey, 101) };
-            var quotedProduct = new QuotedProductValidator();
-
-            quotedProduct.ValidLead(_testLeadEntity);
 
             bool expectedValue = false;
 
@@ -348,22 +237,6 @@ namespace LMS.DataProviderUnitTest
         }
 
         [TestMethod]
-        public void SessionGuidValidator()
-        {
-            var validator = _serviceProvider.GetService<IValidator>();
-            _testLeadEntity.Context = new IContext[] { new DefaultContext(LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey, Guid.NewGuid().ToString()) };
-            var sessionGuid = new SessionGuidValidator();
-
-            sessionGuid.ValidLead(_testLeadEntity);
-
-            bool expectedValue = false;
-
-            var actualValue = validator.ValidLead(_testLeadEntity);
-
-            Assert.AreEqual(expectedValue, actualValue);
-        }
-
-        [TestMethod]
         public void SessionRequestSequenceValidator()
         {
             var validator = _serviceProvider.GetService<IValidator>();
@@ -371,22 +244,6 @@ namespace LMS.DataProviderUnitTest
             var sessionRequestSequence = new SessionRequestSequenceValidator();
 
             sessionRequestSequence.ValidLead(_testLeadEntity);
-
-            bool expectedValue = false;
-
-            var actualValue = validator.ValidLead(_testLeadEntity);
-
-            Assert.AreEqual(expectedValue, actualValue);
-        }
-
-        [TestMethod]
-        public void SiteIdValidator()
-        {
-            var validator = _serviceProvider.GetService<IValidator>();
-            _testLeadEntity.Context = new IContext[] { new DefaultContext(LeadEntity.Interface.Constants.ContextKeys.SiteIDKey, 26238) };
-            var siteId = new SiteIdValidator();
-
-            siteId.ValidLead(_testLeadEntity);
 
             bool expectedValue = false;
 
