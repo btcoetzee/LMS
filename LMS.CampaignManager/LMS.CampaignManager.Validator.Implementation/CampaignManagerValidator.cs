@@ -3,7 +3,7 @@
     using System;
     using LMS.LoggerClient.Interface;
     using LMS.CampaignManager.Validator.Interface;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
 
     public class CampaignManagerValidator:ICampaignManagerValidator
     {

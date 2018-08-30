@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LMS.Modules.LeadEntity.Components" Version="1.0.0" />
+    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LMS.DataProvider\LMS.DataProvider.csproj" />
   </ItemGroup>
 

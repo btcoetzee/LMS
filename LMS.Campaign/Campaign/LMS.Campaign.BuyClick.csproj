@@ -12,6 +12,11 @@
   </Target>
 
   <ItemGroup>
+    <PackageReference Include="LMS.Modules.LeadEntity.Components" Version="1.0.0" />
+    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Campaign.Interface\LMS.Campaign.Interface.csproj" />
     <ProjectReference Include="..\Filter.Interface\LMS.Filter.Interface.csproj" />
     <ProjectReference Include="..\LMS.CampaignValidator.Interface\LMS.CampaignValidator.Interface.csproj" />
@@ -19,12 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.LeadEntity.Components">
-      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadEntity.Interface">
-      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
-    </Reference>
     <Reference Include="LMS.LoggerClient.Console">
       <HintPath>..\..\lib\LMS.LoggerClient.Console.dll</HintPath>
     </Reference>

@@ -1,4 +1,4 @@
-﻿using LMS.LeadEntity.Interface;
+﻿using LMS.Modules.LeadEntity.Interface;
 using LMS.Validator.Interface;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace LMS.DataProvider.Validators
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var requoteValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.RequoteKey)?.Value;
+            var requoteValue = leadEntity.Context.SingleOrDefault(item => item.Id ==Modules.LeadEntity.Interface.Constants.ActivityKeys.RequoteKey)?.Value;
             if (requoteValue == null)
             {
                 if (leadEntity.ErrorList == null)

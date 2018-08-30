@@ -3,7 +3,7 @@
     using System;
     using Newtonsoft.Json;
     using LMS.CampaignManager.Publisher.Interface;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using LMS.LoggerClient.Interface;
     public class CampaignManagerPublisher : ICampaignManagerPublisher
     {

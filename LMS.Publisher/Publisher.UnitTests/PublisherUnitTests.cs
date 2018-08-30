@@ -6,7 +6,7 @@ namespace LMS.Publisher.UnitTests
     using Moq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using LMS.Publisher.Interface;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
 
     [TestClass]
     public class PublisherUnitTests

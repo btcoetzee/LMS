@@ -1,19 +1,15 @@
-namespace LeadValidator.UnitTests
+namespace LMS.LeadValidator.UnitTests
 {
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
-    using Moq;
-    using Microsoft.Extensions.DependencyInjection;
-    using LMS.Validator.Interface;
-    using LMS.LeadEntity.Interface;
-    using LMS.LeadValidator.Implementation;
-    using LMS.LeadEntity.Components;
     using LMS.LoggerClient.Interface;
-    using System.Linq;
-    using System.Collections.Generic;
+    using LMS.Modules.LeadEntity.Components;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Validator.Interface;
+    using LMS.LeadValidator.Implementation;
     using LMS.ValidatorFactory.Interface;
-
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
     [TestClass]
     public class LeadValidatorUnitTests
     {
@@ -24,10 +20,10 @@ namespace LeadValidator.UnitTests
         private Mock<IValidatorFactory> _validatorFactory;
         private ILeadEntity _testLeadEntity;
 
-        string activityId = LMS.LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey;
-        string identityId = LMS.LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey;
-        string sessionId = LMS.LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey;
-        string quotedProductId = LMS.LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey;
+        string activityId = LMS.Modules.LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey;
+        string identityId = LMS.Modules.LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey;
+        string sessionId = LMS.Modules.LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey;
+        string quotedProductId = LMS.Modules.LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey;
 
         
 
@@ -47,15 +43,15 @@ namespace LeadValidator.UnitTests
         /// <summary>
         /// Create an Instance of the LeadEntity
         /// </summary>
-        private class TestLeadEntityClass : ILeadEntity
-        {
+        //private class TestLeadEntityClass : ILeadEntity
+        //{
 
-            public IContext[] Context { get; set; }
-            public IProperty[] Properties { get; set; }
-            public ISegment[] Segments { get; set; }
-            public IResultCollection ResultCollection { get; set; }
-            public List<string> ErrorList { get; set; }
-        }
+        //    public IContext[] Context { get; set; }
+        //    public IProperty[] Properties { get; set; }
+        //    public ISegment[] Segments { get; set; }
+        //    public IResultCollection ResultCollection { get; set; }
+        //    public List<string> ErrorList { get; set; }
+        //}
 
         //struct TestLeadEntityResultClass : IResult
         //{
@@ -72,16 +68,7 @@ namespace LeadValidator.UnitTests
 
         void CreateLeadEntity()
         {
-            _testLeadEntity = new TestLeadEntityClass()
-            {
-                Context = new IContext[]
-                    {},
-                Properties = new IProperty[]
-                    {},
-                Segments = new ISegment[]
-                    {},
-                ResultCollection = new DefaultResultCollection()
-            };
+            _testLeadEntity = new DefaultLeadEntity();
 
         }
 
@@ -244,10 +231,10 @@ namespace LeadValidator.UnitTests
         public void InvalidLeadTest()
         {
             var validator = new LeadValidator(_validatorFactory.Object, _loggingClient.Object);
-            _testLeadEntity.Context = new IContext[] { new DefaultContext ( LMS.LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString() ) ,
-                                                       new DefaultContext ( LMS.LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey, Guid.NewGuid().ToString() )  ,
-                                                       new DefaultContext ( LMS.LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString() ) ,
-                                                       new DefaultContext ( LMS.LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey, Guid.NewGuid().ToString() )
+            _testLeadEntity.Context = new IContext[] { new DefaultContext ( LMS.Modules.LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString() ) ,
+                                                       new DefaultContext ( LMS.Modules.LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey, Guid.NewGuid().ToString() )  ,
+                                                       new DefaultContext ( LMS.Modules.LeadEntity.Interface.Constants.ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString() ) ,
+                                                       new DefaultContext ( LMS.Modules.LeadEntity.Interface.Constants.ContextKeys.QuotedProductKey, Guid.NewGuid().ToString() )
             };
 
             //activityId = "ActivityGUID";

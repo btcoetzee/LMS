@@ -2,7 +2,7 @@
 {
     using System;
     using Compare.Components.Notification.Contract;
-    using LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using LMS.LoggerClient.Interface;
     using Newtonsoft.Json;
     using Publisher.Interface;

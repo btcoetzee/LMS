@@ -7,7 +7,6 @@ namespace LMS.Campaign.UnitTests.Campaign
     using System.Text;
     using LMS.Campaign.Interface;
     using LMS.Decorator.Interface;
-    using LMS.LeadEntity.Interface;
     using LMS.Publisher.Interface;
     using LMS.Validator.Interface;
     using Microsoft.Extensions.DependencyInjection;
@@ -18,12 +17,15 @@ namespace LMS.Campaign.UnitTests.Campaign
     using LMS.LoggerClient.Interface;
     using LMS.Filter.Interface;
     using LMS.Rule.Interface;
-    using LMS.LeadEntity.Components;
+ 
     using LMS.Campaign.BuyClick.Filter;
     using LMS.Campaign.BuyClick.Validator;
     using LMS.Campaign.BuyClick.Rule;
-    using LMS.LeadEntity.Interface.Constants;
+
     using System.Linq;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface.Constants;
+    using LMS.Modules.LeadEntity.Components;
 
 
 

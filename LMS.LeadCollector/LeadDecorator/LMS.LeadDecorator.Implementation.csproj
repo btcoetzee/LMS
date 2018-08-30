@@ -6,18 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LMS.Modules.LeadEntity.Components" Version="1.0.0" />
+    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadEntity.Components">
-      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadEntity.Interface">
-      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LoggerClient.Console">
       <HintPath>..\..\lib\LMS.LoggerClient.Console.dll</HintPath>

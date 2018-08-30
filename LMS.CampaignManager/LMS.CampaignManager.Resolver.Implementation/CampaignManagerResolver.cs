@@ -1,17 +1,14 @@
-﻿using System.Collections.Immutable;
-using System.ComponentModel.DataAnnotations;
-using System.Net.Mail;
-
-namespace LMS.CampaignManager.Resolver.Implementation
+﻿namespace LMS.CampaignManager.Resolver.Implementation
 {
     using System;
     using System.Linq;
     using System.Collections.Generic;
     using LMS.LoggerClient.Interface;
     using LMS.CampaignManager.Resolver.Interface;
-    using LMS.LeadEntity.Interface;
-    using LMS.LeadEntity.Components;
-    using LMS.LeadEntity.Interface.Constants;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface.Constants;
+    using LMS.Modules.LeadEntity.Components;
+
     public class CampaignManagerResolver : ICampaignManagerResolver
     {
         private readonly ILoggerClient _loggerClient;

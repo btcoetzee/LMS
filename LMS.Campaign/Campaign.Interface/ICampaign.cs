@@ -1,6 +1,6 @@
 ﻿namespace LMS.Campaign.Interface
 {
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using System.IO;
     using System.Collections.Generic;
 

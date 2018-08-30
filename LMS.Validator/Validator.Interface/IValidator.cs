@@ -1,7 +1,7 @@
 ﻿namespace LMS.Validator.Interface
 {
     using System;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
 
     public interface IValidator
     {

@@ -6,7 +6,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using LMS.Validator.Interface;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
 
     /// <summary>
     /// 

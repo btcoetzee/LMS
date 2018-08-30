@@ -6,9 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.LeadEntity.Interface">
-      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
-    </Reference>
+    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

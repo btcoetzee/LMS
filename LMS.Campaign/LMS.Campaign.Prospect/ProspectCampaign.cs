@@ -1,14 +1,13 @@
-﻿
-namespace LMS.Campaign.Prospect
+﻿namespace LMS.Campaign.Prospect
 {
     using System;
     using System.Collections.Generic;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using LMS.Campaign.Interface;
     using LMS.CampaignValidator.Interface;
     using LMS.LoggerClient.Interface;
-    using LMS.LeadEntity.Components;
-    using LMS.LeadEntity.Interface.Constants;
+    using LMS.Modules.LeadEntity.Components;
+    using LMS.Modules.LeadEntity.Interface.Constants;
 
     public class ProspectCampaign:ICampaign
     {

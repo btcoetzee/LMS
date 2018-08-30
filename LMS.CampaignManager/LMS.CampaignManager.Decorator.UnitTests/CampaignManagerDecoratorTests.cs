@@ -10,11 +10,11 @@ namespace LMS.CampaignManager.Decorator.UnitTests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using LMS.LoggerClient.Interface;
-    using LMS.LeadEntity.Interface;
-    using LMS.LeadEntity.Components;
     using LMS.CampaignManager.Decorator.Interface;
-    using LMS.LeadEntity.Interface.Constants;
     using LMS.CampaignManager.Decorator.Implementation;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Components;
+    using LMS.Modules.LeadEntity.Interface.Constants;
 
     [TestClass]
     public class CampaignManagerDecoratorTests

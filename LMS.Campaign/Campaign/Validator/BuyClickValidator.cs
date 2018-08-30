@@ -3,8 +3,10 @@
     using System;
     using System.Linq;
     using LMS.CampaignValidator.Interface;
-    using LMS.LeadEntity.Interface;
     using LMS.LoggerClient.Interface;
+    using LMS.LoggerClientEventTypeControl.Interface.Constants;
+    using LMS.Modules.LeadEntity.Interface;
+
     public class BuyClickValidator : ICampaignValidator
     {
         readonly ILoggerClient _loggerClient;
@@ -23,13 +25,13 @@
             var errorStr = string.Empty;
             try
             {
-                var phoneNumberValue = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber)?.Value;
+                var phoneNumberValue = leadEntity.Properties.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber)?.Value;
                 if ((phoneNumberValue == null) || (phoneNumberValue == String.Empty))
                 {
                     errorStr += "PhoneNumber Not In Properties of LeadEntityObject\n";
                 }
                 
-                var ageValue = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PNI_Age)?.Value;
+                var ageValue = leadEntity.Properties.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.PropertyKeys.PNI_Age)?.Value;
                 if ((ageValue == null) || (!int.TryParse(ageValue.ToString(), out int pniAge)))
                 {
                     errorStr += "PNI_Age Invalid or Not In Properties of LeadEntityObject\n";
@@ -43,7 +45,7 @@
 
             if (errorStr != String.Empty)
             {
-                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext =errorStr,ProcessContext = processContext,SolutionContext = solutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
+                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext =errorStr,ProcessContext = processContext,SolutionContext = solutionContext, EventType = LoggerClientEventType.LoggerClientEventTypes.Information });
                 return false;
             }
             return true;

@@ -10,6 +10,10 @@
   </Target>
 
   <ItemGroup>
+    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LMS.CampaignManager.Decorator.Interface\LMS.CampaignManager.Decorator.Interface.csproj" />
     <ProjectReference Include="..\LMS.CampaignManager.Publisher.Interface\LMS.CampaignManager.Publisher.Interface.csproj" />
     <ProjectReference Include="..\LMS.CampaignManager.Resolver.Interface\LMS.CampaignManager.Resolver.Interface.csproj" />
@@ -20,12 +24,6 @@
   <ItemGroup>
     <Reference Include="LMS.Campaign.Interface">
       <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadEntity.Components">
-      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadEntity.Interface">
-      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>

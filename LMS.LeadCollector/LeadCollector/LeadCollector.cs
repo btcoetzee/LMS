@@ -5,13 +5,13 @@
     using System.Collections.Generic;
     using LMS.LeadCollector.Interface;
     using LMS.Decorator.Interface;
-    using LMS.LeadEntity.Interface;
     using LMS.Validator.Interface;
     using LMS.Publisher.Interface;
     using LMS.LoggerClient.Interface;
-    using LMS.LeadEntity.Components;
-    using LMS.LeadEntity.Interface.Constants;
     using Newtonsoft.Json;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface.Constants;
+    using LMS.Modules.LeadEntity.Components;
 
     public class LeadCollector : ILeadCollector
     {

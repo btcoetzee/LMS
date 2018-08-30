@@ -1,4 +1,4 @@
-﻿using LMS.LeadEntity.Interface;
+﻿using LMS.Modules.LeadEntity.Interface;
 using LMS.Validator.Interface;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace LMS.DataProvider.Validators
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var renterValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.SegementKeys.RenterKey)?.Value;
+            var renterValue = leadEntity.Context.SingleOrDefault(item => item.Id ==Modules.LeadEntity.Interface.Constants.SegementKeys.RenterKey)?.Value;
             if (renterValue == null)
             {
                 if (leadEntity.ErrorList == null)

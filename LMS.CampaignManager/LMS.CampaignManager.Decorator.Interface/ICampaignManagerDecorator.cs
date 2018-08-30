@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
 
     public interface ICampaignManagerDecorator 
     {

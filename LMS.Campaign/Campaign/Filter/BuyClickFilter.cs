@@ -1,12 +1,13 @@
 ﻿namespace LMS.Campaign.BuyClick.Filter
 {
-    using LMS.Filter.Interface;
-    using LMS.LoggerClient.Interface;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Filter.Interface;
+    using LMS.LoggerClient.Interface;
+    using LMS.LoggerClientEventTypeControl.Interface.Constants;
 
     public class BuyClickFilter : IFilter
     {
@@ -32,7 +33,7 @@
             try
             {
                 //retrieve activityGuid from leadEntity
-                var activityGuidValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey)?.Value;
+                var activityGuidValue = leadEntity.Context.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey)?.Value;
                 if (activityGuidValue == null)
                 {
                     errorStr += "No activityGuid Found In Context of LeadEntityObject\n";
@@ -49,13 +50,13 @@
             }
             catch (Exception ex)
             {
-                _loggerClient.Log(new DefaultLoggerClientErrorObject { OperationContext = ex.Message, ProcessContext = processContext, SolutionContext = solutionContext, Exception = ex, ErrorContext = ex.Message, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Error });
+                _loggerClient.Log(new DefaultLoggerClientErrorObject { OperationContext = ex.Message, ProcessContext = processContext, SolutionContext = solutionContext, Exception = ex, ErrorContext = ex.Message, EventType = LoggerClientEventType.LoggerClientEventTypes.Error });
                 return false;
             }
 
             if (errorStr != String.Empty)
             {
-                _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = errorStr, ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
+                _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = errorStr, ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventType.LoggerClientEventTypes.Information });
                 return false;
             }
             return true;

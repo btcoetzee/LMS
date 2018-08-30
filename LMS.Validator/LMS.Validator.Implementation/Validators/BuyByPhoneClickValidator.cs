@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LMS.LeadEntity.Interface;
+using LMS.Modules.LeadEntity.Interface;
 using LMS.Validator.Interface;
 
 namespace LMS.Validator.Implementation.Validators
@@ -17,7 +17,7 @@ namespace LMS.Validator.Implementation.Validators
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var buyByPhoneClickValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.BuyByPhoneClickKey)?.Value;
+            var buyByPhoneClickValue = leadEntity.Context.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.ActivityKeys.BuyByPhoneClickKey)?.Value;
             if (buyByPhoneClickValue == null)
             {
                 if (leadEntity.ErrorList == null)

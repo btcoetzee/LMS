@@ -3,9 +3,10 @@
     using System;
     using System.Linq;
     using LMS.CampaignValidator.Interface;
-    using LMS.LeadEntity.Interface;
     using LMS.LoggerClient.Interface;
     using LMS.LoggerClientEventTypeControl.Implementation;
+    using LMS.LoggerClientEventTypeControl.Interface.Constants;
+    using LMS.Modules.LeadEntity.Interface;
 
     public class ProspectValidator : ICampaignValidator
     {
@@ -20,11 +21,11 @@
         public bool ValidLead(ILeadEntityImmutable leadEntity)
         {
             string processContext = "ValidLead";
-            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Validating the Lead",ProcessContext = processContext,SolutionContext = solutionContext, EventType = LMS.LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
+            _loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "Validating the Lead",ProcessContext = processContext,SolutionContext = solutionContext, EventType = LoggerClientEventType.LoggerClientEventTypes.Information });
             var errorStr = string.Empty;
             try
             {
-                var phoneNumberValue = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber)?.Value;
+                var phoneNumberValue = leadEntity.Properties.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.PropertyKeys.PhoneNumber)?.Value;
                 if (phoneNumberValue == null)
                 {
                     errorStr += "PhoneNumber Invalid or Not In Properties of LeadEntityObject\n";
@@ -38,7 +39,7 @@
 
             if (errorStr != String.Empty)
             {
-                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext =errorStr,ProcessContext = processContext,SolutionContext = solutionContext, EventType = LMS.LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
+                _loggerClient.Log(new DefaultLoggerClientObject{OperationContext =errorStr,ProcessContext = processContext,SolutionContext = solutionContext, EventType = LoggerClientEventType.LoggerClientEventTypes.Information });
                 return false;
             }
             return true;

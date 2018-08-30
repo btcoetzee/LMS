@@ -1,6 +1,7 @@
 ﻿namespace LMS.ResolutionValidator
 {
-    using LMS.LeadEntity.Interface;
+
+    using LMS.Modules.LeadEntity.Interface;
     using LMS.Validator.Interface;
     using System;
  

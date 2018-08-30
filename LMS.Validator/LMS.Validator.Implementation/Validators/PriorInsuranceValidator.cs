@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using LMS.LeadEntity.Interface;
+using LMS.Modules.LeadEntity.Interface;
 using LMS.Validator.Interface;
 
 namespace LMS.Validator.Implementation.Validators
@@ -16,7 +16,7 @@ namespace LMS.Validator.Implementation.Validators
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var priorInsuranceValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey)?.Value;
+            var priorInsuranceValue = leadEntity.Context.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey)?.Value;
             if (priorInsuranceValue == null)
             {
                 if (leadEntity.ErrorList == null)

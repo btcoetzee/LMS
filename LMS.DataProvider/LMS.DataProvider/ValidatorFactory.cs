@@ -1,6 +1,6 @@
 ﻿namespace LMS.DataProvider
 {
-    using LMS.LeadEntity.Interface;
+
     using System;
     using System.Collections.Generic;
     using System.Text;

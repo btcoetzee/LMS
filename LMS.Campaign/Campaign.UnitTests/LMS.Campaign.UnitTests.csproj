@@ -7,26 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LMS.Modules.LeadEntity.Components" Version="1.0.0" />
+    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
     <PackageReference Include="Moq" Version="4.8.2" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Campaign.Interface\LMS.Campaign.Interface.csproj" />
+    <ProjectReference Include="..\Campaign\LMS.Campaign.BuyClick.csproj" />
     <ProjectReference Include="..\Filter.Interface\LMS.Filter.Interface.csproj" />
+    <ProjectReference Include="..\LMS.CampaignValidator.Interface\LMS.CampaignValidator.Interface.csproj" />
     <ProjectReference Include="..\Rule.Interface\LMS.Rule.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.Campaign.BuyClick">
-      <HintPath>..\..\lib\LMS.Campaign.BuyClick.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignValidator.Interface">
-      <HintPath>..\..\lib\LMS.CampaignValidator.Interface.dll</HintPath>
-    </Reference>
     <Reference Include="LMS.Decorator.Interface">
       <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
     </Reference>

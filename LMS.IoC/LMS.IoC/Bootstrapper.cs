@@ -13,7 +13,6 @@ namespace LMS.IoC
     using Decorator.Interface;
     using LeadCollector.Implementation;
     using LeadCollector.Interface;
-    using LeadEntity.Interface;
     using LoggerClient.Console;
     using LoggerClient.Interface;
     using Microsoft.Extensions.DependencyInjection;
@@ -49,6 +48,7 @@ namespace LMS.IoC
     using LMS.ValidatorFactory.Interface;
     using LMS.DataProvider;
     using LMS.ValidatorDataProvider.Interface;
+    using LMS.Modules.LeadEntity.Interface;
 
     public static class Bootstrapper
     {

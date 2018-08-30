@@ -7,11 +7,11 @@ namespace LMS.LeadCollector.UnitTests
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using LMS.Decorator.Interface;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using LMS.Validator.Interface;
     using LMS.Publisher.Interface;
     using LMS.LoggerClient.Interface;
-    using LMS.LeadEntity.Components;
+    using LMS.Modules.LeadEntity.Components;
     using LMS.LeadCollector.Implementation;
 
     [TestClass]

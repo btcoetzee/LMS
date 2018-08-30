@@ -1,14 +1,14 @@
 namespace LMS.LeadDecorator.UnitTests
 {
     using LMS.Decorator.Interface;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using System;
     using LMS.LeadDecorator.Implementation;
     using LMS.LoggerClient.Interface;
-    using LMS.LeadEntity.Components;
+    using LMS.Modules.LeadEntity.Components;
     using System.Collections.Generic;
 
     [TestClass]

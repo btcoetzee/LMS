@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace LMS.CampaignManager.Interface
+﻿namespace LMS.CampaignManager.Interface
 {
-    using LMS.LeadEntity.Interface;
+    using System.Collections.Generic;
+    using LMS.Modules.LeadEntity.Interface;
 
     public interface ICampaignManager
     {

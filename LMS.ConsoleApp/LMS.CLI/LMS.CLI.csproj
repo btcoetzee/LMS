@@ -12,15 +12,13 @@
     <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
     <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.2" />
     <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
+    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="Moq" Version="4.8.3" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.Campaign.Implementation">
-      <HintPath>..\..\lib\LMS.Campaign.Implementation.dll</HintPath>
-    </Reference>
     <Reference Include="LMS.Campaign.Interface">
       <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
     </Reference>
@@ -59,15 +57,6 @@
     </Reference>
     <Reference Include="LMS.LeadDecorator.Implementation">
       <HintPath>..\..\lib\LMS.LeadDecorator.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadEntity.Components">
-      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadEntity.Interface">
-      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadEntity.JSON">
-      <HintPath>..\..\lib\LMS.LeadEntity.JSON.dll</HintPath>
     </Reference>
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>

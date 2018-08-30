@@ -5,8 +5,7 @@
     using LMS.CampaignManager.Interface;
     using LMS.CampaignManager.Subscriber.Interface;
     using LMS.LoggerClient.Interface;
-    using LMS.LeadEntity.Interface;
-
+    using LMS.Modules.LeadEntity.Interface;
 
     public class CampaignManagerSubscriber : ICampaignManagerSubscriber
     {

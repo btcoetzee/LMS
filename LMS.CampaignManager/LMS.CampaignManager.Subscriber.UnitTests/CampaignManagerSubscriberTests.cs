@@ -14,10 +14,9 @@ namespace LMS.CampaignManager.Subscriber.UnitTests
     using LMS.LoggerClient.Interface;
     using LMS.CampaignManager.Subscriber.Implementation;
     using LMS.CampaignManager.Interface;
-    using LMS.LeadEntity.Interface;
     using LMS.CampaignManager.Subscriber.Interface;
-    using LMS.LeadEntity.Components;
-
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Components;
 
     [TestClass]
     public class CampaignManagerSubscriberTests

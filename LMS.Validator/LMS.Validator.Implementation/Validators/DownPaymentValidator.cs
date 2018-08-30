@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LMS.LeadEntity.Interface;
+using LMS.Modules.LeadEntity.Interface;
 using LMS.Validator.Interface;
 
 namespace LMS.Validator.Implementation.Validators
@@ -17,7 +17,7 @@ namespace LMS.Validator.Implementation.Validators
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var downPaymentValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ActivityKeys.DownPaymentKey)?.Value;
+            var downPaymentValue = leadEntity.Context.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.ActivityKeys.DownPaymentKey)?.Value;
             if (downPaymentValue == null)
             {
                 if (leadEntity.ErrorList == null)

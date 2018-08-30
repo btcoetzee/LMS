@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using LMS.CampaignManager.Decorator.Interface;
-    using LMS.LeadEntity.Interface;
     using System.Linq;
-    using LMS.LeadEntity.Components;
-    using LMS.LeadEntity.Interface.Constants;
     using LMS.LoggerClient.Interface;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Components;
+    using LMS.Modules.LeadEntity.Interface.Constants;
 
     public class CampaignManagerDecorator: ICampaignManagerDecorator
     {

@@ -4,7 +4,7 @@ namespace LMS.Rule.UnitTests
     using System.IO;
     using System.Text;
     using LMS.CampaignValidator.Interface;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using LMS.Rule.Interface;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestTools.UnitTesting;

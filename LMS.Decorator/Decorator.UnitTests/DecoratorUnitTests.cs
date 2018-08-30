@@ -7,7 +7,7 @@ namespace LMS.Decorator.UnitTests
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using LMS.Decorator.Interface;
 
 

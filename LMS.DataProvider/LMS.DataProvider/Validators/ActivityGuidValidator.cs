@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using LMS.Validator.Interface;
 
     public class ActivityGuidValidator : IValidator
@@ -21,7 +21,7 @@
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var activityGuidValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey)?.Value;
+            var activityGuidValue = leadEntity.Context.SingleOrDefault(item => item.Id ==Modules.LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey)?.Value;
             if (activityGuidValue == null)
             {
                 if (leadEntity.ErrorList == null)

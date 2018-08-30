@@ -9,13 +9,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Validator.Interface\LMS.Validator.Interface.csproj" />
+    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.LeadEntity.Interface">
-      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Validator.Interface\LMS.Validator.Interface.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -3,13 +3,11 @@
     using System.Globalization;
     using System.Reflection;
     using System.Reflection.Emit;
-    using LMS.LeadEntity.Components;
-    using LMS.LeadEntity.Interface;
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using LMS.LeadEntity.Interface.Constants;
     using System.Linq;
+    using LMS.Modules.LeadEntity.Interface;
 
     public class ValidatorHandlerStaticFunc
     {

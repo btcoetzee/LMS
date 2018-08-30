@@ -3,8 +3,11 @@
     using System;
     using System.Linq;
     using LMS.Rule.Interface;
-    using LMS.LeadEntity.Interface;
     using LMS.LoggerClient.Interface;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface.Constants;
+    using LMS.LoggerClientEventTypeControl.Interface.Constants;
+
     public class BuyClickRule : IRule
     {
         readonly ILoggerClient _loggerClient;
@@ -26,7 +29,7 @@
             var errorStr = string.Empty;
             try
             {
-                var priorInsuranceValue = leadEntity.Properties.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey)?.Value;
+                var priorInsuranceValue = leadEntity.Properties.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey)?.Value;
               
                 if ((priorInsuranceValue == null) || (!bool.TryParse(priorInsuranceValue.ToString(), out bool priorInsurance)))
                 {
@@ -48,7 +51,7 @@
 
             if (errorStr != String.Empty)
             {
-                _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = errorStr, ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
+                _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = errorStr, ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventType.LoggerClientEventTypes.Information });
                 return false;
             }
             return true;

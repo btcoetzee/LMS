@@ -8,12 +8,11 @@ using Newtonsoft.Json;
 
 namespace LMS.ConsoleApp
 {
-    using LeadEntity.Interface;
+
     using System;
     using System.Linq;
     using IoC;
     using LeadCollector.Interface;
-    using LeadEntity.Interface.Constants;
     using Microsoft.Extensions.DependencyInjection;
     using LMS.LoggerClient.Console;
     using LMS.LoggerClient.Interface;
@@ -22,6 +21,10 @@ namespace LMS.ConsoleApp
     using LMS.DataProvider;
     using LMS.ValidatorFactory.Interface;
     using LMS.Validator.Implementation;
+    using LMS.Modules.LeadEntity.Interface.Constants;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.LeadCollector.Implementation;
+    using LMS.Modules.LeadEntity.Components;
 
     public class Program
     {

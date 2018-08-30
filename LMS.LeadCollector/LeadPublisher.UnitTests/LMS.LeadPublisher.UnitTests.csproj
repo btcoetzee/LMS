@@ -12,6 +12,8 @@
     <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
     <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.2" />
     <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
+    <PackageReference Include="LMS.Modules.LeadEntity.Components" Version="1.0.0" />
+    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="Moq" Version="4.8.3" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
@@ -23,9 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.LeadEntity.Interface">
-      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
-    </Reference>
     <Reference Include="LMS.LoggerClient.Interface">
       <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
     </Reference>

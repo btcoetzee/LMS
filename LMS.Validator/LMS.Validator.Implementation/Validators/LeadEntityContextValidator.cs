@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using LMS.LeadEntity.Interface;
+using LMS.Modules.LeadEntity.Interface;
 using LMS.Validator.Interface;
 
 namespace LMS.Validator.Implementation.Validators

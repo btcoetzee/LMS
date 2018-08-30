@@ -10,15 +10,15 @@ namespace LMS.CampaignManager.UnitTests
     using Moq;
     using CampaignManager.Implementation;
     using LMS.LoggerClient.Interface;
-    using LMS.LeadEntity.Interface.Constants;
     using LMS.CampaignManager.Resolver.Interface;
     using LMS.CampaignManager.Subscriber.Interface;
-    using LMS.LeadEntity.Interface;
-    using LMS.LeadEntity.Components;
     using LMS.CampaignManager.Decorator.Interface;
     using LMS.CampaignManager.Validator.Interface;
     using LMS.CampaignManager.Publisher.Interface;
     using LMS.Campaign.Interface;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Components;
+    using LMS.Modules.LeadEntity.Interface.Constants;
 
     [TestClass]
     public class CampaignManagerTests

@@ -10,7 +10,7 @@ namespace LMS.LeadPublisher.UnitTests
     using Compare.Components.Notification.Publishers;
     using Compare.Components.Notification.Subscribers;
     using Implementation;
-    using LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using LoggerClient.Interface;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;

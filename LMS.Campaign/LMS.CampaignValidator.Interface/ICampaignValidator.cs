@@ -1,6 +1,8 @@
 ﻿namespace LMS.CampaignValidator.Interface
 {
-    using LMS.LeadEntity.Interface;
+
+    using LMS.Modules.LeadEntity.Interface;
+
     public interface ICampaignValidator 
     {
         // Using the Immutable LeadEntity Object

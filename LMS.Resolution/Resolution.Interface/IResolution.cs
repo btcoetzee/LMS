@@ -1,6 +1,6 @@
 ﻿namespace LMS.Resolution.Interface
 {
-    using LMS.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
     using System;
 
 

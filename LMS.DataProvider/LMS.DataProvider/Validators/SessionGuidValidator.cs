@@ -1,4 +1,4 @@
-﻿using LMS.LeadEntity.Interface;
+﻿using LMS.Modules.LeadEntity.Interface;
 using LMS.Validator.Interface;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace LMS.DataProvider.Validators
 
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var sessionGuidValue = leadEntity.Context.SingleOrDefault(item => item.Id == LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey)?.Value;
+            var sessionGuidValue = leadEntity.Context.SingleOrDefault(item => item.Id ==Modules.LeadEntity.Interface.Constants.ContextKeys.SessionGuidKey)?.Value;
             if (sessionGuidValue == null)
             {
                 if (leadEntity.ErrorList == null)

@@ -5,9 +5,9 @@
     using LMS.Campaign.Interface;
     using LMS.CampaignValidator.Interface;
     using LMS.Filter.Interface;
-    using LMS.LeadEntity.Components;
-    using LMS.LeadEntity.Interface;
-    using LMS.LeadEntity.Interface.Constants;
+    using LMS.Modules.LeadEntity.Components;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface.Constants;
     using LMS.LoggerClient.Interface;
     using LMS.Rule.Interface;
 

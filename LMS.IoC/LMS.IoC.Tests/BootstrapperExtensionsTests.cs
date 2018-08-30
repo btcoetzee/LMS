@@ -12,12 +12,12 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using LMS.Decorator.Interface;
     using LMS.LeadDecorator.Implementation;
-    using LMS.LeadEntity.Interface;
-    using LMS.LeadEntity.Components;
     using Moq;
     using LMS.Publisher.Interface;
     using StackExchange.Redis;
     using LMS.CampaignManager.Subscriber.Implementation;
+    using LMS.Modules.LeadEntity.Components;
+    using LMS.Modules.LeadEntity.Interface;
 
     [TestClass]
     public class BootstrapperExtensionsTests

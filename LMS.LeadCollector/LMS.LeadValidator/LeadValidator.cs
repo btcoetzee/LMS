@@ -1,13 +1,11 @@
 ﻿namespace LMS.LeadValidator.Implementation
 {
-    using System.Linq;
+    using LMS.LoggerClient.Interface;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Validator.Interface;
+    using LMS.ValidatorFactory.Interface;
     using System;
     using System.Collections.Generic;
-    using LMS.LoggerClient.Interface;
-    using LMS.Decorator.Interface;
-    using LMS.LeadEntity.Interface;
-    using LMS.ValidatorFactory.Interface;
-    using LMS.Validator.Interface;
 
     public class LeadValidator : IValidator
     {

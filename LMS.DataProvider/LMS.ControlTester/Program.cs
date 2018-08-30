@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace LMS.ControlTester
 {
-    using LMS.LeadEntity.Components;
-    using LMS.LeadEntity.Interface;
-    using LMS.LeadEntity.Interface.Constants;
+    using LMS.Modules.LeadEntity.Components;
+    using LMS.Modules.LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface.Constants;
     using System;
     using LMS.DataProvider;
     using LMS.Validator.Interface;

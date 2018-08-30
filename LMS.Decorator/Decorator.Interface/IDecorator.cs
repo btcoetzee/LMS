@@ -1,7 +1,7 @@
 ﻿namespace LMS.Decorator.Interface
 {
     using System.Collections.Generic;
-    using LeadEntity.Interface;
+    using LMS.Modules.LeadEntity.Interface;
 
     public interface IDecorator
     {

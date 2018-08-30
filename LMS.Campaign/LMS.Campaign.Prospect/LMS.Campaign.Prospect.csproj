@@ -6,13 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LMS.Modules.LeadEntity.Components" Version="1.0.0" />
+    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Campaign.Interface\LMS.Campaign.Interface.csproj" />
     <ProjectReference Include="..\LMS.CampaignValidator.Interface\LMS.CampaignValidator.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.Campaign.Interface">
-      <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
-    </Reference>
     <Reference Include="LMS.LeadEntity.Components">
       <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
     </Reference>
