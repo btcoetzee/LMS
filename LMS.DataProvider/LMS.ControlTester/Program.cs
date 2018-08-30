@@ -9,6 +9,7 @@ namespace LMS.ControlTester
     using System;
     using LMS.DataProvider;
     using LMS.Validator.Interface;
+    using LMS.Validator.Implementation;
 
     public class Program
     {
@@ -52,25 +53,25 @@ namespace LMS.ControlTester
 
             };
 
-            var validatorDataProvider = new ValidatorDataProvider();
-            var validatorFactory = new ValidatorFactory(validatorDataProvider);
-            var validators = validatorFactory.BuildLeadCollectorValidators();
-            bool allValid = true;
-            // Process all validators before returning.
-            foreach (var validator in validators)
-            {
-                var valid = validator.ValidLead(_testLeadEntity);
-                if (!valid)
-                {
-                    allValid = false;
-                }
-            }
-            if (!allValid)
-            {
+            //var validatorDataProvider = new ValidatorDataProvider();
+            //var validatorFactory = new ValidatorFactory(validatorDataProvider);
+            //var validators = validatorFactory.BuildLeadCollectorValidators();
+            //bool allValid = true;
+            //// Process all validators before returning.
+            //foreach (var validator in validators)
+            //{
+            //    var valid = validator.ValidLead(_testLeadEntity);
+            //    if (!valid)
+            //    {
+            //        allValid = false;
+            //    }
+            //}
+            //if (!allValid)
+            //{
             
-               Console.WriteLine("Not All Valid");
-            }
-            Console.ReadKey();
+            //   Console.WriteLine("Not All Valid");
+            //}
+            //Console.ReadKey();
 
 
         }

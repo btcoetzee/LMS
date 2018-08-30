@@ -9,6 +9,7 @@
     public class ValidatorContext : DbContext
     {
         public DbSet<Validator> Validators { get; set; }
+        public DbSet<ControlAssembly> ControlAssemblies { get; set; }
         public DbSet<LeadCollectorValidator> LeadCollectorValidators { get; set; }
         public DbSet<CampaignManagerValidator> CampaignManagerValidators { get; set; }
         public DbSet<CampaignValidator> CampaignValidators { get; set; }
@@ -30,6 +31,14 @@
             }
         }
     }
+    [Table("ControlAssembly", Schema = "dbo")]
+    public class ControlAssembly
+    {
+        public int ControlAssemblyId { get; set; }
+        public string Description { get; set; }
+        public bool Enabled { get; set; }
+        public string AssemblyName { get; set; }
+    }
     [Table("Validator", Schema="dbo")]
     public class Validator
     {
@@ -37,6 +46,7 @@
         public string Description { get; set; }
         public bool Enabled { get; set; }
         public string ClassName { get; set; }
+        public int ControlAssemblyId { get; set; }
     }
 
     [Table("LeadCollectorValidator", Schema = "dbo")]

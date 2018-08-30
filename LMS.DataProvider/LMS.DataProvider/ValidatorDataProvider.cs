@@ -1,5 +1,6 @@
 ﻿namespace LMS.DataProvider
 {
+    using LMS.ValidatorDataProvider.Interface.ValidatorEntites;
     using LMS.ValidatorDataProvider.Interface;
     using System.Collections.Generic;
     using System;
@@ -14,26 +15,36 @@
         {
         }
 
-        public List<string> LeadCollectorValidatorClassNameList()
+        public List<ValidatorClassAndAssemblyData> LeadCollectorValidatorClassAndAssemblyList()
         {
-            var classNameList = new List<String>();
+            var classAndAssemblyList = new List<ValidatorClassAndAssemblyData>();
 
             // Create the className List
             using (var context = new ValidatorContext())
             {
+                int prevAssemblyId = 0;  //Initialize to force first lookup for ControlAssemblyId
+                string assemblyName = String.Empty;
                 foreach (var leadCollectorValidator in context.LeadCollectorValidators)
                 {
                     // Select the validator
                     var validator = context.Validators.FirstOrDefault(v => v.ValidatorId == leadCollectorValidator.ValidatorId);
-                    // var className = context.Validators.Where(v => v.ValidatorId == leadCollectorValidator.ValidatorId).Select(v => v.ClassName).ToString();
-                    //var className = context.Validators.Where(v => v.ValidatorId == leadCollectorValidator.ValidatorId).Select(v => new { ClassName = v.ClassName}).ToString();
 
+                    // Select different Assembly if different from prev - Most Validators in same assembly
+                    if (validator != null && validator.ControlAssemblyId != prevAssemblyId)
+                    {
+
+                        assemblyName = context.ControlAssemblies.Where(a => a.ControlAssemblyId == validator.ControlAssemblyId).Select(a => a.AssemblyName)
+                            .SingleOrDefault();
+                        prevAssemblyId = validator.ControlAssemblyId;
+
+                    }
+    
                     if (validator != null)
                     {
-                        classNameList.Add(validator.ClassName);
+                        classAndAssemblyList.Add(new ValidatorClassAndAssemblyData(validator.ClassName, assemblyName));
                     }
                 }
-                return classNameList;
+                return classAndAssemblyList;
             }
         }
     }

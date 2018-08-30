@@ -63,7 +63,7 @@
             {
                 _loggerClient.Log(new DefaultLoggerClientErrorObject
                 {
-                    OperationContext = "Exception in Validation of Lead",ProcessContext = processContext,SolutionContext = solutionContext,Exception = ex,ErrorContext = ex.Message, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information
+                    OperationContext = "Exception in Validation of Lead",ProcessContext = processContext,SolutionContext = solutionContext,Exception = ex,ErrorContext = ex.Message, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Error
                 });
                 return false;
             }

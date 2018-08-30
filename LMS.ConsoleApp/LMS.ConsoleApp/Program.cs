@@ -21,6 +21,7 @@ namespace LMS.ConsoleApp
     using LMS.LoggerClientEventTypeControl.Interface;
     using LMS.DataProvider;
     using LMS.ValidatorFactory.Interface;
+    using LMS.Validator.Implementation;
 
     public class Program
     {
