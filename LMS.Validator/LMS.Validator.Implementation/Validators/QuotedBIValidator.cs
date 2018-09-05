@@ -17,7 +17,7 @@ namespace LMS.Validator.Implementation.Validators
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var quotedBIValue = leadEntity.Context.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.PropertyKeys.QuotedBIKey)?.Value;
+            var quotedBIValue = leadEntity.Properties.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.PropertyKeys.QuotedBIKey)?.Value;
             if (quotedBIValue == null)
             {
                 if (leadEntity.ErrorList == null)

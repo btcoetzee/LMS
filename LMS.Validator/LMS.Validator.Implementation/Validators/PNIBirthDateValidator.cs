@@ -17,7 +17,7 @@ namespace LMS.Validator.Implementation.Validators
         /// <returns></returns>
         public bool ValidLead(ILeadEntity leadEntity)
         {
-            var pniBirthDateValue = leadEntity.Context.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.PropertyKeys.PNI_Age)?.Value;
+            var pniBirthDateValue = leadEntity.Properties.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.PropertyKeys.PNI_Age)?.Value;
             if (pniBirthDateValue == null)
             {
                 if (leadEntity.ErrorList == null)
