@@ -4,25 +4,18 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <DebugType>Full</DebugType>
     <IsPackable>false</IsPackable>
+    <AssemblyName>Compare.Services.LMS.Rule.UnitTests</AssemblyName>
+    <RootNamespace>Compare.Services.LMS.Rule.UnitTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Common.Common.Interfaces" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.ServicesLMS.Modules.LeadEntity.Components" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
     <PackageReference Include="Moq" Version="4.8.2" />
     <PackageReference Include="MSTest.TestFramework" Version="1.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\LMS.CampaignValidator.Interface\LMS.CampaignValidator.Interface.csproj" />
-    <ProjectReference Include="..\Rule.Interface\LMS.Rule.Interface.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="LMS.Validator.Interface">
-      <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

@@ -1,41 +1,34 @@
-namespace LMS.CampaignManager.UnitTests
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using Compare.Components.Notification.Contract;
+using Compare.Services.LMS.CampaignManager.Interface;
+using Compare.Services.LMS.CampaignManager.Implementation;
+using Compare.Services.LMS.Campaign.Interface;
+using Compare.Services.LMS.Common.Common.Interfaces;
+using Compare.Services.LMS.Controls.Validator.Interface;
+using Compare.Services.LMS.Modules.LeadEntity.Components;
+using Compare.Services.LMS.Modules.LeadEntity.Interface;
+using Compare.Services.LMS.Modules.LeadEntity.Interface.Constants;
+using Compare.Services.LMS.Modules.LoggerClient.Interface;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+
+namespace Compare.Services.LMS.CampaignManager.UnitTests
 {
-
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
-    using System.Linq.Expressions;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using CampaignManager.Implementation;
-    using LMS.LoggerClient.Interface;
-    using LMS.CampaignManager.Resolver.Interface;
-    using LMS.CampaignManager.Subscriber.Interface;
-    using LMS.CampaignManager.Decorator.Interface;
-    using LMS.CampaignManager.Validator.Interface;
-    using LMS.CampaignManager.Publisher.Interface;
-    using LMS.Campaign.Interface;
-    using LMS.Modules.LeadEntity.Interface;
-    using LMS.Modules.LeadEntity.Components;
-    using LMS.Modules.LeadEntity.Interface.Constants;
-
     [TestClass]
     public class CampaignManagerTests
     {
 
         private static IServiceProvider _campaignManagerServiceProvider;
-        private Mock<ICampaignManagerSubscriber> _campaignManagerSubscriber;
-        private Mock<List<ICampaign>> _campaignCollection;
-        private Mock<ICampaignManagerDecorator> _campaignManagerDecorator;
-        private Mock<List<ICampaignManagerValidator>> _campaignManagerValidatorCollection;
-        private Mock<ICampaignManagerResolver> _campaignManagerResolver;
-        private Mock<ICampaignManagerPublisher> _campaignManagerPublisher;
+        private Mock<ICampaignManagerConfig> _campaignManagerConfig;
         private Mock<ILoggerClient> _loggerClient;
         private static readonly string[] EmptyResultArray = new string[] { };
         private DefaultLeadEntity _testLeadEntity;
         private List<IResult> _testCampaignManagerResultList;
         private readonly int _testMultiThreadedWaitTime = 200;
+        private readonly int _testCampaignManagerId = 1;
  
         /// <summary>
         /// Initializes this instance.
@@ -44,23 +37,13 @@ namespace LMS.CampaignManager.UnitTests
         public void Initialize()
         {
             // Mock the Components that is part of the CampaignManager
-            _campaignManagerSubscriber = new Mock<ICampaignManagerSubscriber>();
-            _campaignCollection = new Mock<List<ICampaign>> ();
-            _campaignManagerValidatorCollection = new Mock<List<ICampaignManagerValidator>>();
-            _campaignManagerDecorator = new Mock<ICampaignManagerDecorator>();
-            _campaignManagerResolver = new Mock<ICampaignManagerResolver>();
-            _campaignManagerPublisher = new Mock<ICampaignManagerPublisher>();
+            _campaignManagerConfig = new Mock<ICampaignManagerConfig>();
             _loggerClient = new Mock<ILoggerClient>();
       
 
             // Create Service Providers 
             _campaignManagerServiceProvider = new ServiceCollection()
-                .AddSingleton(typeof(ICampaignManagerSubscriber), _campaignManagerSubscriber)
-                .AddSingleton(typeof(List<ICampaign>), _campaignCollection)
-                .AddSingleton(typeof(List<ICampaignManagerValidator>), _campaignManagerValidatorCollection)
-                .AddSingleton(typeof(ICampaignManagerDecorator), _campaignManagerDecorator.Object)
-                .AddSingleton(typeof(ICampaignManagerResolver), _campaignManagerResolver)
-                .AddSingleton(typeof(ICampaignManagerPublisher), _campaignManagerPublisher)
+                .AddSingleton(typeof(ICampaignManagerConfig), _campaignManagerConfig)
                 .AddSingleton(typeof(ILoggerClient), _loggerClient.Object)
                 .BuildServiceProvider();
 
@@ -91,19 +74,8 @@ namespace LMS.CampaignManager.UnitTests
         [TestCleanup]
         public void Cleanup()
         {
-
-            _campaignManagerSubscriber.VerifyAll();
-            _campaignManagerSubscriber = null;
-            _campaignCollection.VerifyAll();
-            _campaignCollection = null;
-            _campaignManagerValidatorCollection.VerifyAll();
-            _campaignManagerValidatorCollection = null;
-            _campaignManagerDecorator.VerifyAll();
-            _campaignManagerDecorator = null;
-            _campaignManagerResolver.VerifyAll();
-            _campaignManagerResolver = null;
-            _campaignManagerPublisher.VerifyAll();
-            _campaignManagerPublisher = null;
+            _campaignManagerConfig.VerifyAll();
+            _campaignManagerConfig = null;
             _loggerClient.VerifyAll();
             _loggerClient = null;
             _campaignManagerServiceProvider = null;
@@ -116,129 +88,34 @@ namespace LMS.CampaignManager.UnitTests
         [TestMethod]
         public void CampaignManagerConstructorTest()
         {
-            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-                _campaignCollection.Object.ToArray(),  _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
+            // The Subscriber is set up in the constructor
+            var testCampaignManagagerSubscriber = new Mock<ISubscriber>();
+            // Mock the call to the subscriber
+            testCampaignManagagerSubscriber.Setup(d => d.SetupAddOnReceiveActionToChannel(It.IsAny<Action<ILeadEntity>>())).Verifiable();
+            // Mock CampaignConfig to return the above Subscriber
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerSubscriber).Returns(testCampaignManagagerSubscriber.Object);
+            var campaignManager = new Implementation.CampaignManager(_testCampaignManagerId, _campaignManagerConfig.Object,  _loggerClient.Object);
         }
 
         /// <summary>
-        /// Campaign Manager Constructor Test With Null Publisher
+        /// Campaign Manager Constructor Test With Null CampaignManagerConfig
         /// </summary>
         [TestMethod]
-        public void CampaignManagerConstructorNullPublisherTest()
+        public void CampaignManagerConstructorNullConfigTest()
         {
             try
             {
-                var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-                    _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                    _campaignManagerResolver.Object, null, _loggerClient.Object);
-                Assert.Fail("An Argument Null Exception is expected when the campaignManagerPublisher is null");
+                var campaignManager = new Implementation.CampaignManager(_testCampaignManagerId,  null, _loggerClient.Object);
+                Assert.Fail("An Argument Null Exception is expected when the campaignManagerConfig is null");
             }
             catch (Exception exception)
             {
                 Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
-                Assert.AreEqual("Value cannot be null. Parameter name: campaignManagerPublisher", exception.Message.Replace(Environment.NewLine, " "));
+                Assert.AreEqual("Value cannot be null. Parameter name: campaignManagerConfig", exception.Message.Replace(Environment.NewLine, " "));
             }
         }
 
-        /// <summary>
-        /// Campaign Manager Constructor Test With Null Decorator
-        /// </summary>
-        [TestMethod]
-        public void CampaignManagerConstructorNullDecoratorTest()
-        {
-           
-            try
-            {
-                var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-                    _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), null,
-                    _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-                Assert.Fail("An Argument Null Exception is expected when the campaignManagerDecorator is null");
-            }
-            catch (Exception exception)
-            {
-                Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
-                Assert.AreEqual("Value cannot be null. Parameter name: campaignManagerDecorator", exception.Message.Replace(Environment.NewLine, " "));
-            }
-        }
-
-        /// <summary>
-        /// Campaign Manager Constructor Test with a Null CampaignManagerSubscriber.
-        /// </summary>
-        [TestMethod]
-        public void CampaignManagerConstructorNullCampaignSubscriberTest()
-        {
-
-            try
-            {
-                var campaignManager = new CampaignManager(null,
-                    _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                    _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-                Assert.Fail("An Argument Null Exception is expected when the CampaignManagerSubscriber is null");
-            }
-            catch (Exception exception)
-            {
-                Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
-                Assert.AreEqual("Value cannot be null. Parameter name: campaignManagerSubscriber", exception.Message.Replace(Environment.NewLine, " "));
-            }
-        }
-
-        /// <summary>
-        /// Campaign Manager Constructor Test with a Null Campaign List.
-        /// </summary>
-        [TestMethod]
-        public void CampaignManagerConstructorNullCampaignListTest()
-        {
-            try
-            {
-                var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-                    null, _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                    _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-               Assert.Fail("An Argument Null Exception is expected when the campaignCollection is null");
-            }
-            catch (Exception exception)
-            {
-                Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
-                Assert.AreEqual("Value cannot be null. Parameter name: campaignCollection", exception.Message.Replace(Environment.NewLine, " "));
-            }
-        }
-        /// <summary>
-        /// Campaign Manager Constructor Test with a Null CampaignValidatorCollection.
-        /// This is an optional parameter - so also test other constructor
-        /// </summary>
-        [TestMethod]
-        public void CampaignManagerConstructorNullCampaignValidatorCollection()
-        {
-            new CampaignManager(_campaignManagerSubscriber.Object,
-                _campaignCollection.Object.ToArray(), null, _campaignManagerDecorator.Object, 
-                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-
-            new CampaignManager(_campaignManagerSubscriber.Object,
-                _campaignCollection.Object.ToArray(), _campaignManagerDecorator.Object, 
-                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-        }
-
-        /// <summary>
-        /// Campaign Manager Constructor Test with a Null CampaignManagerResolver.
-        /// </summary>
-        [TestMethod]
-        public void CampaignManagerConstructorNullCampaignManagerResolver()
-        {
-            try
-            {
-                var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-                    _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object, 
-                    null, _campaignManagerPublisher.Object, _loggerClient.Object);
-              
-                Assert.Fail("An Argument Null Exception is expected when the CampaignManagerResolver is null");
-            }
-            catch (Exception exception)
-            {
-                Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
-                Assert.AreEqual("Value cannot be null. Parameter name: campaignManagerResolver", exception.Message.Replace(Environment.NewLine, " "));
-            }
-        }
-
+   
         /// <summary>
         /// Campaign Manager Constructor Test with a Null LoggerClient.
         /// </summary>
@@ -247,9 +124,7 @@ namespace LMS.CampaignManager.UnitTests
         {
             try
             {
-                var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-                    _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                    _campaignManagerResolver.Object, _campaignManagerPublisher.Object, null);
+                var campaignManager = new Implementation.CampaignManager(_testCampaignManagerId, _campaignManagerConfig.Object, null);
                 Assert.Fail("An Argument Null Exception is expected when the LoggerClient is null");
             }
             catch (Exception exception)
@@ -268,10 +143,16 @@ namespace LMS.CampaignManager.UnitTests
         [TestMethod]
         public void CampaignManagerDriverTestWithNullLeadEntityObject()
         {
+
+            // The Subscriber is set up in the constructor
+            var testCampaignManagagerSubscriber = new Mock<ISubscriber>();
+            // Mock the call to the subscriber
+            testCampaignManagagerSubscriber.Setup(d => d.SetupAddOnReceiveActionToChannel(It.IsAny<Action<ILeadEntity>>())).Verifiable();
+            // Mock CampaignConfig to return the above Subscriber
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerSubscriber).Returns(testCampaignManagagerSubscriber.Object);
+
             // No Campaigns set up, not necessary to mock other components
-            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-                _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
+            var campaignManager = new Implementation.CampaignManager(_testCampaignManagerId, _campaignManagerConfig.Object, _loggerClient.Object);
 
             try
             {
@@ -292,12 +173,21 @@ namespace LMS.CampaignManager.UnitTests
         [TestMethod]
         public void CampaignManagerDriverEmptyCampaignTest()
         {
-            // No Campaigns set up, so do not have to mock other components
-            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-                _campaignCollection.Object.ToArray(), _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
-           campaignManager.CampaignManagerDriver(_testLeadEntity);
+            // The Subscriber is set up in the constructor
+            var testCampaignManagagerSubscriber = new Mock<ISubscriber>();
+            // Mock the call to the subscriber
+            testCampaignManagagerSubscriber.Setup(d => d.SetupAddOnReceiveActionToChannel(It.IsAny<Action<ILeadEntity>>())).Verifiable();
+            // Mock CampaignConfig to return the above Subscriber
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerSubscriber).Returns(testCampaignManagagerSubscriber.Object);
 
+            // No Campaigns set up, mock the Decorator that is called once
+            var decorator = new Mock<IDecorator>();
+            decorator.Setup(d => d.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
+            // Mock CampaignConfig to return the above Decorator
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerDecorator).Returns(decorator.Object);
+
+            var campaignManager = new Implementation.CampaignManager(_testCampaignManagerId, _campaignManagerConfig.Object, _loggerClient.Object);
+            campaignManager.CampaignManagerDriver(_testLeadEntity);
         }
 
         /// <summary>
@@ -307,40 +197,45 @@ namespace LMS.CampaignManager.UnitTests
         [TestMethod]
         public void CampaignManagerDriverMultipleCampaignsWithValidatorReturningFalseTest()
         {
+            // The Subscriber is set up in the constructor
+            var testCampaignManagagerSubscriber = new Mock<ISubscriber>();
+            // Mock the call to the subscriber
+            testCampaignManagagerSubscriber.Setup(d => d.SetupAddOnReceiveActionToChannel(It.IsAny<Action<ILeadEntity>>())).Verifiable();
+            // Mock CampaignConfig to return the above Subscriber
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerSubscriber).Returns(testCampaignManagagerSubscriber.Object);
 
-            // Mock the Campaign Manager Validator Collection where the first validator returns false
-            var testValidator = new Mock<ICampaignManagerValidator>();
-            testValidator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(false);
-            _campaignManagerValidatorCollection.Object.Add(testValidator.Object);
-
-
-            // The resolver and publisher should not be called
-            // The decorator should be called when the lead is classified as not valid.
-            _campaignManagerResolver.Verify(c => c.ResolveLeads(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>[]>()),Times.Never());
-            _campaignManagerDecorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
-            _campaignManagerPublisher.Verify(c => c.PublishLead(It.IsAny<ILeadEntity>()), Times.Never());
-
+            // No Campaigns set up, mock the Decorator that is called once
+            var decorator = new Mock<IDecorator>();
+            decorator.Setup(d => d.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
+            // Mock CampaignConfig to return the above Decorator
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerDecorator).Returns(decorator.Object);
 
             // Set up 3 Campaigns
             const int testCampaignCnt = 3;
             var testCampaignCollection = new ICampaign[testCampaignCnt];
-
             for (var campaignIndex = 0; campaignIndex < testCampaignCnt; campaignIndex++)
             {
                 var id = campaignIndex;
                 var mock = new Mock<ICampaign>();
                 mock.Setup(campaign => campaign.ProcessLead(It.IsAny<ILeadEntity>()))
                     .Returns(_testCampaignManagerResultList);
-
                 testCampaignCollection[id] = mock.Object;
             }
+            // Mock the Campaign Config to return the above Campaign Collection
+            _campaignManagerConfig.SetupGet(cc =>
+                cc.CampaignCollection).Returns(testCampaignCollection);
+
+            // Mock the Campaign Manager Validator to return false
+            var testValidator = new Mock<IValidator>();
+            testValidator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(false);
+
+            // Mock the Campaign Config to return the testValidator as the CampaignMangerValidator
+            _campaignManagerConfig.SetupGet(cc =>
+                cc.CampaignManagerValidator).Returns(testValidator.Object);
 
             // Intitialize the CampaignManager with the mocked testCampaignCollection
-            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-               testCampaignCollection, _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
+            var campaignManager = new Implementation.CampaignManager(_testCampaignManagerId, _campaignManagerConfig.Object, _loggerClient.Object);
             campaignManager.CampaignManagerDriver(_testLeadEntity);
-
            
         }
 
@@ -351,32 +246,54 @@ namespace LMS.CampaignManager.UnitTests
         public void CampaignManagerDriverMultipleCampaignTest()
         {
 
-            // Mock the Campaign Manager Resolver, Decorator and Publisher - If these are executed
-            // it means that campaign manager executed the Campaign tasks successfully.
-            _campaignManagerResolver.Setup(c => c.ResolveLeads(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>[]>())).Verifiable();
-            _campaignManagerDecorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
-            _campaignManagerPublisher.Setup(c => c.PublishLead(It.IsAny<ILeadEntity>())).Verifiable();
+            // The Subscriber is set up in the constructor
+            var testCampaignManagagerSubscriber = new Mock<ISubscriber>();
+            // Mock the call to the subscriber
+            testCampaignManagagerSubscriber.Setup(d => d.SetupAddOnReceiveActionToChannel(It.IsAny<Action<ILeadEntity>>())).Verifiable();
+            // Mock CampaignConfig to return the above Subscriber
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerSubscriber).Returns(testCampaignManagagerSubscriber.Object);
+
+            // No Campaigns set up, mock the Decorator that is called once
+            var testCampaignManagerDecorator = new Mock<IDecorator>();
+            testCampaignManagerDecorator.Setup(d => d.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
+            // Mock CampaignConfig to return the above Decorator
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerDecorator).Returns(testCampaignManagerDecorator.Object);
 
             // Set up 3 Campaigns
             const int testCampaignCnt = 3;
             var testCampaignCollection = new ICampaign[testCampaignCnt];
-
             for (var campaignIndex = 0; campaignIndex < testCampaignCnt; campaignIndex++)
             {
                 var id = campaignIndex;
                 var mock = new Mock<ICampaign>();
                 mock.Setup(campaign => campaign.ProcessLead(It.IsAny<ILeadEntity>()))
                     .Returns(_testCampaignManagerResultList);
-
                 testCampaignCollection[id] = mock.Object;
             }
+            // Mock the Campaign Config to return the above Campaign Collection
+            _campaignManagerConfig.SetupGet(cc =>
+                cc.CampaignCollection).Returns(testCampaignCollection);
+
+            // Mock the Campaign Manager Validator to return true
+            var testValidator = new Mock<IValidator>();
+            testValidator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
+
+            // Mock the Campaign Config to return the testValidator as the CampaignMangerValidator
+            _campaignManagerConfig.SetupGet(cc =>
+                cc.CampaignManagerValidator).Returns(testValidator.Object);
+
+            // The Resolver 
+            var testCampaignManagagerResolver = new Mock<IResolver>();
+            // Mock the call to the resolver
+            testCampaignManagagerResolver.Setup(d => d.ResolveLead(It.IsAny<ILeadEntity>())).Verifiable();
+            // Mock CampaignConfig to return the above Resolver
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerResolver).Returns(testCampaignManagagerResolver.Object);
 
             // Intitialize the CampaignManager with the mocked testCampaignCollection
-            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-               testCampaignCollection, _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
+            var campaignManager = new Implementation.CampaignManager(_testCampaignManagerId, _campaignManagerConfig.Object, _loggerClient.Object);
             campaignManager.CampaignManagerDriver(_testLeadEntity);
 
+  
             // A sleep here - not a great solution - to wait for the campaign tasks to finish and ensure that
             // the resolver, publisher and decorator are called in the CampaignManagerProcessResults() function
             // which is set up via ContinueWith() of the Campaign Task.
@@ -386,46 +303,75 @@ namespace LMS.CampaignManager.UnitTests
 
         /// <summary>
         /// Set up Multiple Campaigns to be managed and the Resolver that throws an exception
+        ///           
+        /// Mock the Campaign Manager Resolver, Decorator and Publisher - If these are executed
+        /// it means that campaign manager executed the Campaign tasks successfully.
+        /// The Resolver throws exception, so the Publisher should not execute
         /// </summary>
         [TestMethod]
         public void CampaignManagerDriverMultipleCampaignTestWithResolverException()
         {
 
-            // Mock the Campaign Manager Resolver, Decorator and Publisher - If these are executed
-            // it means that campaign manager executed the Campaign tasks successfully.
-            // The Resolver throws exception, so the Publisher should not execute
-            _campaignManagerResolver.Setup(c => c.ResolveLeads(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>[]>())).Throws(new ArgumentNullException(
-                $"ResolveLeads"));
-            _campaignManagerDecorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
-            _campaignManagerPublisher.Verify(c => c.PublishLead(It.IsAny<ILeadEntity>()), Times.Never()); 
+            // The Subscriber is set up in the constructor
+            var testCampaignManagagerSubscriber = new Mock<ISubscriber>();
+            // Mock the call to the subscriber
+            testCampaignManagagerSubscriber.Setup(d => d.SetupAddOnReceiveActionToChannel(It.IsAny<Action<ILeadEntity>>())).Verifiable();
+            // Mock CampaignConfig to return the above Subscriber
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerSubscriber).Returns(testCampaignManagagerSubscriber.Object);
 
-            var random = new Random();
-            //const int minSleepInMs = 1000;
-            //const int maxSleepInMs = 5000;
+            // No Campaigns set up, mock the Decorator that is called once
+            var testCampaignManagerDecorator = new Mock<IDecorator>();
+            testCampaignManagerDecorator.Setup(d => d.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
+            // Mock CampaignConfig to return the above Decorator
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerDecorator).Returns(testCampaignManagerDecorator.Object);
 
             // Set up 3 Campaigns
             const int testCampaignCnt = 3;
             var testCampaignCollection = new ICampaign[testCampaignCnt];
-
             for (var campaignIndex = 0; campaignIndex < testCampaignCnt; campaignIndex++)
             {
                 var id = campaignIndex;
                 var mock = new Mock<ICampaign>();
                 mock.Setup(campaign => campaign.ProcessLead(It.IsAny<ILeadEntity>()))
-                    //.Callback(() => Thread.Sleep(random.Next(minSleepInMs, maxSleepInMs)))
                     .Returns(_testCampaignManagerResultList);
-
                 testCampaignCollection[id] = mock.Object;
             }
+            // Mock the Campaign Config to return the above Campaign Collection
+            _campaignManagerConfig.SetupGet(cc =>
+                cc.CampaignCollection).Returns(testCampaignCollection);
 
-            // Intitialize the CampaignManager with the mocked testCampaignCollection
-            var campaignManager = new CampaignManager(_campaignManagerSubscriber.Object,
-               testCampaignCollection, _campaignManagerValidatorCollection.Object.ToArray(), _campaignManagerDecorator.Object,
-                _campaignManagerResolver.Object, _campaignManagerPublisher.Object, _loggerClient.Object);
+            // Mock the Campaign Manager Validator to return true
+            var testValidator = new Mock<IValidator>();
+            testValidator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns(true);
+
+            // Mock the Campaign Config to return the testValidator as the CampaignMangerValidator
+            _campaignManagerConfig.SetupGet(cc =>
+                cc.CampaignManagerValidator).Returns(testValidator.Object);
+
+            // The Resolver 
+            var testCampaignManagagerResolver = new Mock<IResolver>();
+            // Mock the call to the resolver to return an exception
+            testCampaignManagagerResolver.Setup(d => d.ResolveLead(It.IsAny<ILeadEntity>())).Throws(new ArgumentNullException($"ResolveLeads"));
+            // Mock CampaignConfig to return the above Resolver
+            _campaignManagerConfig.SetupGet(cc => cc.CampaignManagerResolver).Returns(testCampaignManagagerResolver.Object);
+
+
+
+
+            //_campaignManagerResolver.Setup(c => c.ResolveLeads(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>[]>())).Throws(new ArgumentNullException(
+            //    $"ResolveLeads"));
+            //_campaignManagerDecorator.Setup(c => c.DecorateLead(It.IsAny<ILeadEntity>(), It.IsAny<List<IResult>>())).Verifiable();
+            //_campaignManagerPublisher.Verify(c => c.PublishLead(It.IsAny<ILeadEntity>()), Times.Never());
+
+
 
             try
             {
+
+                // Intitialize the CampaignManager with the mocked testCampaignCollection
+                var campaignManager = new Implementation.CampaignManager(_testCampaignManagerId, _campaignManagerConfig.Object, _loggerClient.Object);
                 campaignManager.CampaignManagerDriver(_testLeadEntity);
+             
                 // A sleep here - not a great solution - to wait for the campaign tasks to finish and ensure that
                 // the resolver thows exception and the decorator are called in the CampaignManagerProcessResults() function
                 // which is set up via ContinueWith() of the Campaign Task.
@@ -433,7 +379,7 @@ namespace LMS.CampaignManager.UnitTests
             }
             catch (Exception exception)
             {
-   
+
                 Assert.AreEqual(typeof(ArgumentNullException), exception.GetType());
                 Assert.AreEqual("Value cannot be null. Parameter name: ResolveLeads",
                     exception.Message.Replace(Environment.NewLine, " "));

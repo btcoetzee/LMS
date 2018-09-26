@@ -5,7 +5,7 @@ namespace LMS.CLI
     using System.Threading;
     using System.Threading.Tasks;
     using IoC;
-    using LeadCollector.Interface;
+    using Compare.Services.LMS.Modules.Preamble.Interface;
     using Microsoft.Extensions.DependencyInjection;
 
     public class Program

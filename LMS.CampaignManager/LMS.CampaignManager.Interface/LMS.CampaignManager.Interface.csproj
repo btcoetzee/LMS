@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <DebugType>Full</DebugType>
+    <AssemblyName>Compare.Services.LMS.CampaignManager.Interface</AssemblyName>
+    <RootNamespace>Compare.Services.LMS.CampaignManager.Interface</RootNamespace>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
@@ -10,23 +12,14 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Common.Common.Interfaces" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Validator.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LMS.CampaignManager.Decorator.Interface\LMS.CampaignManager.Decorator.Interface.csproj" />
-    <ProjectReference Include="..\LMS.CampaignManager.Publisher.Interface\LMS.CampaignManager.Publisher.Interface.csproj" />
-    <ProjectReference Include="..\LMS.CampaignManager.Resolver.Interface\LMS.CampaignManager.Resolver.Interface.csproj" />
-    <ProjectReference Include="..\LMS.CampaignManager.Subscriber.Interface\LMS.CampaignManager.Subscriber.Interface.csproj" />
-    <ProjectReference Include="..\LMS.CampaignManager.Validator.Interface\LMS.CampaignManager.Validator.Interface.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="LMS.Campaign.Interface">
-      <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LoggerClient.Interface">
-      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
+    <Reference Include="Compare.Services.LMS.Campaign.Interface">
+      <HintPath>..\..\lib\Compare.Services.LMS.Campaign.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

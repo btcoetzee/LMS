@@ -1,14 +1,13 @@
-﻿namespace LMS.Campaign.BuyClick.Rule
-{
-    using System;
-    using System.Linq;
-    using LMS.Rule.Interface;
-    using LMS.LoggerClient.Interface;
-    using LMS.Modules.LeadEntity.Interface;
-    using LMS.Modules.LeadEntity.Interface.Constants;
-    using LMS.LoggerClientEventTypeControl.Interface.Constants;
+﻿using System;
+using System.Linq;
+using Compare.Services.LMS.Common.Common.Interfaces;
+using Compare.Services.LMS.Modules.LeadEntity.Interface;
+using Compare.Services.LMS.Modules.LeadEntity.Interface.Constants;
+using Compare.Services.LMS.Modules.LoggerClient.Interface;
 
-    public class BuyClickRule : IRule
+namespace Compare.Services.LMS.Campaign.BuyClick.Rule
+{
+    public class BuyClickRule : IController
     {
         readonly ILoggerClient _loggerClient;
         private static string solutionContext = "BuyClickRule";
@@ -21,15 +20,15 @@
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
         }
 
-        public bool ValidateForRule(ILeadEntityImmutable leadEntity)
+        public bool ConstraintMet(ILeadEntity leadEntity)
         {
             string processContext = "ValidateForRule";
 
-            _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Validating the Lead", ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
+            _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Validating the Lead", ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventType.LoggerClientEventTypes.Information });
             var errorStr = string.Empty;
             try
             {
-                var priorInsuranceValue = leadEntity.Properties.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.PropertyKeys.PriorInsuranceKey)?.Value;
+                var priorInsuranceValue = leadEntity.Properties.SingleOrDefault(item => item.Id == PropertyKeys.PriorInsuranceKey)?.Value;
               
                 if ((priorInsuranceValue == null) || (!bool.TryParse(priorInsuranceValue.ToString(), out bool priorInsurance)))
                 {
@@ -45,7 +44,7 @@
             }
             catch (Exception ex)
             {
-                _loggerClient.Log(new DefaultLoggerClientErrorObject { OperationContext = "\nPrior Insurance", ProcessContext = processContext, SolutionContext = solutionContext, Exception = ex, ErrorContext = ex.Message, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Error });
+                _loggerClient.Log(new DefaultLoggerClientErrorObject { OperationContext = "\nPrior Insurance", ProcessContext = processContext, SolutionContext = solutionContext, Exception = ex, ErrorContext = ex.Message, EventType = LoggerClientEventType.LoggerClientEventTypes.Error });
                 return false;
             }
 

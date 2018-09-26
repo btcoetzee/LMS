@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Compare.Services.LMS.CampaignConfig.Interface</AssemblyName>
+    <RootNamespace>Compare.Services.LMS.CampaignConfig.Interface</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Compare.Services.LMS.Common.Common.Interfaces" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Validator.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LMS.CampaignValidator.Interface\LMS.CampaignValidator.Interface.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
+  </Target>
+
+</Project>

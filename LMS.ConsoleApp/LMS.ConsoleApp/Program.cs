@@ -6,25 +6,33 @@ using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 
+
+
 namespace LMS.ConsoleApp
 {
 
     using System;
     using System.Linq;
     using IoC;
-    using LeadCollector.Interface;
     using Microsoft.Extensions.DependencyInjection;
-    using LMS.LoggerClient.Console;
-    using LMS.LoggerClient.Interface;
-    using LMS.CampaignManager.Interface;
-    using LMS.LoggerClientEventTypeControl.Interface;
-    using LMS.DataProvider;
-    using LMS.ValidatorFactory.Interface;
-    using LMS.Validator.Implementation;
-    using LMS.Modules.LeadEntity.Interface.Constants;
-    using LMS.Modules.LeadEntity.Interface;
-    using LMS.LeadCollector.Implementation;
-    using LMS.Modules.LeadEntity.Components;
+    using Compare.Services.LMS.Modules.CampaignManager.Interface;
+    using Compare.Services.LMS.Modules.Campaign.Interface;
+    using Compare.Services.LMS.Modules.LeadEntity.Interface.Constants;
+    using Compare.Services.LMS.Modules.LeadEntity.Interface;
+    using Compare.Services.LMS.Modules.LeadEntity.Components;
+    using Compare.Services.LMS.Modules.LoggerClient.Interface;
+    using Compare.Services.LMS.Modules.LoggerClient.Implementation;
+    using Compare.Services.LMS.Common.Common.Interfaces;
+    using Compare.Services.LMS.Modules.DataProvider.Interface;
+    using Compare.Services.LMS.Modules.DataProvider.Implementation;
+    using Compare.Services.LMS.Modules.Preamble.Interface;
+    using Compare.Services.LMS.Modules.Preamble.Implementation;
+    using Compare.Services.LMS.Controls.Factory.Interface;
+    using Compare.Services.LMS.Controls.Factory.Implementation;
+    using Compare.Services.LMS.Controls.Rule.Implementation;
+    using Compare.Services.LMS.Controls.Filter.Implementation;
+    using Compare.Services.LMS.Controls.Validator.Interface;
+    using Compare.Services.LMS.Controls.Validator.Implementation;
 
     public class Program
     {
@@ -39,24 +47,23 @@ namespace LMS.ConsoleApp
             const string processContext = "Main";
 
             // Create the logger cliet for this program
-            var loggerClient = new LoggerClientEventTypeControl.Implementation.LoggerClientEventTypeControl();
+            var loggerClient = new LoggerClientEventTypeControl(); // LoggerClientEventTypeControl.Implementation.LoggerClientEventTypeControl();
             //loggerClient.Log(new DefaultLoggerClientObject{OperationContext = "ConsoleApp.Main Start",ProcessContext = processContext,SolutionContext = SolutionContext});
 
             var provider = new ServiceCollection()
                 .BuildUp()
                 .BuildServiceProvider();
 
-            // Set up the Lead Collector
+            // Set up different components
             var leadCollector = provider.GetService<ILeadCollector>();
-  
-            // Set up the Campaign Manager
             var campaignManager = provider.GetService<ICampaignManager>();
-
             var loggerClientEventTypeControl = provider.GetService<ILoggerClientEventTypeControl>();
+            var validatorFactory = provider.GetService<IValidatorFactory>();
+            var controllerFactory = provider.GetService<IControllerFactory>();
+            var campaign = provider.GetService<ICampaign>();
+
             // Mock leads to be sent through
             var leadEntities = CreateLeads();
-
-            var validatorFactory = provider.GetService<IValidatorFactory>();
 
             // Ask for user to select a lead to process
             WriteToConsole($"{GetLeadDirectory()}Select a lead [1-{leadEntities.Length}] to process: ", LogColors);
@@ -156,7 +163,7 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                     new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
                     new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
@@ -181,6 +188,8 @@ namespace LMS.ConsoleApp
                     new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
+                    new MyContext(ContextKeys.SiteIDKey,"26328"),
                     new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
@@ -190,7 +199,7 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                     new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
                     new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
@@ -213,6 +222,8 @@ namespace LMS.ConsoleApp
                     new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
+                    new MyContext(ContextKeys.SiteIDKey,"26328"),
                     new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
@@ -222,7 +233,7 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                     new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
@@ -244,6 +255,8 @@ namespace LMS.ConsoleApp
                     new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
+                    new MyContext(ContextKeys.SiteIDKey,"26328"),
                     new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
@@ -253,7 +266,7 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                     new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
   
                 },
@@ -277,6 +290,8 @@ namespace LMS.ConsoleApp
                     new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
+                    new MyContext(ContextKeys.SiteIDKey,"26328"),
                     new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
@@ -286,7 +301,7 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                 },
 
                 Segments = new ISegment[]
@@ -309,6 +324,8 @@ namespace LMS.ConsoleApp
                     new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
+                    new MyContext(ContextKeys.SiteIDKey,"26328"),
                     new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
@@ -318,7 +335,7 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                     new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
                     new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
@@ -341,6 +358,8 @@ namespace LMS.ConsoleApp
                     new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
+                    new MyContext(ContextKeys.SiteIDKey,"26328"),
                     new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
@@ -350,7 +369,7 @@ namespace LMS.ConsoleApp
                     new MyProperty(PropertyKeys.PriorInsuranceKey,"false"),
                     new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
+                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                     new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
                     new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
@@ -375,7 +394,7 @@ namespace LMS.ConsoleApp
         public IProperty[] Properties { get; set; }
         public ISegment[] Segments { get; set; }
         public IResultCollection ResultCollection { get; set; }
-        public List<string> ErrorList { get; set; }
+        public IList<string> ErrorList { get; set; }
     }
 
     struct MyContext : IContext

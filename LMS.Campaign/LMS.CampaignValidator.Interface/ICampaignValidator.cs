@@ -1,7 +1,7 @@
 ﻿namespace LMS.CampaignValidator.Interface
 {
 
-    using LMS.Modules.LeadEntity.Interface;
+    using Compare.Services.LMS.Modules.LeadEntity.Interface;
 
     public interface ICampaignValidator 
     {

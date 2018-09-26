@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <DebugType>Full</DebugType>
-    <AssemblyName>LMS.Campaign.BuyClick</AssemblyName>
-    <RootNamespace>LMS.Campaign.BuyClick</RootNamespace>
+    <AssemblyName>Compare.ServicesLMS.Campaign.BuyClick</AssemblyName>
+    <RootNamespace>Compare.Services.LMS.Campaign.BuyClick</RootNamespace>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
@@ -12,30 +12,15 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="LMS.Modules.LeadEntity.Components" Version="1.0.0" />
-    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Validator.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LoggerClient.Interface" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Campaign.Interface\LMS.Campaign.Interface.csproj" />
     <ProjectReference Include="..\Filter.Interface\LMS.Filter.Interface.csproj" />
-    <ProjectReference Include="..\LMS.CampaignValidator.Interface\LMS.CampaignValidator.Interface.csproj" />
     <ProjectReference Include="..\Rules.UnitTests\LMS.Rule.UnitTests.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="LMS.LoggerClient.Console">
-      <HintPath>..\..\lib\LMS.LoggerClient.Console.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LoggerClient.Interface">
-      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LoggerClientEventTypeControl.Implementation">
-      <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LoggerClientEventTypeControl.Interface">
-      <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Interface.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

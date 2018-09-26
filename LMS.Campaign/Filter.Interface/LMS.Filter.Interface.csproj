@@ -3,14 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   <DebugType>Full</DebugType>
+  <AssemblyName>Compare.Services.LMS.Filter.Interface</AssemblyName>
+  <RootNamespace>Compare.Services.LMS.Filter.Interface</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
-  </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
   </Target>
+
+  <ItemGroup>
+    
+  </ItemGroup>
 
 </Project>

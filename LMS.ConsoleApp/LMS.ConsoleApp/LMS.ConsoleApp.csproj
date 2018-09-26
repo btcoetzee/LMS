@@ -12,8 +12,25 @@
     <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
     <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.2" />
     <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
-    <PackageReference Include="LMS.Modules.LeadEntity.Components" Version="1.0.0" />
-    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Common.Common.Interfaces" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Factory.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Factory.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Filter.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Rule.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Validator.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Validator.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.Campaign.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.Campaign.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.CampaignManager.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.CampaignManager.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.DataProvider.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.DataProvider.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LoggerClient.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LoggerClient.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.ServicesLMS.Modules.LeadEntity.Components" Version="1.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
@@ -22,113 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.Campaign.BuyClick">
-      <HintPath>..\..\lib\LMS.Campaign.BuyClick.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Campaign.Interface">
-      <HintPath>..\..\lib\LMS.Campaign.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Campaign.Prospect">
-      <HintPath>..\..\lib\LMS.Campaign.Prospect.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Decorator.Implementation">
-      <HintPath>..\..\lib\LMS.CampaignManager.Decorator.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Decorator.Interface">
-      <HintPath>..\..\lib\LMS.CampaignManager.Decorator.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Implementation">
-      <HintPath>..\..\lib\LMS.CampaignManager.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Interface">
-      <HintPath>..\..\lib\LMS.CampaignManager.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Publisher.Implementation">
-      <HintPath>..\..\lib\LMS.CampaignManager.Publisher.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Publisher.Interface">
-      <HintPath>..\..\lib\LMS.CampaignManager.Publisher.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Resolver.Implementation">
-      <HintPath>..\..\lib\LMS.CampaignManager.Resolver.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Resolver.Interface">
-      <HintPath>..\..\lib\LMS.CampaignManager.Resolver.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Subscriber.Implementation">
-      <HintPath>..\..\lib\LMS.CampaignManager.Subscriber.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Subscriber.Interface">
-      <HintPath>..\..\lib\LMS.CampaignManager.Subscriber.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Validator.Implementation">
-      <HintPath>..\..\lib\LMS.CampaignManager.Validator.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignManager.Validator.Interface">
-      <HintPath>..\..\lib\LMS.CampaignManager.Validator.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.CampaignValidator.Interface">
-      <HintPath>..\..\lib\LMS.CampaignValidator.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.DataProvider">
-      <HintPath>..\..\lib\LMS.DataProvider.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Decorator.Interface">
-      <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Filter.Interface">
-      <HintPath>..\..\lib\LMS.Filter.Interface.dll</HintPath>
-    </Reference>
     <Reference Include="LMS.IoC">
       <HintPath>..\..\lib\LMS.IoC.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadCollector.Implementation">
-      <HintPath>..\..\lib\LMS.LeadCollector.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadCollector.Interface">
-      <HintPath>..\..\lib\LMS.LeadCollector.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadDecorator.Implementation">
-      <HintPath>..\..\lib\LMS.LeadDecorator.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadPublisher.Implementation">
-      <HintPath>..\..\lib\LMS.LeadPublisher.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadValidator.Implementation">
-      <HintPath>..\..\lib\LMS.LeadValidator.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LoggerClient.Console">
-      <HintPath>..\..\lib\LMS.LoggerClient.Console.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LoggerClient.Interface">
-      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LoggerClientEventTypeControl.Implementation">
-      <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LoggerClientEventTypeControl.Interface">
-      <HintPath>..\..\lib\LMS.LoggerClientEventTypeControl.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Publisher.Interface">
-      <HintPath>..\..\lib\LMS.Publisher.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Resolution.Interface">
-      <HintPath>..\..\lib\LMS.Resolution.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Rule.Interface">
-      <HintPath>..\..\lib\LMS.Rule.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Validator.Implementation">
-      <HintPath>..\..\lib\LMS.Validator.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Validator.Interface">
-      <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.ValidatorDataProvider.Interface">
-      <HintPath>..\..\lib\LMS.ValidatorDataProvider.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.ValidatorFactory.Interface">
-      <HintPath>..\..\lib\LMS.ValidatorFactory.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -4,44 +4,24 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <DebugType>Full</DebugType>
     <IsPackable>false</IsPackable>
+    <AssemblyName>Compare.Services.LMS.Campaign.UnitTests</AssemblyName>
+    <RootNamespace>Compare.Services.LMS.Campaign.UnitTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LMS.Modules.LeadEntity.Components" Version="1.0.0" />
-    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Common.Common.Interfaces" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Validator.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
     <PackageReference Include="Moq" Version="4.8.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Campaign.Interface\LMS.Campaign.Interface.csproj" />
-    <ProjectReference Include="..\Campaign\LMS.Campaign.BuyClick.csproj" />
-    <ProjectReference Include="..\Filter.Interface\LMS.Filter.Interface.csproj" />
-    <ProjectReference Include="..\LMS.CampaignValidator.Interface\LMS.CampaignValidator.Interface.csproj" />
-    <ProjectReference Include="..\Rule.Interface\LMS.Rule.Interface.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="LMS.Decorator.Interface">
-      <HintPath>..\..\lib\LMS.Decorator.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadEntity.Components">
-      <HintPath>..\..\lib\LMS.LeadEntity.Components.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadEntity.Interface">
-      <HintPath>..\..\lib\LMS.LeadEntity.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LoggerClient.Interface">
-      <HintPath>..\..\lib\LMS.LoggerClient.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Publisher.Interface">
-      <HintPath>..\..\lib\LMS.Publisher.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Validator.Interface">
-      <HintPath>..\..\lib\LMS.Validator.Interface.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\LMS.Campaign.Implementation\LMS.Campaign.Implementation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

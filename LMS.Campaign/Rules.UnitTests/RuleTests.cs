@@ -1,20 +1,16 @@
-namespace LMS.Rule.UnitTests
+using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+
+namespace Compare.Services.LMS.Rule.UnitTests
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
-    using LMS.CampaignValidator.Interface;
-    using LMS.Modules.LeadEntity.Interface;
-    using LMS.Rule.Interface;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
     [TestClass]
     public class RuleTests
     {
         private static System.IServiceProvider _ruleServiceProvider;
         private Mock<IRule> _rule;
-        private Mock<ICampaignValidator> _validator;
+        private Mock<IValidator> _validator;
         private Mock<ILeadEntityImmutable> _leadEntity;
         private Mock<List<IResult>> _resultList;
         /// <summary>
@@ -27,12 +23,12 @@ namespace LMS.Rule.UnitTests
             _rule = new Mock<IRule>();
             _leadEntity = new Mock<ILeadEntityImmutable>();
             _resultList = new Mock<List<IResult>>();
-            _validator = new Mock<ICampaignValidator>();
+            _validator = new Mock<IValidator>();
 
             // Create Service Providers for Rule and Validator
             _ruleServiceProvider = new ServiceCollection()
                 .AddSingleton(typeof(IRule), _rule.Object)
-                .AddSingleton(typeof(ICampaignValidator), _validator.Object)
+                .AddSingleton(typeof(IValidator), _validator.Object)
                 .BuildServiceProvider();
         }
         /// <summary>
@@ -59,11 +55,11 @@ namespace LMS.Rule.UnitTests
             string actualMessage = "";
 
             // Mock the ProcessLead function to update the message
-            _rule.Setup(c => c.ValidateForRule(It.IsAny<ILeadEntityImmutable>())).Callback(() => {
+            _rule.Setup(c => c.ConstraintMet(It.IsAny<ILeadEntityImmutable>())).Callback(() => {
                 actualMessage = expectedMessage;
             });
 
-            Rule.ValidateForRule(_leadEntity.Object);
+            Rule.ConstraintMet(_leadEntity.Object);
             Assert.AreEqual(expectedMessage, actualMessage);
         }
         /// <summary>
@@ -84,7 +80,7 @@ namespace LMS.Rule.UnitTests
             string actualMessage = string.Empty;
 
             // Set up return values when the validator is invoked
-            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntityImmutable>())).Returns<ILeadEntityImmutable>(s => {
+            _validator.Setup(v => v.ValidLead(It.IsAny<ILeadEntity>())).Returns<ILeadEntityImmutable>(s => {
                 if (s == null)
                     return false;
                 else
@@ -92,7 +88,7 @@ namespace LMS.Rule.UnitTests
             });
 
             // Tie the Rule to call out to the validator
-            _rule.Setup(c => c.ValidateForRule(It.IsAny<ILeadEntityImmutable>())).Callback<ILeadEntityImmutable>(s => {
+            _rule.Setup(c => c.ConstraintMet(It.IsAny<ILeadEntityImmutable>())).Callback<ILeadEntityImmutable>(s => {
                 if (validator.ValidLead(s))
                     actualMessage = expectedValidLeadMessage;
                 else
@@ -100,11 +96,11 @@ namespace LMS.Rule.UnitTests
             });
 
             // Send a valid stream parameter
-            Rule.ValidateForRule(_leadEntity.Object);
+            Rule.ConstraintMet(_leadEntity.Object);
             Assert.AreEqual(expectedValidLeadMessage, actualMessage);
 
             // Send a null value parameter
-            Rule.ValidateForRule(null);
+            Rule.ConstraintMet(null);
             Assert.AreEqual(expectedInvalidLeadMessage, actualMessage);
         }
 

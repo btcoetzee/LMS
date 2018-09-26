@@ -1,14 +1,11 @@
-﻿namespace LMS.Filter.UnitTests
-{
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
-    using LMS.Modules.LeadEntity.Interface;
-    using LMS.Filter.Interface;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
+﻿using Compare.Services.LMS.Filter.Interface;
+using Compare.Services.LMS.Modules.LeadEntity.Interface;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
+namespace Compare.Services.LMS.Filter.UnitTests
+{
     [TestClass]
     public class FilterTests
     {
@@ -54,9 +51,9 @@
             bool extpectedValue = true;
 
             // Mock the ProcessLead function to update the message
-             _filter.Setup(c => c.ClearedFilter((It.IsAny<ILeadEntityImmutable>()))).Returns(true);
+             _filter.Setup(c => c.ConstraintMet((It.IsAny<ILeadEntityImmutable>()))).Returns(true);
 
-            var actualValue = filter.ClearedFilter(_leadEntity.Object);
+            var actualValue = filter.ConstraintMet(_leadEntity.Object);
             Assert.AreEqual(extpectedValue, actualValue);
         }
     }

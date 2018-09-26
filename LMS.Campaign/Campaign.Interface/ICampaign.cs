@@ -1,14 +1,15 @@
-﻿namespace LMS.Campaign.Interface
-{
-    using LMS.Modules.LeadEntity.Interface;
-    using System.IO;
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Compare.Services.LMS.Modules.LeadEntity.Interface;
 
+namespace Compare.Services.LMS.Campaign.Interface
+{
     public interface ICampaign
     {
-        string CampaignName { get; }
-        int CampaignPriority { get; }
-       int CampaignId { get; }
+
+        int CampaignId { get; set; }
+        string CampaignDescription { get; set; }
+        int CampaignPriority { get; set; }
+
 
         //  Accept Lead and Process and return the list of results
         /// <summary>

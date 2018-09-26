@@ -1,11 +1,10 @@
-﻿namespace LMS.Rule.Interface
-{
-    using LMS.Modules.LeadEntity.Interface;
-    using System;
+﻿using Compare.Services.LMS.Modules.LeadEntity.Interface;
 
+namespace Compare.Services.LMS.Rule.Interface
+{
     public interface IRule
     {
         //  Accept Lead and Process
-        bool ValidateForRule(ILeadEntityImmutable leadEntity);
+        bool ConstraintMet(ILeadEntityImmutable leadEntity);
     }
 }

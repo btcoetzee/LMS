@@ -1,15 +1,14 @@
-﻿namespace LMS.Campaign.BuyClick.Filter
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using LMS.Modules.LeadEntity.Interface;
-    using LMS.Filter.Interface;
-    using LMS.LoggerClient.Interface;
-    using LMS.LoggerClientEventTypeControl.Interface.Constants;
+﻿using System;
+using System.Linq;
+using Compare.Services.LMS.Common.Common.Interfaces;
+using Compare.Services.LMS.Modules.LeadEntity.Interface;
+using Compare.Services.LMS.Modules.LeadEntity.Interface.Constants;
 
-    public class BuyClickFilter : IFilter
+using Compare.Services.LMS.Modules.LoggerClient.Interface;
+
+namespace Compare.Services.LMS.Campaign.BuyClick.Filter
+{
+    public class BuyClickFilter : IController
     {
         readonly ILoggerClient _loggerClient;
 
@@ -24,16 +23,16 @@
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
 
         }
-        public bool ClearedFilter(ILeadEntityImmutable leadEntity)
+        public bool ConstraintMet(ILeadEntity leadEntity)
         {
             string processContext = "ClearedFilter";
 
-            _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Filter the Lead", ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventTypeControl.Interface.Constants.LoggerClientEventType.LoggerClientEventTypes.Information });
+            _loggerClient.Log(new DefaultLoggerClientObject { OperationContext = "Filter the Lead", ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventType.LoggerClientEventTypes.Information});
             var errorStr = string.Empty;
             try
             {
                 //retrieve activityGuid from leadEntity
-                var activityGuidValue = leadEntity.Context.SingleOrDefault(item => item.Id == Modules.LeadEntity.Interface.Constants.ContextKeys.ActivityGuidKey)?.Value;
+                var activityGuidValue = leadEntity.Context.SingleOrDefault(item => item.Id == ContextKeys.ActivityGuidKey)?.Value;
                 if (activityGuidValue == null)
                 {
                     errorStr += "No activityGuid Found In Context of LeadEntityObject\n";
@@ -61,5 +60,7 @@
             }
             return true;
         }
+
+      
     }
 }

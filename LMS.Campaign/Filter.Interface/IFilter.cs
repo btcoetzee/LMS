@@ -1,11 +1,10 @@
-﻿namespace LMS.Filter.Interface
-{
+﻿
 
-    using LMS.Modules.LeadEntity.Interface;
-    using System;
+namespace Compare.Services.LMS.Filter.Interface
+{
     public interface IFilter
     {
         // Process the Lead through Filter
-        bool ClearedFilter(ILeadEntityImmutable lead);
+        bool ConstraintMet(ILeadEntityImmutable lead);
     }
 }
