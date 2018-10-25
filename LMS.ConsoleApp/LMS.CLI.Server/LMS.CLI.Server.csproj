@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,17 +9,14 @@
     <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.0" />
     <PackageReference Include="Compare.Components.Notification.NotificationChannels" Version="1.0.0" />
     <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.0" />
-    <PackageReference Include="LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.ServicesLMS.Modules.LeadEntity.Components" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="4.5.11" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="LMS.LeadCollector.Interface">
-      <HintPath>..\..\lib\LMS.LeadCollector.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.Modules.LeadEntity.Components">
-      <HintPath>..\..\..\..\Users\milo.wical\.nuget\packages\lms.modules.leadentity.components\1.0.0\lib\netcoreapp2.0\LMS.Modules.LeadEntity.Components.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>

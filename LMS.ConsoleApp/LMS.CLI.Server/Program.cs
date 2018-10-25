@@ -1,15 +1,18 @@
-﻿namespace LMS.CLI.Server
+﻿using Compare.Services.LMS.Modules.LeadEntity.Components;
+using Compare.Services.LMS.Modules.LeadEntity.Interface;
+using Compare.Services.LMS.Modules.LeadEntity.Interface.Constants;
+using Compare.Services.LMS.Modules.Preamble.Interface;
+
+namespace LMS.CLI.Server
 {
-    using Modules.LeadEntity.Interface;
+
     using System;
     using System.Linq;
     using System.Threading;
     using Compare.Components.Notification.Contract;
     using Compare.Components.Notification.NotificationChannels.Redis;
     using Compare.Components.Notification.Subscribers;
-    using LeadCollector.Interface;
-    using Modules.LeadEntity.Components;
-    using Modules.LeadEntity.Interface.Constants;
+
     using Newtonsoft.Json;
 
     public class Program

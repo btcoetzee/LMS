@@ -45,8 +45,9 @@ namespace LMS.IoC.Tests
         {
             _testLeadEntity = new DefaultLeadEntity()
             {
-                Context = new IContext[] { },
-                Properties = new IProperty[] { },
+                Context = new ILeadEntityObjectContainer[] { },
+                Properties = new ILeadEntityObjectContainer[] { },
+                Activity= new ILeadEntityObjectContainer[] {},
                 Segments = new ISegment[] { }
             };
 

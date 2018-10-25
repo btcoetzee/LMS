@@ -146,168 +146,166 @@ namespace LMS.ConsoleApp
             _leadDirectory = new string[7];
 
             _leadDirectory[0] = "Lead - NO IdentityGUID";
-            leadEntities[0] = new MyLeads
+            leadEntities[0] = new DefaultLeadEntity
             {
 
-                Context = new IContext[]
+                Context = new ILeadEntityObjectContainer[]
                 {
-                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
+                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
-                Properties = new IProperty[]
+                Properties = new ILeadEntityObjectContainer[]
                 {
-                    new MyProperty(PropertyKeys.PriorBIKey,priorBi),
-                    new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(SegementKeys.HighPOPKey),
-                    new MySegment(SegementKeys.HomeownerKey)
+                    new DefaultSegment(SegementKeys.HighPOPKey),
+                    new DefaultSegment(SegementKeys.HomeownerKey)
                 },
-
-
 
             };
 
             _leadDirectory[1] = "Lead - Phone #, PNI Age";
-            leadEntities[1] = new MyLeads
+            leadEntities[1] = new DefaultLeadEntity
             {
 
-                Context = new IContext[]
+                Context = new ILeadEntityObjectContainer[]
                 {
-                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
-                    new MyContext(ContextKeys.SiteIDKey,"26328"),
-                    new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
+                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
-                Properties = new IProperty[]
+                Properties = new ILeadEntityObjectContainer[]
                 {
-                    new MyProperty(PropertyKeys.PriorBIKey,priorBi),
-                    new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(SegementKeys.HighPOPKey),
-                    new MySegment(SegementKeys.HomeownerKey)
+                    new DefaultSegment(SegementKeys.HighPOPKey),
+                    new DefaultSegment(SegementKeys.HomeownerKey)
                 },
 
  
             };
             _leadDirectory[2] = "Lead - NO Phone #, PNI Age";
-            leadEntities[2] = new MyLeads
+            leadEntities[2] = new DefaultLeadEntity
             {
 
-                Context = new IContext[]
+                Context = new ILeadEntityObjectContainer[]
                 {
-                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
-                    new MyContext(ContextKeys.SiteIDKey,"26328"),
-                    new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
+                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
-                Properties = new IProperty[]
+                Properties = new ILeadEntityObjectContainer[]
                 {
-                    new MyProperty(PropertyKeys.PriorBIKey,priorBi),
-                    new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(SegementKeys.HighPOPKey),
-                    new MySegment(SegementKeys.HomeownerKey)
+                    new DefaultSegment(SegementKeys.HighPOPKey),
+                    new DefaultSegment(SegementKeys.HomeownerKey)
                 },
 
 
             };
             _leadDirectory[3] = "Lead - Phone #, NO PNI Age";
-            leadEntities[3] = new MyLeads
+            leadEntities[3] = new DefaultLeadEntity
             {
 
-                Context = new IContext[]
+                Context = new ILeadEntityObjectContainer[]
                 {
-                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
-                    new MyContext(ContextKeys.SiteIDKey,"26328"),
-                    new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
+                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
-                Properties = new IProperty[]
+                Properties = new ILeadEntityObjectContainer[]
                 {
-                    new MyProperty(PropertyKeys.PriorBIKey,priorBi),
-                    new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
   
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(SegementKeys.HighPOPKey),
-                    new MySegment(SegementKeys.HomeownerKey)
+                    new DefaultSegment(SegementKeys.HighPOPKey),
+                    new DefaultSegment(SegementKeys.HomeownerKey)
                 },
 
  
             };
 
             _leadDirectory[4] = "Lead - NO Phone #, NO PNI Age";
-            leadEntities[4] = new MyLeads
+            leadEntities[4] = new DefaultLeadEntity
             {
 
-                Context = new IContext[]
+                Context = new ILeadEntityObjectContainer[]
                 {
-                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
-                    new MyContext(ContextKeys.SiteIDKey,"26328"),
-                    new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
+                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
-                Properties = new IProperty[]
+                Properties = new ILeadEntityObjectContainer[]
                 {
-                    new MyProperty(PropertyKeys.PriorBIKey,priorBi),
-                    new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(SegementKeys.HighPOPKey),
-                    new MySegment(SegementKeys.HomeownerKey)
+                    new DefaultSegment(SegementKeys.HighPOPKey),
+                    new DefaultSegment(SegementKeys.HomeownerKey)
                 },
 
   
@@ -315,69 +313,69 @@ namespace LMS.ConsoleApp
 
  
             _leadDirectory[5] = "Lead - BF526BAF-F860-4530-BAA5-A205E285881A - Notification sent previously";
-            leadEntities[5] = new MyLeads
+            leadEntities[5] = new DefaultLeadEntity
             {
 
-                Context = new IContext[]
+                Context = new ILeadEntityObjectContainer[]
                 {
-                    new MyContext(ContextKeys.ActivityGuidKey, new Guid("BF526BAF-F860-4530-BAA5-A205E285881A").ToString()),
-                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
-                    new MyContext(ContextKeys.SiteIDKey,"26328"),
-                    new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
+                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, new Guid("BF526BAF-F860-4530-BAA5-A205E285881A").ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
-                Properties = new IProperty[]
+                Properties = new ILeadEntityObjectContainer[]
                 {
-                    new MyProperty(PropertyKeys.PriorBIKey,priorBi),
-                    new MyProperty(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(SegementKeys.HighPOPKey),
-                    new MySegment(SegementKeys.HomeownerKey)
+                    new DefaultSegment(SegementKeys.HighPOPKey),
+                    new DefaultSegment(SegementKeys.HomeownerKey)
                 },
 
    
             };
             _leadDirectory[6] = "Lead - No POP";
-            leadEntities[6] = new MyLeads
+            leadEntities[6] = new DefaultLeadEntity
             {
 
-                Context = new IContext[]
+                Context = new ILeadEntityObjectContainer[]
                 {
-                    new MyContext(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new MyContext(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new MyContext(ContextKeys.SessionRequestSeqKey,"1"),
-                    new MyContext(ContextKeys.SiteIDKey,"26328"),
-                    new MyContext(ContextKeys.AdditionalProductKey,additonalProducts)
+                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
                 },
 
-                Properties = new IProperty[]
+                Properties = new ILeadEntityObjectContainer[]
                 {
-                    new MyProperty(PropertyKeys.PriorBIKey,priorBi),
-                    new MyProperty(PropertyKeys.PriorInsuranceKey,"false"),
-                    new MyProperty(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new MyProperty(PropertyKeys.QuotedBIKey,quotedBi),
-                    new MyProperty(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new MyProperty(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new MyProperty(PropertyKeys.PNI_Age,pni_Age.ToString())
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,"false"),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
                 },
 
                 Segments = new ISegment[]
                 {
-                    new MySegment(SegementKeys.HighPOPKey),
-                    new MySegment(SegementKeys.HomeownerKey)
+                    new DefaultSegment(SegementKeys.HighPOPKey),
+                    new DefaultSegment(SegementKeys.HomeownerKey)
                 },
 
   
@@ -388,79 +386,79 @@ namespace LMS.ConsoleApp
     #endregion
 
     #region LeadEntityClassImplementations
-    class MyLeads : ILeadEntity
-    {
-        public IContext[] Context { get; set; }
-        public IProperty[] Properties { get; set; }
-        public ISegment[] Segments { get; set; }
-        public IResultCollection ResultCollection { get; set; }
-        public IList<string> ErrorList { get; set; }
-    }
+    //class MyLeads : ILeadEntity
+    //{
+    //    public ILeadEntityObjectContainer[] Context { get; set; }
+    //    public IProperty[] Properties { get; set; }
+    //    public ISegment[] Segments { get; set; }
+    //    public IResultCollection ResultCollection { get; set; }
+    //    public IList<string> ErrorList { get; set; }
+    //}
 
-    struct MyContext : IContext
-    {
-        public MyContext(string id, object value)
-        {
-            Id = id;
-            Value = value;
-        }
+    //struct DefaultLeadEntityObjectContainer : ILeadEntityObjectContainer
+    //{
+    //    public DefaultLeadEntityObjectContainer(string id, object value)
+    //    {
+    //        Id = id;
+    //        Value = value;
+    //    }
 
-        public string Id { get; private set; }
+    //    public string Id { get; private set; }
 
-        public object Value { get; private set; }
+    //    public object Value { get; private set; }
 
-        private string ToXmlString()
-        {
-            return string.Format("<Context id='{0}' value='{1}'/>", Id, Value);
-        }
+    //    private string ToXmlString()
+    //    {
+    //        return string.Format("<Context id='{0}' value='{1}'/>", Id, Value);
+    //    }
 
-        private string ToJsonString()
-        {
-            return string.Format("{{\"Id\":\"{0}\", \"Value\":\"{1}\"}}", Id, Value);
-        }
+    //    private string ToJsonString()
+    //    {
+    //        return string.Format("{{\"Id\":\"{0}\", \"Value\":\"{1}\"}}", Id, Value);
+    //    }
 
-        public string ToString(FormatSpecifier format)
-        {
-            switch (format)
-            {
-                case FormatSpecifier.Xml:
-                    return ToXmlString();
+    //    public string ToString(FormatSpecifier format)
+    //    {
+    //        switch (format)
+    //        {
+    //            case FormatSpecifier.Xml:
+    //                return ToXmlString();
 
-                case FormatSpecifier.Json:
-                    return ToJsonString();
+    //            case FormatSpecifier.Json:
+    //                return ToJsonString();
 
-                default:
-                    return string.Empty;
-            }
-        }
+    //            default:
+    //                return string.Empty;
+    //        }
+    //    }
 
-        public enum FormatSpecifier
-        {
-            Xml,
-            Json
-        }
-    }
+    //    public enum FormatSpecifier
+    //    {
+    //        Xml,
+    //        Json
+    //    }
+    //}
 
-    struct MyProperty : IProperty
-    {
-        public MyProperty(string id, object value)
-        {
-            Id = id;
-            Value = value;
-        }
-        public string Id { get; private set; }
+    //struct DefaultLeadEntityObjectContainer : IProperty, ILeadEntityObjectContainer
+    //{
+    //    public DefaultLeadEntityObjectContainer(string id, object value)
+    //    {
+    //        Id = id;
+    //        Value = value;
+    //    }
+    //    public string Id { get; private set; }
 
-        public object Value { get; private set; }
-    }
+    //    public object Value { get; private set; }
+    //}
 
-    struct MySegment : ISegment
-    {
-        public MySegment(string Type)
-        {
-            type = Type;
-        }
-        public string type { get; private set; }
-    }
+    //struct DefaultSegment : ISegment
+    //{
+    //    public DefaultSegment(string Type)
+    //    {
+    //        type = Type;
+    //    }
+    //    public string type { get; private set; }
+    //}
     #endregion
 
     #region ObjectDumper
