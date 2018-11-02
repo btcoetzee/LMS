@@ -20,7 +20,7 @@ namespace LMS.Client
 
     public class Program
     {
-        private static string[] _customerLeadDirectory;
+        public static List<string> CustomerLeadDirectory = new List<string>();
         private static readonly ColorSet LogColors = new ColorSet(ConsoleColor.White, ConsoleColor.Black);
         private static readonly ColorSet ObjectLogColors = new ColorSet(ConsoleColor.White, ConsoleColor.Black);
         private static IPublisher<string> _leadPublisher;
@@ -37,11 +37,11 @@ namespace LMS.Client
             var customerToLMS = CreateCustomerLeads();
 
             // Ask for user to select a lead to process
-            WriteToConsole($"{GetLeadDirectory()}Select a customer lead [1-{customerToLMS.Length}] to process: ", LogColors);
+            WriteToConsole($"{GetLeadDirectory()}Select a customer lead [1-{customerToLMS.Count}] to process: ", LogColors);
             int.TryParse(Console.ReadLine(), out var leadChoice);
 
             // Process the lead
-            while (leadChoice >= 1 && leadChoice <= customerToLMS.Length)
+            while (leadChoice >= 1 && leadChoice <= customerToLMS.Count)
             {
                 leadChoice--; //Since array indices start at 0
                 WriteToConsole("\n_______________________________________________________________________________________________________________________________\n\n", LogColors);
@@ -50,7 +50,7 @@ namespace LMS.Client
                 _leadPublisher.BroadcastMessage(serializedEntity);
 
                 Console.ReadLine();
-                WriteToConsole($"{GetLeadDirectory()}Select a lead [1-{customerToLMS.Length}] to process: ", LogColors);
+                WriteToConsole($"{GetLeadDirectory()}Select a lead [1-{customerToLMS.Count}] to process: ", LogColors);
                 int.TryParse(Console.ReadLine(), out leadChoice);
 
             }
@@ -70,58 +70,56 @@ namespace LMS.Client
       
 
         #region CreateLeads
-        static ICustomerLead[] CreateCustomerLeads()
+        static List<ICustomerLead> CreateCustomerLeads()
         {
             const int quotedProduct = 101;
             const string buyOnlineStr = "BuyOnline";
             const string buyByPhoneStr = "BuyByPhone";
             int[] displayedBrands = new int[] { 22, 58, 181, 218 };
-    
 
-            var customerLeads = new ICustomerLead[4];
-            _customerLeadDirectory = new string[4];
+            var customerLeads = new List<ICustomerLead>();
 
-            _customerLeadDirectory[0] = "Lead - All Values";
-            customerLeads[0] = new DefaultCustomerLead(new ICustomerLeadProperty[]
+            CustomerLeadDirectory.Add("Lead - All Values");
+            customerLeads.Add(new DefaultCustomerLead(new List<KeyValuePair<string, object>>
             {
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.BuyTypeKey, buyOnlineStr),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.BrandIdKey, displayedBrands[0].ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.DisplayedBrandsKey, displayedBrands),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
+                new KeyValuePair<string, object>(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.BuyTypeKey, buyOnlineStr),
+                new KeyValuePair<string, object>(CustomerLeadKeys.BrandIdKey, displayedBrands[0].ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.DisplayedBrandsKey, displayedBrands),
+                new KeyValuePair<string, object>(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
 
-            });
-            _customerLeadDirectory[1] = "Lead - No BuyType";
-            customerLeads[1] = new DefaultCustomerLead(new ICustomerLeadProperty[]
+            }));
+            CustomerLeadDirectory.Add("Lead - No BuyType");
+            customerLeads.Add(new DefaultCustomerLead(new List<KeyValuePair<string, object>>
             {
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.BrandIdKey, displayedBrands[1].ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.DisplayedBrandsKey, displayedBrands),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
+                new KeyValuePair<string, object>(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.BrandIdKey, displayedBrands[1].ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.DisplayedBrandsKey, displayedBrands),
+                new KeyValuePair<string, object>(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
 
-            });
-            _customerLeadDirectory[2] = "Lead - No BrandId";
-            customerLeads[2] = new DefaultCustomerLead(new ICustomerLeadProperty[]
+            }));
+            CustomerLeadDirectory.Add("Lead - No BrandId");
+            customerLeads.Add(new DefaultCustomerLead(new List<KeyValuePair<string, object>>
             {
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.BuyTypeKey, buyOnlineStr),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.DisplayedBrandsKey, displayedBrands),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
+                new KeyValuePair<string, object>(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.BuyTypeKey, buyByPhoneStr),
+                new KeyValuePair<string, object>(CustomerLeadKeys.DisplayedBrandsKey, displayedBrands),
+                new KeyValuePair<string, object>(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
 
-            });
-            _customerLeadDirectory[3] = "Lead - No Displayed Brands";
-            customerLeads[3] = new DefaultCustomerLead(new ICustomerLeadProperty[]
+            }));
+            CustomerLeadDirectory.Add("Lead - No Displayed Brands");
+            customerLeads.Add(new DefaultCustomerLead(new List<KeyValuePair<string, object>>
             {
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.BuyTypeKey, buyOnlineStr),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.BrandIdKey, displayedBrands[3].ToString()),
-                new DefaultCustomerLeadProperty(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
+                new KeyValuePair<string, object>(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.BuyTypeKey, buyOnlineStr),
+                new KeyValuePair<string, object>(CustomerLeadKeys.BrandIdKey, displayedBrands[3].ToString()),
+                new KeyValuePair<string, object>(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
 
-            });
+            }));
 
             return customerLeads;
         }
@@ -132,7 +130,7 @@ namespace LMS.Client
             string leadDirectory = "\n";
 
             var ix = 1;
-            foreach (var directory in _customerLeadDirectory)
+            foreach (var directory in CustomerLeadDirectory)
             {
                 leadDirectory += $"\n{ix}. {directory}";
                 ix++;

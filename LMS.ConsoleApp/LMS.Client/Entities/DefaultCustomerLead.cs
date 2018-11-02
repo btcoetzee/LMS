@@ -6,17 +6,26 @@ namespace LMS.Client.Entities
 {
     public class DefaultCustomerLead : ICustomerLead
     {
-        private ICustomerLeadProperty[] _customerLeadProperties;
+        private List<KeyValuePair<string, object>> _customerLeadProperties;
 
-        public DefaultCustomerLead(ICustomerLeadProperty[] customerLeadProperties)
+        /// <summary>
+        /// Constructor - create Key Value Pair List.
+        /// </summary>
+        public DefaultCustomerLead()
+        {
+            _customerLeadProperties = new List<KeyValuePair<string, object>>();
+        }
+
+
+        public DefaultCustomerLead(List<KeyValuePair<string, object>> customerLeadProperties)
         {
             _customerLeadProperties = customerLeadProperties;
         }
 
-        public ICustomerLeadProperty[] CustomerLeadProperty
+        public List<KeyValuePair<string, object>> CustomerLeadProperty
         {
-            get { return this._customerLeadProperties; }
-            set { this._customerLeadProperties = value; }
+            get => this._customerLeadProperties;
+            set => this._customerLeadProperties = value;
         }
     }
 }

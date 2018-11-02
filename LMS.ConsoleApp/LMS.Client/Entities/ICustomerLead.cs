@@ -6,6 +6,6 @@ namespace LMS.Client.Entities
 {
     public interface ICustomerLead
     {
-        ICustomerLeadProperty[] CustomerLeadProperty { get; set; }
+        List<KeyValuePair<string, object>> CustomerLeadProperty { get; set; }
     }
 }
