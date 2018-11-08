@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
+using LMS.Client.Constants;
 using LMS.Client.Entities;
 
 namespace LMS.Client
@@ -73,8 +74,6 @@ namespace LMS.Client
         static List<ICustomerLead> CreateCustomerLeads()
         {
             const int quotedProduct = 101;
-            const string buyOnlineStr = "BuyOnline";
-            const string buyByPhoneStr = "BuyByPhone";
             int[] displayedBrands = new int[] { 22, 58, 181, 218 };
 
             var customerLeads = new List<ICustomerLead>();
@@ -84,7 +83,7 @@ namespace LMS.Client
             {
                 new KeyValuePair<string, object>(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                 new KeyValuePair<string, object>(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
-                new KeyValuePair<string, object>(CustomerLeadKeys.BuyTypeKey, buyOnlineStr),
+                new KeyValuePair<string, object>(CustomerLeadKeys.BuyTypeKey, BuyClickType.BuyOnLine),
                 new KeyValuePair<string, object>(CustomerLeadKeys.BrandIdKey, displayedBrands[0].ToString()),
                 new KeyValuePair<string, object>(CustomerLeadKeys.DisplayedBrandsKey, displayedBrands),
                 new KeyValuePair<string, object>(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
@@ -105,7 +104,7 @@ namespace LMS.Client
             {
                 new KeyValuePair<string, object>(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                 new KeyValuePair<string, object>(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
-                new KeyValuePair<string, object>(CustomerLeadKeys.BuyTypeKey, buyByPhoneStr),
+                new KeyValuePair<string, object>(CustomerLeadKeys.BuyTypeKey, BuyClickType.BuyOnPhone),
                 new KeyValuePair<string, object>(CustomerLeadKeys.DisplayedBrandsKey, displayedBrands),
                 new KeyValuePair<string, object>(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
 
@@ -115,7 +114,7 @@ namespace LMS.Client
             {
                 new KeyValuePair<string, object>(CustomerLeadKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                 new KeyValuePair<string, object>(CustomerLeadKeys.QuotedProductKey, quotedProduct.ToString()),
-                new KeyValuePair<string, object>(CustomerLeadKeys.BuyTypeKey, buyOnlineStr),
+                new KeyValuePair<string, object>(CustomerLeadKeys.BuyTypeKey, BuyClickType.BuyOnLine),
                 new KeyValuePair<string, object>(CustomerLeadKeys.BrandIdKey, displayedBrands[3].ToString()),
                 new KeyValuePair<string, object>(CustomerLeadKeys.ClickTimeKey, DateTime.UtcNow)
 
