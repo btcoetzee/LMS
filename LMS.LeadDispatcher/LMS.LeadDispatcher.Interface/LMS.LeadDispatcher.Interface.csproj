@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>LMS.LeadDispatcher.Interface</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Compare.Services.LMS.Common.Common.Interfaces" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Resolver.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LoggerClient.Interface" Version="1.0.0" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y $(TargetPath) $(SolutionDir)..\lib" />
+  </Target>
+
+</Project>
