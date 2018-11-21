@@ -23,12 +23,12 @@ namespace LMS.LeadDispatcher.Implementation.Resolver
         /// Constructor for the LeadDispatcherLeadDispatcherResolver. 
         /// This class functions as the wrapper for all resolvers defined. 
         /// </summary>
-        /// <param name="campaignResolvers"></param>
+        /// <param name="leadDispatchResolvers"></param>
         /// <param name="loggerClient"></param>
-        public LeadDispatcherResolver(IList<IResolver> campaignResolvers, ILoggerClient loggerClient)
+        public LeadDispatcherResolver(IList<IResolver> leadDispatchResolvers, ILoggerClient loggerClient)
         {
             _loggerClient = loggerClient ?? throw new ArgumentNullException(nameof(loggerClient));
-            _leadDispatcherResolvers = campaignResolvers;
+            _leadDispatcherResolvers = leadDispatchResolvers;
         }
         /// <summary>
         /// Loop through the Resolvers and check if the lead is resolved as expected.  This function

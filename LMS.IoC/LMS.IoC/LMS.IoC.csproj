@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UseNETCoreGenerator>true</UseNETCoreGenerator>
     <DebugType>Full</DebugType>
   </PropertyGroup>
 
@@ -16,6 +17,7 @@
     <PackageReference Include="Compare.Services.LMS.Controls.Factory.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Controls.Factory.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Controls.Filter.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Resolver.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Controls.Rule.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Controls.Validator.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Controls.Validator.Interface" Version="1.0.0" />
@@ -31,13 +33,16 @@
     <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.ServicesLMS.Modules.LeadEntity.Components" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0-preview2-35157" />
     <PackageReference Include="Moq" Version="4.8.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
-      <HintPath>..\..\..\..\..\.nuget\packages\microsoft.extensions.logging.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    <Reference Include="LMS.LeadDispatcher.Implementation">
+      <HintPath>..\..\lib\LMS.LeadDispatcher.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="LMS.LeadDispatcher.Interface">
+      <HintPath>..\..\lib\LMS.LeadDispatcher.Interface.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework">
       <HintPath>..\..\..\..\..\.nuget\packages\mstest.testframework\1.2.0\lib\netstandard1.0\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>

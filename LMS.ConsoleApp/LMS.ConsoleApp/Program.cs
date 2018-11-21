@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using LMS.ConsoleApp.Constants;
+using LMS.LeadDispatcher.Interface;
 using Newtonsoft.Json;
 
 
@@ -33,6 +35,9 @@ namespace LMS.ConsoleApp
     using Compare.Services.LMS.Controls.Filter.Implementation;
     using Compare.Services.LMS.Controls.Validator.Interface;
     using Compare.Services.LMS.Controls.Validator.Implementation;
+    using Compare.Services.LMS.Controls.Resolver.Interface;
+    using Compare.Services.LMS.Controls.Resolver.Implementation;
+
 
     public class Program
     {
@@ -55,11 +60,13 @@ namespace LMS.ConsoleApp
                 .BuildServiceProvider();
 
             // Set up different components
-            var leadCollector = provider.GetService<ILeadCollector>();
-            var campaignManager = provider.GetService<ICampaignManager>();
-            var loggerClientEventTypeControl = provider.GetService<ILoggerClientEventTypeControl>();
             var validatorFactory = provider.GetService<IValidatorFactory>();
             var controllerFactory = provider.GetService<IControllerFactory>();
+            var resolverFactory = provider.GetService<IResolverFactory>();
+            var leadCollector = provider.GetService<ILeadCollector>();
+            var campaignManager = provider.GetService<ICampaignManager>();
+            var leadDispatcher = provider.GetService<ILeadDispatcher>();
+            var loggerClientEventTypeControl = provider.GetService<ILoggerClientEventTypeControl>();
             var campaign = provider.GetService<ICampaign>();
 
             // Mock leads to be sent through
@@ -141,6 +148,8 @@ namespace LMS.ConsoleApp
             int[] displayedBrands = new int[] { 22, 58, 181, 218 };
             const string phoneNumber = "888-556-5456";
             const int pni_Age = 28;
+            const string emailAddress = "SomeEmail@compare.com";
+            const string stateStr = "VA";
 
             var leadEntities = new ILeadEntity[7];
             _leadDirectory = new string[7];
@@ -151,6 +160,7 @@ namespace LMS.ConsoleApp
 
                 Context = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
@@ -176,12 +186,13 @@ namespace LMS.ConsoleApp
 
             };
 
-            _leadDirectory[1] = "Lead - Phone #, PNI Age";
+            _leadDirectory[1] = "Lead - Good ";
             leadEntities[1] = new DefaultLeadEntity
             {
 
                 Context = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
@@ -199,7 +210,13 @@ namespace LMS.ConsoleApp
                     new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
+                },
+                Activity = new ILeadEntityObjectContainer[]
+                {
+                    new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
                 },
 
                 Segments = new ISegment[]
@@ -216,6 +233,7 @@ namespace LMS.ConsoleApp
 
                 Context = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
@@ -249,6 +267,7 @@ namespace LMS.ConsoleApp
 
                 Context = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
@@ -284,6 +303,7 @@ namespace LMS.ConsoleApp
 
                 Context = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
@@ -318,6 +338,7 @@ namespace LMS.ConsoleApp
 
                 Context = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, new Guid("BF526BAF-F860-4530-BAA5-A205E285881A").ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
@@ -352,6 +373,7 @@ namespace LMS.ConsoleApp
 
                 Context = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
                     new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
