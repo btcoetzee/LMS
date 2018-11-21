@@ -117,12 +117,15 @@ namespace LMS.IoC
         #region NotificationPubSub
         public static IServiceCollection AddNotificationChannel(this IServiceCollection container)
         {
-   
-            // Two Channels - LeadCollector to CampaignManager AND CampaignManager to LeadDispatcher
+
+            // Two Channels -
+            // LeadCollector to CampaignManager 
             // Create the dictionary entries for Channels
             NotificationChannelDictionary.Add(LeadCollectorNotificationChannelKey,
                 new InProcNotificationChannel<ILeadEntity>("Lead Collector Channel",
                     container.BuildServiceProvider().GetService<ILogger>()));
+
+            // CampaignManager to LeadDispatcher
             NotificationChannelDictionary.Add(CampaignManagerNotificationChannelKey,
                 new InProcNotificationChannel<ILeadEntity>("Campaign Manager Channel",
                     container.BuildServiceProvider().GetService<ILogger>()));
@@ -130,36 +133,30 @@ namespace LMS.IoC
             // Add the Services
             container.AddSingleton<Dictionary<string, INotificationChannel<ILeadEntity>>>(
                 NotificationChannelDictionary);
-     
-
-
             return container;
         }
         public static IServiceCollection AddNotificationSubscriber(this IServiceCollection container)
         {
-
-            // Two Subscribers - LeadCollector to CampaignManager AND CampaignManager to LeadDispatcher
-            // Create the dictionary entries for Subscribers
+            // Create the dictionary entries for the 2 Subscribers 
+            // LeadCollector to CampaignManager 
             SubscriberDictionary.Add(LeadCollectorSubscriberKey,
                 new Subscriber<ILeadEntity>(
                     container.BuildServiceProvider().GetService<Dictionary<string, INotificationChannel<ILeadEntity>>>()
                         .FirstOrDefault(p => p.Key == LeadCollectorNotificationChannelKey).Value, true));
+            // CampaignManager to LeadDispatcher
             SubscriberDictionary.Add(CampaignManagerSubscriberKey,
                 new Subscriber<ILeadEntity>(
                     container.BuildServiceProvider().GetService<Dictionary<string, INotificationChannel<ILeadEntity>>>()
                         .FirstOrDefault(p => p.Key == CampaignManagerNotificationChannelKey).Value, true));
-
             // Add the Services
             container.AddSingleton<Dictionary<string, ISubscriber<ILeadEntity>>>(
                 SubscriberDictionary);
-
-         
-
             return container;
         }
         public static IServiceCollection AddNotificationPublisher(this IServiceCollection container)
         {
-            // Two Publishers - LeadCollector to CampaignManager AND CampaignManager to LeadDispatcher
+            // Create dictionary for 2 Publishers
+            // LeadCollector to CampaignManager 
             // Create the dictionary entries for Publishers
             PublisherDictionary.Add(LeadCollectorPublisherKey,
                 new Publisher<ILeadEntity>(
@@ -168,7 +165,7 @@ namespace LMS.IoC
                         .SelectMany(
                             d => d.Where(p => p.Key == LeadCollectorNotificationChannelKey).Select(p => p.Value))
                         .ToArray(), true));
-
+            // CampaignManager to LeadDispatcher
             PublisherDictionary.Add(CampaignManagerPublisherKey,
                 new Publisher<ILeadEntity>(
                     container.BuildServiceProvider()
@@ -251,19 +248,16 @@ namespace LMS.IoC
 
         public static IServiceCollection AddCampaignManagerConfig(this IServiceCollection container)
         {
-
             container.AddSingleton<ICampaignManagerConfig>(provider => new CampaignManagerConfig(1,
                 provider.GetRequiredService<IValidatorFactory>(),
                 provider.GetRequiredService<IResolverFactory>(),
                 new CampaignManagerSubscriber(
-                    //provider.GetRequiredService<ISubscriber<ILeadEntity>>(),
                     container.BuildServiceProvider().GetService<Dictionary<string, ISubscriber<ILeadEntity>>>()
                         .FirstOrDefault(p => p.Key == LeadCollectorSubscriberKey).Value,
                     new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
                         ColorSet.ErrorLoggingColors)),
                 new ICampaign[]
                 {
-                    // Custom color logging
                     new Campaign(1, "Buy Click Campaign", 1,
                         provider.GetRequiredService<ICampaignConfig>(),
                         new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),ColorSet.ErrorLoggingColors)),
@@ -275,10 +269,8 @@ namespace LMS.IoC
                     new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
                         ColorSet.ErrorLoggingColors)),
                 provider.GetRequiredService<ILoggerClient>()));
-
             return container;
         }
-
         #endregion
 
         #region LeadDispatcher
@@ -286,7 +278,7 @@ namespace LMS.IoC
         {
             container.AddSingleton<ILeadDispatcherConfig>(provider => new LeadDispatcherConfig(1,
                 new LeadDispatcherSubscriber(container.BuildServiceProvider().GetService<Dictionary<string, ISubscriber<ILeadEntity>>>()
-                        .FirstOrDefault(p => p.Key == LeadCollectorSubscriberKey).Value,
+                        .FirstOrDefault(p => p.Key == CampaignManagerSubscriberKey).Value,
                     new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
                         ColorSet.ErrorLoggingColors)),
                 provider.GetRequiredService<IResolverFactory>(),
@@ -305,10 +297,7 @@ namespace LMS.IoC
                 provider.GetRequiredService<ILeadDispatcherConfig>()));
             return container;
         }
-
-
         #endregion
-
 
         #region Campaign
         public static IServiceCollection AddCampaignConfig(this IServiceCollection container)
