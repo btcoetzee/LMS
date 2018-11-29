@@ -56,12 +56,44 @@ namespace LMS.LeadDispatcher.Implementation
             if (leadEntity == null) throw new ArgumentNullException(nameof(leadEntity));
             string processContext = "DispatchLead";
             _leadDispatcherConfig.LoggerClient.Log(new DefaultLoggerClientObject { OperationContext = $"Processing the Lead in {LeadDispatcherName}", ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventType.LoggerClientEventTypes.Information });
+
             try
             {
                 // Create LeadDispatcher Result List and insert LeadDispatcher Details
                 _leadDispatcherResultList = new List<ILeadEntityObjectContainer> { new DefaultLeadEntityObjectContainer(ResultKeys.DiagnosticKeys.TimeStampStartKey, DateTime.Now) };
                 _leadDispatcherResultList.Add(new DefaultLeadEntityObjectContainer(ResultKeys.LeadDispatcherKeys.LeadDispatcherIdKey, LeadDispatcherId));
                 _leadDispatcherResultList.Add(new DefaultLeadEntityObjectContainer(ResultKeys.LeadDispatcherKeys.LeadDispatcherNameKey, LeadDispatcherName));
+
+                // Validate the lead
+                if (_leadDispatcherConfig.Validator != null)
+                {
+                    if (_leadDispatcherConfig.Validator.ValidLead(leadEntity).Equals(false))
+                    {
+                        _leadDispatcherResultList.Add(new DefaultLeadEntityObjectContainer(ResultKeys.ValidatorStatusKey,
+                            ResultKeys.ResultKeysStatusEnum.Failed.ToString()));
+                        _leadDispatcherConfig.LoggerClient.Log(new DefaultLoggerClientObject { OperationContext = $"Lead is not valid for this Lead Dispatcher. Id: {LeadDispatcherId}, Name: {LeadDispatcherName}", ProcessContext = processContext, SolutionContext = solutionContext, EventType = LoggerClientEventType.LoggerClientEventTypes.Information });
+                        _leadDispatcherConfig.Decorator.DecorateLead(leadEntity, _leadDispatcherResultList);
+                        try
+                        {
+                            // Persist the lead that was not valid for this Campaign Manager
+                            _leadDispatcherConfig.Persistor.PersistLead(leadEntity);
+                        }
+                        catch (Exception exception)
+                        {
+                            _leadDispatcherConfig.LoggerClient.Log(new DefaultLoggerClientErrorObject() { OperationContext = "Exception occurred within CampaignManager.PersistLead.", ProcessContext = processContext, SolutionContext = solutionContext, ErrorContext = exception.Message, Exception = exception, EventType = LoggerClientEventType.LoggerClientEventTypes.Error });
+                            throw;
+                        }
+                        return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _leadDispatcherConfig.LoggerClient.Log(new DefaultLoggerClientErrorObject { OperationContext = "Exception raised during LeadDispatcher Validator Processing.", ProcessContext = processContext, SolutionContext = solutionContext, Exception = ex, ErrorContext = ex.Message, EventType = LoggerClientEventType.LoggerClientEventTypes.Error });
+                throw;
+            }
+            try
+            {
 
                 // Verify that there are Resolvers to be Executed.
                 if (_leadDispatcherConfig.ResolverCollection?.Any() != true)

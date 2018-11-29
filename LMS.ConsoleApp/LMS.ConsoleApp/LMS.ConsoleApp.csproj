@@ -21,8 +21,6 @@
     <PackageReference Include="Compare.Services.LMS.Controls.Validator.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.Campaign.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.Campaign.Interface" Version="1.0.0" />
-    <PackageReference Include="Compare.Services.LMS.Modules.CampaignManager.Implementation" Version="1.0.0" />
-    <PackageReference Include="Compare.Services.LMS.Modules.CampaignManager.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.DataProvider.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.DataProvider.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
@@ -48,6 +46,12 @@
     </Reference>
     <Reference Include="Compare.Services.LMS.Controls.Validator.Interface">
       <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Controls\Validator\LMS.Controls.Validator.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Controls.Validator.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Compare.Services.LMS.Modules.CampaignManager.Implementation">
+      <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Modules\CampaignManager\LMS.Modules.CampaignManager.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Modules.CampaignManager.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="Compare.Services.LMS.Modules.CampaignManager.Interface">
+      <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Modules\CampaignManager\LMS.Modules.CampaignManager.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Modules.CampaignManager.Interface.dll</HintPath>
     </Reference>
     <Reference Include="Compare.Services.LMS.Modules.Preamble.Implementation">
       <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Modules\Preamble\LMS.Modules.Preamble.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Modules.Preamble.Implementation.dll</HintPath>

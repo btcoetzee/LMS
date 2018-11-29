@@ -5,8 +5,10 @@ using Compare.Services.LMS.Common.Common.Interfaces;
 using Compare.Services.LMS.Controls.Factory.Interface;
 using Compare.Services.LMS.Controls.Factory.Interface.Constants;
 using Compare.Services.LMS.Controls.Resolver.Interface;
+using Compare.Services.LMS.Controls.Validator.Interface;
 using Compare.Services.LMS.Modules.LoggerClient.Interface;
 using LMS.LeadDispatcher.Implementation.Resolver;
+using LMS.LeadDispatcher.Implementation.Validator;
 using LMS.LeadDispatcher.Interface;
 
 namespace LMS.LeadDispatcher.Implementation.Config
@@ -24,6 +26,22 @@ namespace LMS.LeadDispatcher.Implementation.Config
         private IPublisher _leadDispatcherPublisher;
         private IDecorator _leadDispatcherDecorator;
         private IPersistor _leadDispatcherPersistor;
+        private IValidator _leadDispatcherValidator;
+        private IList<IValidator> _validators;
+
+        // The CampaignManagerValidator is a wrapper and loops through the Validators defined for the CampaignManager
+        public IValidator Validator
+        {
+            get => _leadDispatcherValidator;
+            set => _leadDispatcherValidator = value;
+        }
+
+        // List of Validators that are defined for the CampaignManager
+        public IList<IValidator> ValidatorCollection
+        {
+            get => _validators;
+            set => _validators = value;
+        }
 
         /// <summary>
         /// List of resolvers that are required for the Dispatcher 
@@ -90,6 +108,7 @@ namespace LMS.LeadDispatcher.Implementation.Config
 
         public LeadDispatcherConfig(int leadDispatcherId,
                                     ISubscriber leadDispatcherSubscriber,
+                                    IValidatorFactory validatorFactory,
                                     IResolverFactory resolverFactory,
                                     IPublisher leadDispatcherPublisher,
                                     IDecorator leadDispatcherDecorator,
@@ -101,6 +120,15 @@ namespace LMS.LeadDispatcher.Implementation.Config
             try
             {
                 _leadDispatcherSubscriber = leadDispatcherSubscriber ?? throw new ArgumentNullException(nameof(leadDispatcherSubscriber));
+
+                // Create the LeadDispatcherValidator that is the wrapper.
+                var validatorFactoryIn = validatorFactory ?? throw new ArgumentNullException(nameof(validatorFactory));
+                _validators = validatorFactoryIn.GetValidators(ControllerComponentUsingFactory.LeadDispatcher, leadDispatcherId);
+                if (_leadDispatcherValidator == null)
+                {
+                    _leadDispatcherValidator = new LeadDispatcherValidator(ValidatorCollection, _loggerClient);
+                }
+
                 var resolverFactoryIn = resolverFactory ?? throw new ArgumentNullException(nameof(resolverFactory));
                 // Retrieve the applicable Resolvers from the Factory for this LeadDispatcher
                 // Create the LeadDispatcher that is the wrapper if it doesn't exist yet.

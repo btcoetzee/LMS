@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Compare.Services.LMS.Common.Common.Interfaces;
 using Compare.Services.LMS.Controls.Resolver.Interface;
+using Compare.Services.LMS.Controls.Validator.Interface;
 using Compare.Services.LMS.Modules.LoggerClient.Interface;
 
 namespace LMS.LeadDispatcher.Interface
@@ -9,6 +10,12 @@ namespace LMS.LeadDispatcher.Interface
     {
         // Return the subscriber for the Lead Dispatcher
         ISubscriber Subscriber { get; set; }
+
+        // Return the wrapper validator for the LeadDispatcher
+        IValidator Validator { get; set; }
+
+        //  Return the list of other validators for the LeadDispatcher
+        IList<IValidator> ValidatorCollection { get; set; }
 
         //  Return the resolver for the Lead Dispatcher - 
         // This is the wrapper Resolver that executes the required resolvers 

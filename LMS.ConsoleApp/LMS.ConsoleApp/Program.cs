@@ -154,7 +154,7 @@ namespace LMS.ConsoleApp
             var leadEntities = new ILeadEntity[7];
             _leadDirectory = new string[7];
 
-            _leadDirectory[0] = "Lead - NO IdentityGUID";
+            _leadDirectory[0] = "Lead - NO IdentityGUID - LeadCollector Validator";
             leadEntities[0] = new DefaultLeadEntity
             {
 
@@ -227,7 +227,7 @@ namespace LMS.ConsoleApp
 
  
             };
-            _leadDirectory[2] = "Lead - NO Phone #, PNI Age";
+            _leadDirectory[2] = "Lead - NO Email, No State - Campaign Manager Validator";
             leadEntities[2] = new DefaultLeadEntity
             {
 
@@ -250,7 +250,12 @@ namespace LMS.ConsoleApp
                     new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+                },
+                Activity = new ILeadEntityObjectContainer[]
+                {
+                    new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
                 },
 
                 Segments = new ISegment[]
@@ -261,7 +266,7 @@ namespace LMS.ConsoleApp
 
 
             };
-            _leadDirectory[3] = "Lead - Phone #, NO PNI Age";
+            _leadDirectory[3] = "Lead - QuotedBIValidator - Campaign Validator";
             leadEntities[3] = new DefaultLeadEntity
             {
 
@@ -282,10 +287,15 @@ namespace LMS.ConsoleApp
                     new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-  
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
+                },
+                Activity = new ILeadEntityObjectContainer[]
+                {
+                    new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
                 },
 
                 Segments = new ISegment[]
@@ -294,10 +304,10 @@ namespace LMS.ConsoleApp
                     new DefaultSegment(SegementKeys.HomeownerKey)
                 },
 
- 
+
             };
 
-            _leadDirectory[4] = "Lead - NO Phone #, NO PNI Age";
+            _leadDirectory[4] = "Lead - Less than 2 Brands Displayed - Campaign Rule";
             leadEntities[4] = new DefaultLeadEntity
             {
 
@@ -319,7 +329,15 @@ namespace LMS.ConsoleApp
                     new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,1),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
+                },
+                Activity = new ILeadEntityObjectContainer[]
+                {
+                    new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
                 },
 
                 Segments = new ISegment[]
@@ -327,12 +345,10 @@ namespace LMS.ConsoleApp
                     new DefaultSegment(SegementKeys.HighPOPKey),
                     new DefaultSegment(SegementKeys.HomeownerKey)
                 },
-
-  
             };
 
  
-            _leadDirectory[5] = "Lead - BF526BAF-F860-4530-BAA5-A205E285881A - Notification sent previously";
+            _leadDirectory[5] = "Lead - BF526BAF-F860-4530-BAA5-A205E285881A - Campaign Filter";
             leadEntities[5] = new DefaultLeadEntity
             {
 
@@ -354,9 +370,11 @@ namespace LMS.ConsoleApp
                     new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,1),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
                 },
 
                 Segments = new ISegment[]
@@ -367,7 +385,7 @@ namespace LMS.ConsoleApp
 
    
             };
-            _leadDirectory[6] = "Lead - No POP";
+            _leadDirectory[6] = "Lead - No POP - Good";
             leadEntities[6] = new DefaultLeadEntity
             {
 
@@ -391,7 +409,9 @@ namespace LMS.ConsoleApp
                     new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
+                    new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
                 },
 
                 Segments = new ISegment[]

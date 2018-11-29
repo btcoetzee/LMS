@@ -46,15 +46,38 @@ namespace LMS.IoC
 
     public static class Bootstrapper
     {
+        // Dictionaries for the Notification Channels, Subscribers and Publishers
         static Dictionary<string, INotificationChannel<ILeadEntity>> NotificationChannelDictionary = new Dictionary<string, INotificationChannel<ILeadEntity>>();
         private const string LeadCollectorNotificationChannelKey = "LeadCollectorChannel";
         private const string CampaignManagerNotificationChannelKey = "CampaignManagerChannel";
+        private const string LeadDispatcherNotificationChannelKey = "LeadDispatcherChannel";
         static Dictionary<string, ISubscriber<ILeadEntity>> SubscriberDictionary = new Dictionary<string, ISubscriber<ILeadEntity>>();
         private const string LeadCollectorSubscriberKey = "LeadCollectorSubscriber";
         private const string CampaignManagerSubscriberKey = "CampaignManagerSubscriber";
+        private const string LeadDispatcherSubscriberKey = "LeadDispatcherSubscriber";
         static Dictionary<string, IPublisher<ILeadEntity>> PublisherDictionary = new Dictionary<string, IPublisher<ILeadEntity>>();
         private const string LeadCollectorPublisherKey = "LeadCollectorPublisher";
         private const string CampaignManagerPublisherKey = "CampaignManagerPublisher";
+        private const string LeadDispatcherPublisherKey = "LeadDispatcherPublisher";
+
+        //-----------------
+        // Below is too much for the console app for now.
+        private enum LoggerClientColors
+        {
+            BlueOnBlack,
+            CyanOnBlack,
+            GreenyOnBlack,
+            WhiteOnBlack,
+            YellowOnBlack, 
+            MagentaOnBlack,
+            DarkCyanOnBlack,
+            DarkGreenOnBlack, 
+            DarkGreyOnBlack,
+            RedOnYellow,
+        }
+        private static Dictionary<LoggerClientColors, ColorSet> _loggerClientColorSetDictionary = new Dictionary<LoggerClientColors, ColorSet>();
+        static Dictionary<string, ILoggerClient> _colorLoggerClientDictionary = new Dictionary<string, ILoggerClient>();
+        //------------------
 
         //private static INotificationChannel<ILeadEntity> _leadCollectorNotificationChannel;
         //private static ISubscriber<ILeadEntity> _leadCollectorSubscriber;
@@ -109,6 +132,24 @@ namespace LMS.IoC
 
         public static IServiceCollection AddLoggerClient(this IServiceCollection container)
         {
+         
+
+            _loggerClientColorSetDictionary.Add(LoggerClientColors.BlueOnBlack, new ColorSet(ConsoleColor.Blue, ConsoleColor.Black));
+            _loggerClientColorSetDictionary.Add(LoggerClientColors.CyanOnBlack, new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black));
+            _loggerClientColorSetDictionary.Add(LoggerClientColors.GreenyOnBlack, new ColorSet(ConsoleColor.Green, ConsoleColor.Black));
+            _loggerClientColorSetDictionary.Add(LoggerClientColors.WhiteOnBlack, new ColorSet(ConsoleColor.White, ConsoleColor.Black));
+            _loggerClientColorSetDictionary.Add(LoggerClientColors.YellowOnBlack, new ColorSet(ConsoleColor.Yellow, ConsoleColor.Black));
+            _loggerClientColorSetDictionary.Add(LoggerClientColors.MagentaOnBlack, new ColorSet(ConsoleColor.Magenta, ConsoleColor.Black));
+            _loggerClientColorSetDictionary.Add(LoggerClientColors.DarkCyanOnBlack, new ColorSet(ConsoleColor.DarkCyan, ConsoleColor.Black));
+            _loggerClientColorSetDictionary.Add(LoggerClientColors.DarkGreenOnBlack, new ColorSet(ConsoleColor.DarkGreen, ConsoleColor.Black));
+            _loggerClientColorSetDictionary.Add(LoggerClientColors.DarkGreyOnBlack, new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black));
+            _loggerClientColorSetDictionary.Add(LoggerClientColors.RedOnYellow, new ColorSet(ConsoleColor.Red, ConsoleColor.Yellow));
+
+            _colorLoggerClientDictionary.Add(LoggerClientColors.BlueOnBlack.ToString(),
+                new CustomColorLoggerClient(
+                    _loggerClientColorSetDictionary.FirstOrDefault(p => p.Key == LoggerClientColors.BlueOnBlack).Value,
+                    _loggerClientColorSetDictionary.FirstOrDefault((p => p.Key == LoggerClientColors.RedOnYellow)).Value));
+
             //The registered type can be changed in the future.
             return container.AddSingleton<ILoggerClient, ConsoleLoggerClient>();
         }
@@ -118,7 +159,7 @@ namespace LMS.IoC
         public static IServiceCollection AddNotificationChannel(this IServiceCollection container)
         {
 
-            // Two Channels -
+            // Three Channels -
             // LeadCollector to CampaignManager 
             // Create the dictionary entries for Channels
             NotificationChannelDictionary.Add(LeadCollectorNotificationChannelKey,
@@ -128,6 +169,11 @@ namespace LMS.IoC
             // CampaignManager to LeadDispatcher
             NotificationChannelDictionary.Add(CampaignManagerNotificationChannelKey,
                 new InProcNotificationChannel<ILeadEntity>("Campaign Manager Channel",
+                    container.BuildServiceProvider().GetService<ILogger>()));
+
+            // LeadDispatcher to POE?
+            NotificationChannelDictionary.Add(LeadDispatcherNotificationChannelKey,
+                new InProcNotificationChannel<ILeadEntity>("Lead Dispatcher Channel",
                     container.BuildServiceProvider().GetService<ILogger>()));
 
             // Add the Services
@@ -148,6 +194,12 @@ namespace LMS.IoC
                 new Subscriber<ILeadEntity>(
                     container.BuildServiceProvider().GetService<Dictionary<string, INotificationChannel<ILeadEntity>>>()
                         .FirstOrDefault(p => p.Key == CampaignManagerNotificationChannelKey).Value, true));
+            // LeadDispatcher to POE?
+            SubscriberDictionary.Add(LeadDispatcherSubscriberKey,
+                new Subscriber<ILeadEntity>(
+                    container.BuildServiceProvider().GetService<Dictionary<string, INotificationChannel<ILeadEntity>>>()
+                        .FirstOrDefault(p => p.Key == LeadDispatcherNotificationChannelKey).Value, true));
+
             // Add the Services
             container.AddSingleton<Dictionary<string, ISubscriber<ILeadEntity>>>(
                 SubscriberDictionary);
@@ -173,7 +225,16 @@ namespace LMS.IoC
                         .SelectMany(
                             d => d.Where(p => p.Key == CampaignManagerNotificationChannelKey).Select(p => p.Value))
                         .ToArray(), true));
-      
+
+            // LeadDispatcher to POE?
+            PublisherDictionary.Add(LeadDispatcherPublisherKey,
+                new Publisher<ILeadEntity>(
+                    container.BuildServiceProvider()
+                        .GetServices<Dictionary<string, INotificationChannel<ILeadEntity>>>()
+                        .SelectMany(
+                            d => d.Where(p => p.Key == LeadDispatcherNotificationChannelKey).Select(p => p.Value))
+                        .ToArray(), true));
+
             // Add the Services
             container.AddSingleton<Dictionary<string, IPublisher<ILeadEntity>>>(
                 PublisherDictionary);
@@ -254,21 +315,21 @@ namespace LMS.IoC
                 new CampaignManagerSubscriber(
                     container.BuildServiceProvider().GetService<Dictionary<string, ISubscriber<ILeadEntity>>>()
                         .FirstOrDefault(p => p.Key == LeadCollectorSubscriberKey).Value,
-                    new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
+                    new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),
                         ColorSet.ErrorLoggingColors)),
                 new ICampaign[]
                 {
                     new Campaign(1, "Buy Click Campaign", 1,
                         provider.GetRequiredService<ICampaignConfig>(),
-                        new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),ColorSet.ErrorLoggingColors)),
+                        new CustomColorLoggerClient(new ColorSet(ConsoleColor.Red, ConsoleColor.Black),ColorSet.ErrorLoggingColors)),
                 },
-                new CampaignManagerDecorator(provider.GetRequiredService<ILoggerClient>()),
+                new CampaignManagerDecorator(new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black), ColorSet.ErrorLoggingColors)),
                 new CampaignManagerPersistor(new FileLoggerClient("CMLog.txt", "CMErrorLog.txt")),
                 new CampaignManagerPublisher(container.BuildServiceProvider().GetService<Dictionary<string, IPublisher<ILeadEntity>>>()
                         .FirstOrDefault(p => p.Key == CampaignManagerPublisherKey).Value, 
-                    new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
+                    new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),
                         ColorSet.ErrorLoggingColors)),
-                provider.GetRequiredService<ILoggerClient>()));
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black), ColorSet.ErrorLoggingColors)));
             return container;
         }
         #endregion
@@ -279,15 +340,20 @@ namespace LMS.IoC
             container.AddSingleton<ILeadDispatcherConfig>(provider => new LeadDispatcherConfig(1,
                 new LeadDispatcherSubscriber(container.BuildServiceProvider().GetService<Dictionary<string, ISubscriber<ILeadEntity>>>()
                         .FirstOrDefault(p => p.Key == CampaignManagerSubscriberKey).Value,
-                    new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGray, ConsoleColor.Black),
+                    new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGreen, ConsoleColor.Black),
                         ColorSet.ErrorLoggingColors)),
+                provider.GetRequiredService<IValidatorFactory>(),
                 provider.GetRequiredService<IResolverFactory>(),
-                new LeadDispatcherPublisher(provider.GetRequiredService<ILoggerClient>()),
-                new LeadDispatcherDecorator(provider.GetRequiredService<ILoggerClient>()),
+                new LeadDispatcherPublisher(container.BuildServiceProvider().GetService<Dictionary<string, IPublisher<ILeadEntity>>>()
+                    .FirstOrDefault(p => p.Key == LeadDispatcherPublisherKey).Value, new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGreen, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)),
+                new LeadDispatcherDecorator(new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGreen, ConsoleColor.Black),
+                ColorSet.ErrorLoggingColors)),
                 //   new LeadDispatcherPersistor(provider.GetRequiredService<ILoggerClient>()),
                 //   Instead let the persister write out the LeadEntityObject to a file for now.
                 new LeadDispatcherPersistor(new FileLoggerClient("LDLog.txt", "LDErrorLog.txt")),
-                provider.GetRequiredService<ILoggerClient>()));
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.DarkGreen, ConsoleColor.Black),
+                    ColorSet.ErrorLoggingColors)));
 
             return container;
         }
@@ -306,7 +372,7 @@ namespace LMS.IoC
             container.AddSingleton<ICampaignConfig>(provider => new CampaignConfig(1,
                 provider.GetRequiredService<IValidatorFactory>(),
                 provider.GetRequiredService<IControllerFactory>(),
-                new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black),
+                new CustomColorLoggerClient(new ColorSet(ConsoleColor.Red, ConsoleColor.Black),
                     ColorSet.ErrorLoggingColors)));
             return container;
         }
