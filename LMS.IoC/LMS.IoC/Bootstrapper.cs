@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Compare.Services.LMS.Common.Common.Interfaces;
 using Compare.Services.LMS.Controls.Factory.Implementation;
 using Compare.Services.LMS.Controls.Factory.Interface;
-using Compare.Services.LMS.Controls.Validator.Interface;
 using Compare.Services.LMS.Modules.Campaign.Implementation;
 using Compare.Services.LMS.Modules.Campaign.Implementation.Config;
 using Compare.Services.LMS.Modules.Campaign.Interface;
@@ -13,23 +10,24 @@ using Compare.Services.LMS.Modules.CampaignManager.Implementation.Config;
 using Compare.Services.LMS.Modules.CampaignManager.Implementation.Decorator;
 using Compare.Services.LMS.Modules.CampaignManager.Implementation.Persistor;
 using Compare.Services.LMS.Modules.CampaignManager.Implementation.Publisher;
-using Compare.Services.LMS.Modules.CampaignManager.Implementation.Resolver;
 using Compare.Services.LMS.Modules.CampaignManager.Implementation.Subscriber;
 using Compare.Services.LMS.Modules.CampaignManager.Interface;
 using Compare.Services.LMS.Modules.DataProvider.Implementation;
 using Compare.Services.LMS.Modules.DataProvider.Interface;
+using Compare.Services.LMS.Modules.LeadDispatcher.Implementation;
+using Compare.Services.LMS.Modules.LeadDispatcher.Implementation.Config;
+using Compare.Services.LMS.Modules.LeadDispatcher.Implementation.Decorator;
+using Compare.Services.LMS.Modules.LeadDispatcher.Implementation.Persistor;
+using Compare.Services.LMS.Modules.LeadDispatcher.Implementation.Publisher;
+using Compare.Services.LMS.Modules.LeadDispatcher.Implementation.Subscriber;
+using Compare.Services.LMS.Modules.LeadDispatcher.Interface;
+
 using Compare.Services.LMS.Modules.LeadEntity.Interface;
 using Compare.Services.LMS.Modules.LoggerClient.Implementation;
 using Compare.Services.LMS.Modules.LoggerClient.Interface;
 using Compare.Services.LMS.Modules.Preamble.Implementation;
 using Compare.Services.LMS.Modules.Preamble.Interface;
-using LMS.LeadDispatcher.Implementation.Config;
-using LMS.LeadDispatcher.Implementation.Decorator;
-using LMS.LeadDispatcher.Implementation.Persistor;
-using LMS.LeadDispatcher.Implementation.Publisher;
-using LMS.LeadDispatcher.Implementation.Subscriber;
-using LeadDispatcher = LMS.LeadDispatcher.Implementation.LeadDispatcher;
-using LMS.LeadDispatcher.Interface;
+
 
 
 namespace LMS.IoC
@@ -161,20 +159,31 @@ namespace LMS.IoC
 
             // Three Channels -
             // LeadCollector to CampaignManager 
-            // Create the dictionary entries for Channels
+            //// Create the dictionary entries for Channels
+            //NotificationChannelDictionary.Add(LeadCollectorNotificationChannelKey,
+            //    new InProcNotificationChannel<ILeadEntity>("Lead Collector Channel",
+            //        container.BuildServiceProvider().GetService<ILogger>()));
+
+            //// CampaignManager to LeadDispatcher
+            //NotificationChannelDictionary.Add(CampaignManagerNotificationChannelKey,
+            //    new InProcNotificationChannel<ILeadEntity>("Campaign Manager Channel",
+            //        container.BuildServiceProvider().GetService<ILogger>()));
+
+            //// LeadDispatcher to POE?
+            //NotificationChannelDictionary.Add(LeadDispatcherNotificationChannelKey,
+            //    new InProcNotificationChannel<ILeadEntity>("Lead Dispatcher Channel",
+            //        container.BuildServiceProvider().GetService<ILogger>()));
+            //// Create the dictionary entries for Channels
             NotificationChannelDictionary.Add(LeadCollectorNotificationChannelKey,
-                new InProcNotificationChannel<ILeadEntity>("Lead Collector Channel",
-                    container.BuildServiceProvider().GetService<ILogger>()));
+                new InProcNotificationChannel<ILeadEntity>("Lead Collector Channel"));
 
             // CampaignManager to LeadDispatcher
             NotificationChannelDictionary.Add(CampaignManagerNotificationChannelKey,
-                new InProcNotificationChannel<ILeadEntity>("Campaign Manager Channel",
-                    container.BuildServiceProvider().GetService<ILogger>()));
+                new InProcNotificationChannel<ILeadEntity>("Campaign Manager Channel"));
 
             // LeadDispatcher to POE?
             NotificationChannelDictionary.Add(LeadDispatcherNotificationChannelKey,
-                new InProcNotificationChannel<ILeadEntity>("Lead Dispatcher Channel",
-                    container.BuildServiceProvider().GetService<ILogger>()));
+                new InProcNotificationChannel<ILeadEntity>("Lead Dispatcher Channel"));
 
             // Add the Services
             container.AddSingleton<Dictionary<string, INotificationChannel<ILeadEntity>>>(
@@ -332,6 +341,7 @@ namespace LMS.IoC
                 new CustomColorLoggerClient(new ColorSet(ConsoleColor.Cyan, ConsoleColor.Black), ColorSet.ErrorLoggingColors)));
             return container;
         }
+
         #endregion
 
         #region LeadDispatcher
@@ -359,7 +369,7 @@ namespace LMS.IoC
         }
         public static IServiceCollection AddLeadDispatcher(this IServiceCollection container)
         {
-            container.AddSingleton<ILeadDispatcher>(provider => new LeadDispatcher.Implementation.LeadDispatcher(1, "BuyClick Dispatcher",
+            container.AddSingleton<ILeadDispatcher>(provider => new LeadDispatcher(1, "BuyClick Dispatcher",
                 provider.GetRequiredService<ILeadDispatcherConfig>()));
             return container;
         }

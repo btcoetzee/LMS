@@ -8,11 +8,15 @@
   <ItemGroup>
     <PackageReference Include="Admiral.Components.Instrumentation" Version="2.0.0" />
     <PackageReference Include="Admiral.Components.Instrumentation.Contract" Version="2.0.0" />
-    <PackageReference Include="Compare.Components.Notification.Channels" Version="1.1.2" />
-    <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.1" />
-    <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.2" />
-    <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.1" />
+    <PackageReference Include="Compare.Components.Notification.Channels" Version="1.0.0" />
+    <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.0" />
+    <PackageReference Include="Compare.Components.Notification.NotificationChannels" Version="1.0.0" />
+    <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.0" />
+    <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Common.Common.Interfaces" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Control.Filter.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Factory.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Factory.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Controls.Filter.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Controls.Resolver.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Controls.Resolver.Interface" Version="1.0.0" />
@@ -21,11 +25,17 @@
     <PackageReference Include="Compare.Services.LMS.Controls.Validator.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.Campaign.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.Campaign.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.CampaignManager.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.CampaignManager.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.DataProvider.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.DataProvider.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadDispatcher.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadDispatcher.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.LoggerClient.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.LoggerClient.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.ServicesLMS.Modules.LeadEntity.Components" Version="1.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
@@ -35,24 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Compare.Services.LMS.Controls.Factory.Implementation">
-      <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Controls\Factory\LMS.Controls.Factory.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Controls.Factory.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="Compare.Services.LMS.Controls.Factory.Interface">
-      <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Controls\Factory\LMS.Controls.Factory.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Controls.Factory.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="Compare.Services.LMS.Controls.Validator.Implementation">
-      <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Controls\Validator\LMS.Controls.Validator.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Controls.Validator.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="Compare.Services.LMS.Controls.Validator.Interface">
-      <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Controls\Validator\LMS.Controls.Validator.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Controls.Validator.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="Compare.Services.LMS.Modules.CampaignManager.Implementation">
-      <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Modules\CampaignManager\LMS.Modules.CampaignManager.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Modules.CampaignManager.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="Compare.Services.LMS.Modules.CampaignManager.Interface">
-      <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Modules\CampaignManager\LMS.Modules.CampaignManager.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Modules.CampaignManager.Interface.dll</HintPath>
-    </Reference>
     <Reference Include="Compare.Services.LMS.Modules.Preamble.Implementation">
       <HintPath>..\..\..\..\..\..\..\src\USA\Development\Services\LeadManagement\Modules\Preamble\LMS.Modules.Preamble.Implementation\bin\Debug\netcoreapp2.0\Compare.Services.LMS.Modules.Preamble.Implementation.dll</HintPath>
     </Reference>
@@ -61,12 +53,6 @@
     </Reference>
     <Reference Include="LMS.IoC">
       <HintPath>..\..\lib\LMS.IoC.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadDispatcher.Implementation">
-      <HintPath>..\..\lib\LMS.LeadDispatcher.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="LMS.LeadDispatcher.Interface">
-      <HintPath>..\..\lib\LMS.LeadDispatcher.Interface.dll</HintPath>
     </Reference>
   </ItemGroup>
 

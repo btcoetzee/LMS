@@ -1,23 +1,31 @@
-﻿using Compare.Services.LMS.Modules.LeadEntity.Components;
-using Compare.Services.LMS.Modules.LeadEntity.Interface;
-using Compare.Services.LMS.Modules.LeadEntity.Interface.Constants;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using Admiral.Components.Instrumentation.Contract;
+using Compare.Components.Notification.Channels.Redis;
+using Compare.Components.Notification.Contract;
+using Compare.Components.Notification.Publishers;
+using LMS.ClientObject.Implementation;
+using LMS.CLI.Constants;
+using LMS.ClientObject.Interface;
+using LMS.ClientObject.Interface.Constants;
+using Newtonsoft.Json;
 
 namespace LMS.CLI
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using Admiral.Components.Instrumentation.Contract;
-    using Compare.Components.Notification.Channels.Redis;
-    using Compare.Components.Notification.Contract;
-    using Compare.Components.Notification.Publishers;
-
-    using Newtonsoft.Json;
-
     public class Program
     {
-        private static string[] _leadDirectory;
+        const int RandomMaxCount = 100;  // Number of leads to send through when random is selected
+        private const string DuplicateGuidStr = "BF526BAF-F860-4530-BAA5-A205E285881A";
+        public class CJDirectoryItem
+        {
+            public string CJLeadType { get; set; }
+            public int CJLeadCnt { get; set; }
+            public List<Guid> guidList { get; set; }
+        }
+        public static List<CJDirectoryItem> _CJLeadDirectory = new List<CJDirectoryItem>();
         private static readonly ColorSet LogColors = new ColorSet(ConsoleColor.White, ConsoleColor.Black);
         private static readonly ColorSet ObjectLogColors = new ColorSet(ConsoleColor.White, ConsoleColor.Black);
         private static IPublisher<string> _leadPublisher;
@@ -27,34 +35,117 @@ namespace LMS.CLI
             _leadPublisher =
                 new Publisher<string>(
                     new INotificationChannel<string>[]
-                        {new RedisNotificationChannel("LMS", "Redis", "LMS", new MockLogger())}, true);
+                        {new RedisNotificationChannel("LMS", "Redis", "LMS")}, true);
+//            { new RedisNotificationChannel("LMS", "Redis", "LMS", new MockLogger())}, true);
 
             Console.WriteLine($"Redis channel status: {_leadPublisher.ChannelStatus.First()}");
 
-            var leadEntities = CreateLeads();
-
+            var cjLeads = CreateCJLeads();
+            var cjLeadCount = cjLeads.Count;
+            var randomNbr = new Random();
+            var randomRunningFlag = false;
+            DefaultClientObject newLead; // Used for creating a new lead object when the array of possible leads have been created.
+        
+            var randomCounter = 1;
             // Ask for user to select a lead to process
-            WriteToConsole($"{GetLeadDirectory()}Select a lead [1-{leadEntities.Length}] to process: ", LogColors);
+            WriteToConsole($"{GetCJLeadDirectory()}Select a lead [1-{cjLeads.Count}] to process: ", LogColors);
             int.TryParse(Console.ReadLine(), out var leadChoice);
 
             // Process the lead
-            while (leadChoice >= 1 && leadChoice <= leadEntities.Length)
+            while ((leadChoice >= 1 && leadChoice <= cjLeadCount) || (randomRunningFlag))
             {
                 leadChoice--; //Since array indices start at 0
-                WriteToConsole("\n_______________________________________________________________________________________________________________________________\n\n", LogColors);
-                WriteToConsole($"Processing Activity ID {leadEntities[leadChoice].Context.First(ctx => ctx.Id == ContextKeys.ActivityGuidKey).Value}", LogColors);
 
-                var serializedEntity = JsonConvert.SerializeObject(leadEntities[leadChoice], Formatting.Indented);
+                // Run Leads through at Random
+                if ((leadChoice == (cjLeadCount - 1)) || (randomRunningFlag))
+                {
+                    leadChoice = 5;
+                    randomRunningFlag = true;
 
-                WriteToConsole(serializedEntity, ObjectLogColors);
+                    // Now select a random Lead from List
+                    leadChoice = randomNbr.Next(0, (cjLeadCount - 1));
+                    _CJLeadDirectory[leadChoice].CJLeadCnt++;
+                    if (_CJLeadDirectory[leadChoice].guidList == null)
+                    {
+                        _CJLeadDirectory[leadChoice].guidList = new List<Guid>();
+                    }
+                    
+                    if (randomCounter == RandomMaxCount)
+                    {
+                        randomRunningFlag = false;
+                        randomCounter = 0;
+                    }
+                    else
+                    {
+                        randomCounter++;
+                    }
+                    // Unless it is the duplicate Guid - Assign a new CustomerActivity
+                    if (!String.Equals(cjLeads[leadChoice].ClientObject
+                            .FirstOrDefault(item => item.Key == ClientObjectKeys.ActivityGuidKey).Value.ToString().ToUpper(),
+                            DuplicateGuidStr))
+                    {
+                        var newActivityGuid = Guid.NewGuid();
+                        _CJLeadDirectory[leadChoice].guidList.Add(newActivityGuid);
+
+                        // update the ActivityGuid
+                        cjLeads[leadChoice].ClientObject.RemoveAll(item => item.Key == ClientObjectKeys.ActivityGuidKey);
+                        cjLeads[leadChoice].ClientObject.Add(new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, newActivityGuid));
+                    }
+                    else
+                    {
+                        _CJLeadDirectory[leadChoice].guidList.Add(new Guid(DuplicateGuidStr));
+                    }
+                }
+
+                newLead = CreateNewLead(cjLeads[leadChoice]);
+
+                //WriteToConsole($"Processing Activity ID {leadEntities[leadChoice].Context.First(ctx => ctx.Id == ContextKeys.ActivityGuidKey).Value}", LogColors);
+                //                var serializedEntity = JsonConvert.SerializeObject(cjLeads[leadChoice], Formatting.Indented);
+                var serializedEntity = JsonConvert.SerializeObject(newLead, Formatting.Indented);
+
+                if (!randomRunningFlag)
+                {
+                    WriteToConsole("\n_______________________________________________________________________________________________________________________________\n\n", LogColors);
+                    WriteToConsole(serializedEntity, ObjectLogColors);
+                }
+                WriteToConsole($"Pulishing: {newLead.ClientObject.FirstOrDefault(item => item.Key == ClientObjectKeys.ActivityGuidKey).Value.ToString()}: {leadChoice+1}: {_CJLeadDirectory[leadChoice].CJLeadType}", LogColors);
+                //WriteToConsole(_CJLeadDirectory[leadChoice], LogColors);
+                // Ok send it on
                 _leadPublisher.BroadcastMessage(serializedEntity);
-                
-                Console.ReadLine();
-                WriteToConsole($"{GetLeadDirectory()}Select a lead [1-{leadEntities.Length}] to process: ", LogColors);
-                int.TryParse(Console.ReadLine(), out leadChoice);
+
+                // If running through leads - do not stop - else show menu of leads
+                if (!randomRunningFlag)
+                {
+                    // At the end write a 
+                    if (randomCounter == 0)
+                    {
+                        var summaryStr = Environment.NewLine + ("").PadRight(180, '_') + Environment.NewLine +
+                                         $"SENT {RandomMaxCount} LEADS THROUGH...." +Environment.NewLine + "SUMMARY:" + Environment.NewLine;
+                        var ix = 1;
+                        foreach (var lead in _CJLeadDirectory)
+                        {
+                            summaryStr += $"{ix}. ({lead.CJLeadCnt}) : {lead.CJLeadType}" + Environment.NewLine;
+                            if (lead.guidList != null)
+                            {
+                                foreach (var guid in lead.guidList)
+                                {
+                                    summaryStr += $"{guid}" + Environment.NewLine;
+                                }
+                            }
+                            ix++;
+                        }
+                        WriteToConsole(summaryStr, LogColors);
+                        randomCounter = 1;
+                    }
+                    Console.ReadLine();
+                    WriteToConsole($"{GetCJLeadDirectory()}Select a lead [1-{cjLeads.Count}] to process: ", LogColors);
+                    int.TryParse(Console.ReadLine(), out leadChoice);
+
+                }
+
+                Thread.Sleep(99);
 
             }
-
 
             WriteToConsole("The End.  Press any key to continue...", LogColors);
             Console.ReadKey();
@@ -67,266 +158,123 @@ namespace LMS.CLI
             Console.WriteLine(stringToWrite);
         }
 
+
         #region CreateLeads
-        static ILeadEntity[] CreateLeads()
-        {
-            const int quotedProduct = 101;
-            const string additonalProducts = "None";
-            const string priorBi = "100/300";
-            const bool priorInsurance = true;
-            const int vehicleCount = 2;
-            const string quotedBi = "100/300";
-            int[] displayedBrands = new int[] { 22, 58, 181, 218 };
-            const string phoneNumber = "888-556-5456";
-            const int pni_Age = 28;
-
-            var leadEntities = new ILeadEntity[7];
-            _leadDirectory = new string[7];
-
-            _leadDirectory[0] = "Lead - NO IdentityGUID";
-            leadEntities[0] = new DefaultLeadEntity
-            {
-
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
-                },
-
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-
-
-
-            };
-
-            _leadDirectory[1] = "Lead - Phone #, PNI Age";
-            leadEntities[1] = new DefaultLeadEntity
-            {
-
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
-                },
-
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-
-
-            };
-            _leadDirectory[2] = "Lead - NO Phone #, PNI Age";
-            leadEntities[2] = new DefaultLeadEntity
-            {
-
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
-                },
-
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-
-
-            };
-            _leadDirectory[3] = "Lead - Phone #, NO PNI Age";
-            leadEntities[3] = new DefaultLeadEntity
-            {
-
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-
-                },
-
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-
-
-            };
-
-            _leadDirectory[4] = "Lead - NO Phone #, NO PNI Age";
-            leadEntities[4] = new DefaultLeadEntity
-            {
-
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
-                },
-
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-
-
-            };
-
-
-            _leadDirectory[5] = "Lead - BF526BAF-F860-4530-BAA5-A205E285881A - Notification sent previously";
-            leadEntities[5] = new DefaultLeadEntity
-            {
-
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, new Guid("BF526BAF-F860-4530-BAA5-A205E285881A").ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
-                },
-
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-
-
-            };
-            _leadDirectory[6] = "Lead - No POP";
-            leadEntities[6] = new DefaultLeadEntity
-            {
-
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,"false"),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new Compare.Services.LMS.Modules.LeadEntity.Components.DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
-                },
-
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-
-
-            };
-            return leadEntities;
-        }
-        #endregion
-
-        private static string GetLeadDirectory()
+        private static string GetCJLeadDirectory()
         {
             string leadDirectory = "\n";
 
             var ix = 1;
-            foreach (var directory in _leadDirectory)
+            foreach (var directory in _CJLeadDirectory)
             {
-                leadDirectory += $"\n{ix}. {directory}";
+                leadDirectory += $"\n{ix}. {directory.CJLeadType}";
                 ix++;
             }
             leadDirectory += "\n";
 
             return leadDirectory;
         }
+
+        public static DefaultClientObject CreateNewLead(IClientObject source)
+        {
+            if (source == null)
+                return null;
+
+            var destination = new DefaultClientObject();
+
+           
+            foreach (var valuePair in source.ClientObject)
+            {
+              destination.ClientObject.Add(new KeyValuePair<string, object>(valuePair.Key, valuePair.Value));   
+            }
+            
+            return destination;
+
+        }
+
+        public static DefaultClientObject GetLeadByType(int leadType)
+        {
+            var leadByType = new DefaultClientObject();
+            return leadByType;
+        }
+
+        static List<IClientObject> CreateCJLeads()
+        {
+            const int quotedProduct = 101;
+            int[] displayedBrands = new int[] { 22, 58, 181, 218 };
+
+            var customerLeads = new List<IClientObject>();
+
+            _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - All Values", CJLeadCnt = 0 });  
+            customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.QuotedProductKey, quotedProduct.ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.BuyTypeKey, BuyClickType.BuyOnLine),
+                new KeyValuePair<string, object>(ClientObjectKeys.DisplayedBrandsKey, displayedBrands),
+                new KeyValuePair<string, object>(ClientObjectKeys.BrandIdKey, displayedBrands[3].ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.ClickTimeKey, DateTime.UtcNow)
+
+            }));
+            _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - No BrandId - Failure LeadCollector Validator Tests", CJLeadCnt = 0 });
+            customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.QuotedProductKey, quotedProduct.ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.BuyTypeKey, BuyClickType.BuyOnLine),
+                new KeyValuePair<string, object>(ClientObjectKeys.DisplayedBrandsKey, displayedBrands),
+                new KeyValuePair<string, object>(ClientObjectKeys.ClickTimeKey, DateTime.UtcNow)
+            }));
+            _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - No Quoted Product - Failure in Campaign Manager Validator Tests", CJLeadCnt = 0 });
+            customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.BuyTypeKey, BuyClickType.BuyOnLine),
+                new KeyValuePair<string, object>(ClientObjectKeys.BrandIdKey, displayedBrands[0].ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.DisplayedBrandsKey, displayedBrands),
+                new KeyValuePair<string, object>(ClientObjectKeys.ClickTimeKey, DateTime.UtcNow)
+            }));
+            _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - No BuyType - Failure in Campaign Validator Tests", CJLeadCnt = 0 });
+            customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.QuotedProductKey, quotedProduct.ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.DisplayedBrandsKey, displayedBrands),
+                new KeyValuePair<string, object>(ClientObjectKeys.BrandIdKey, displayedBrands[3].ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.ClickTimeKey, DateTime.UtcNow)
+
+            }));
+            _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - Less than 2 Brands Displayed - Failure in Campaign Rule Tests", CJLeadCnt = 0 });
+            customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.QuotedProductKey, quotedProduct.ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.BuyTypeKey, BuyClickType.BuyOnLine),
+                new KeyValuePair<string, object>(ClientObjectKeys.BrandIdKey, displayedBrands[3].ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.ClickTimeKey, DateTime.UtcNow)
+            }));
+            _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - Duplicate Activity ID - Failure in Campaign Filter Tests", CJLeadCnt = 0 });
+            customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, new Guid(DuplicateGuidStr).ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.QuotedProductKey, quotedProduct.ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.BuyTypeKey, BuyClickType.BuyOnLine),
+                new KeyValuePair<string, object>(ClientObjectKeys.BrandIdKey, displayedBrands[0].ToString()),
+                new KeyValuePair<string, object>(ClientObjectKeys.DisplayedBrandsKey, displayedBrands),
+                new KeyValuePair<string, object>(ClientObjectKeys.ClickTimeKey, DateTime.UtcNow)
+            }));
+            _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = $"Lead - Run {RandomMaxCount} Leads through Randomly", CJLeadCnt = 0 });
+            customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+            }));
+
+            return customerLeads;
+        }
+        
     }
+    #endregion
+
 
     #region LeadEntityClassImplementations
    
@@ -368,4 +316,5 @@ namespace LMS.CLI
         public string ProcessId { get; set; }
         public string ProcessName { get; set; }
     }
+
 }

@@ -31,7 +31,8 @@ namespace LMS.Client
             _leadPublisher =
                 new Publisher<string>(
                     new INotificationChannel<string>[]
-                        {new RedisNotificationChannel("LMS", "Redis", "LMS", new MockLogger())}, true);
+                        {new RedisNotificationChannel("LMS", "Redis", "LMS")}, true);
+            //{ new RedisNotificationChannel("LMS", "Redis", "LMS", new MockLogger())}, true);
 
             Console.WriteLine($"Redis channel status: {_leadPublisher.ChannelStatus.First()}");
 

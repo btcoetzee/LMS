@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Compare.Services.LMS.Modules.LeadDispatcher.Interface;
 using LMS.ConsoleApp.Constants;
-using LMS.LeadDispatcher.Interface;
 using Newtonsoft.Json;
 
 
@@ -60,14 +60,14 @@ namespace LMS.ConsoleApp
                 .BuildServiceProvider();
 
             // Set up different components
-            var validatorFactory = provider.GetService<IValidatorFactory>();
-            var controllerFactory = provider.GetService<IControllerFactory>();
-            var resolverFactory = provider.GetService<IResolverFactory>();
+          //  var validatorFactory = provider.GetService<IValidatorFactory>();
+          //  var controllerFactory = provider.GetService<IControllerFactory>();
+         //   var resolverFactory = provider.GetService<IResolverFactory>();
             var leadCollector = provider.GetService<ILeadCollector>();
             var campaignManager = provider.GetService<ICampaignManager>();
             var leadDispatcher = provider.GetService<ILeadDispatcher>();
-            var loggerClientEventTypeControl = provider.GetService<ILoggerClientEventTypeControl>();
-            var campaign = provider.GetService<ICampaign>();
+         //   var loggerClientEventTypeControl = provider.GetService<ILoggerClientEventTypeControl>();
+         //   var campaign = provider.GetService<ICampaign>();
 
             // Mock leads to be sent through
             var leadEntities = CreateLeads();
@@ -150,6 +150,7 @@ namespace LMS.ConsoleApp
             const int pni_Age = 28;
             const string emailAddress = "SomeEmail@compare.com";
             const string stateStr = "VA";
+            const int brandID = 44;
 
             var leadEntities = new ILeadEntity[7];
             _leadDirectory = new string[7];
@@ -216,6 +217,7 @@ namespace LMS.ConsoleApp
                 },
                 Activity = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
                     new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
                 },
 
@@ -255,6 +257,7 @@ namespace LMS.ConsoleApp
                 },
                 Activity = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
                     new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
                 },
 
@@ -295,6 +298,7 @@ namespace LMS.ConsoleApp
                 },
                 Activity = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
                     new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
                 },
 
@@ -308,6 +312,9 @@ namespace LMS.ConsoleApp
             };
 
             _leadDirectory[4] = "Lead - Less than 2 Brands Displayed - Campaign Rule";
+
+
+
             leadEntities[4] = new DefaultLeadEntity
             {
 
@@ -337,6 +344,7 @@ namespace LMS.ConsoleApp
                 },
                 Activity = new ILeadEntityObjectContainer[]
                 {
+                    new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
                     new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
                 },
 
@@ -413,7 +421,11 @@ namespace LMS.ConsoleApp
                     new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
                     new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
                 },
-
+                Activity = new ILeadEntityObjectContainer[]
+                {
+                   // new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
+                    new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
+                },
                 Segments = new ISegment[]
                 {
                     new DefaultSegment(SegementKeys.HighPOPKey),

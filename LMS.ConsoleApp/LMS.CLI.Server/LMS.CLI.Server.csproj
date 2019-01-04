@@ -6,10 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Compare.Components.Notification.Channels" Version="1.0.0" />
     <PackageReference Include="Compare.Components.Notification.Contract" Version="1.0.0" />
     <PackageReference Include="Compare.Components.Notification.NotificationChannels" Version="1.0.0" />
+    <PackageReference Include="Compare.Components.Notification.Publishers" Version="1.0.0" />
     <PackageReference Include="Compare.Components.Notification.Subscribers" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Control.Filter.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Factory.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Controls.Factory.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.CampaignManager.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.CampaignManager.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadDispatcher.Implementation" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.LeadDispatcher.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.LeadEntity.Interface" Version="1.0.0" />
+    <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.ServicesLMS.Modules.LeadEntity.Components" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="4.5.11" />
