@@ -139,301 +139,301 @@ namespace LMS.ConsoleApp
      #region CreateLeads
         static ILeadEntity[] CreateLeads()
         {
-            const int quotedProduct = 101;
-            const string additonalProducts = "None";
-            const string priorBi = "100/300";
-            const bool priorInsurance = true;
-            const int vehicleCount = 2;
-            const string quotedBi = "100/300";
-            int[] displayedBrands = new int[] { 22, 58, 181, 218 };
-            const string phoneNumber = "888-556-5456";
-            const int pni_Age = 28;
-            const string emailAddress = "SomeEmail@compare.com";
-            const string stateStr = "VA";
-            const int brandID = 44;
+            //const int quotedProduct = 101;
+            //const string additonalProducts = "None";
+            //const string priorBi = "100/300";
+            //const bool priorInsurance = true;
+            //const int vehicleCount = 2;
+            //const string quotedBi = "100/300";
+            //int[] displayedBrands = new int[] { 22, 58, 181, 218 };
+            //const string phoneNumber = "888-556-5456";
+            //const int pni_Age = 28;
+            //const string emailAddress = "SomeEmail@compare.com";
+            //const string stateStr = "VA";
+            //const int brandID = 44;
 
             var leadEntities = new ILeadEntity[7];
-            _leadDirectory = new string[7];
+            //_leadDirectory = new string[7];
 
-            _leadDirectory[0] = "Lead - NO IdentityGUID - LeadCollector Validator";
-            leadEntities[0] = new DefaultLeadEntity
-            {
+            //_leadDirectory[0] = "Lead - NO IdentityGUID - LeadCollector Validator";
+            //leadEntities[0] = new DefaultLeadEntity
+            //{
 
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
+            //    Context = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
+            //    },
 
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
-                },
+            //    Properties = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString())
+            //    },
 
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
+            //    Segments = new ISegment[]
+            //    {
+            //        new DefaultSegment(SegementKeys.HighPOPKey),
+            //        new DefaultSegment(SegementKeys.HomeownerKey)
+            //    },
 
-            };
+            //};
 
-            _leadDirectory[1] = "Lead - Good ";
-            leadEntities[1] = new DefaultLeadEntity
-            {
+            //_leadDirectory[1] = "Lead - Good ";
+            //leadEntities[1] = new DefaultLeadEntity
+            //{
 
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
+            //    Context = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
+            //    },
 
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
-                },
-                Activity = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
-                    new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
-                },
+            //    Properties = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
+            //    },
+            //    Activity = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
+            //        new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
+            //    },
 
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-
- 
-            };
-            _leadDirectory[2] = "Lead - NO Email, No State - Campaign Manager Validator";
-            leadEntities[2] = new DefaultLeadEntity
-            {
-
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
-                },
-                Activity = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
-                    new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
-                },
-
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-
-
-            };
-            _leadDirectory[3] = "Lead - QuotedBIValidator - Campaign Validator";
-            leadEntities[3] = new DefaultLeadEntity
-            {
-
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
-                },
-                Activity = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
-                    new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
-                },
-
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-
-
-            };
-
-            _leadDirectory[4] = "Lead - Less than 2 Brands Displayed - Campaign Rule";
-
-
-
-            leadEntities[4] = new DefaultLeadEntity
-            {
-
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
-
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,1),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
-                },
-                Activity = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
-                    new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
-                },
-
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
-            };
+            //    Segments = new ISegment[]
+            //    {
+            //        new DefaultSegment(SegementKeys.HighPOPKey),
+            //        new DefaultSegment(SegementKeys.HomeownerKey)
+            //    },
 
  
-            _leadDirectory[5] = "Lead - BF526BAF-F860-4530-BAA5-A205E285881A - Campaign Filter";
-            leadEntities[5] = new DefaultLeadEntity
-            {
+            //};
+            //_leadDirectory[2] = "Lead - NO Email, No State - Campaign Manager Validator";
+            //leadEntities[2] = new DefaultLeadEntity
+            //{
 
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, new Guid("BF526BAF-F860-4530-BAA5-A205E285881A").ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
+            //    Context = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
+            //    },
 
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,1),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
-                },
+            //    Properties = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+            //    },
+            //    Activity = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
+            //        new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
+            //    },
 
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
+            //    Segments = new ISegment[]
+            //    {
+            //        new DefaultSegment(SegementKeys.HighPOPKey),
+            //        new DefaultSegment(SegementKeys.HomeownerKey)
+            //    },
+
+
+            //};
+            //_leadDirectory[3] = "Lead - QuotedBIValidator - Campaign Validator";
+            //leadEntities[3] = new DefaultLeadEntity
+            //{
+
+            //    Context = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
+            //    },
+
+            //    Properties = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
+            //    },
+            //    Activity = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
+            //        new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
+            //    },
+
+            //    Segments = new ISegment[]
+            //    {
+            //        new DefaultSegment(SegementKeys.HighPOPKey),
+            //        new DefaultSegment(SegementKeys.HomeownerKey)
+            //    },
+
+
+            //};
+
+            //_leadDirectory[4] = "Lead - Less than 2 Brands Displayed - Campaign Rule";
+
+
+
+            //leadEntities[4] = new DefaultLeadEntity
+            //{
+
+            //    Context = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
+            //    },
+
+            //    Properties = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,1),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
+            //    },
+            //    Activity = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
+            //        new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
+            //    },
+
+            //    Segments = new ISegment[]
+            //    {
+            //        new DefaultSegment(SegementKeys.HighPOPKey),
+            //        new DefaultSegment(SegementKeys.HomeownerKey)
+            //    },
+            //};
+
+ 
+            //_leadDirectory[5] = "Lead - BF526BAF-F860-4530-BAA5-A205E285881A - Campaign Filter";
+            //leadEntities[5] = new DefaultLeadEntity
+            //{
+
+            //    Context = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, new Guid("BF526BAF-F860-4530-BAA5-A205E285881A").ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
+            //    },
+
+            //    Properties = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,priorInsurance.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,1),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
+            //    },
+
+            //    Segments = new ISegment[]
+            //    {
+            //        new DefaultSegment(SegementKeys.HighPOPKey),
+            //        new DefaultSegment(SegementKeys.HomeownerKey)
+            //    },
 
    
-            };
-            _leadDirectory[6] = "Lead - No POP - Good";
-            leadEntities[6] = new DefaultLeadEntity
-            {
+            //};
+            //_leadDirectory[6] = "Lead - No POP - Good";
+            //leadEntities[6] = new DefaultLeadEntity
+            //{
 
-                Context = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
-                    new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
-                },
+            //    Context = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.LeadEntityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.IdentityGuidKey, Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionGuidKey,Guid.NewGuid().ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.QuotedProductKey,quotedProduct.ToString()),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SessionRequestSeqKey,"1"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.SiteIDKey,"26328"),
+            //        new DefaultLeadEntityObjectContainer(ContextKeys.AdditionalProductKey,additonalProducts)
+            //    },
 
-                Properties = new ILeadEntityObjectContainer[]
-                {
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,"false"),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
-                    new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
-                },
-                Activity = new ILeadEntityObjectContainer[]
-                {
-                   // new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
-                    new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
-                },
-                Segments = new ISegment[]
-                {
-                    new DefaultSegment(SegementKeys.HighPOPKey),
-                    new DefaultSegment(SegementKeys.HomeownerKey)
-                },
+            //    Properties = new ILeadEntityObjectContainer[]
+            //    {
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorBIKey,priorBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PriorInsuranceKey,"false"),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.VehicleCountKey,vehicleCount.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.QuotedBIKey,quotedBi),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.DisplayedBrandsKey,displayedBrands),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PhoneNumber,phoneNumber.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.PNI_Age,pni_Age.ToString()),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.EmailAddressKey,emailAddress),
+            //        new DefaultLeadEntityObjectContainer(PropertyKeys.StateKey,stateStr),
+            //    },
+            //    Activity = new ILeadEntityObjectContainer[]
+            //    {
+            //       // new DefaultLeadEntityObjectContainer(ActivityKeys.BrandIdKey, brandID),
+            //        new DefaultLeadEntityObjectContainer(ActivityKeys.BuyType, BuyClickType.BuyOnLine),
+            //    },
+            //    Segments = new ISegment[]
+            //    {
+            //        new DefaultSegment(SegementKeys.HighPOPKey),
+            //        new DefaultSegment(SegementKeys.HomeownerKey)
+            //    },
 
   
-            };
+            //};
             return leadEntities;
         }
     }

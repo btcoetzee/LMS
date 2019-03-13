@@ -8,9 +8,10 @@ namespace LMS.CLI.Server
 
     using System;
     using System.Linq;
+
     using System.Threading;
     using Compare.Components.Notification.Contract;
-    using Compare.Components.Notification.NotificationChannels.Redis;
+    using Compare.Components.Notification.Channels.Redis;
     using Compare.Components.Notification.Subscribers;
 
     using Newtonsoft.Json;
@@ -24,23 +25,23 @@ namespace LMS.CLI.Server
 
         public static void Main(string[] args)
         {
-            _leadSubscriber = new Subscriber<string>(new RedisNotificationChannel("LMS", "Redis", "LMS"), true);
-            _leadSubscriber.AddOnReceiveActionToChannel(message =>
-            {
-                var deserializedEntity = JsonConvert.DeserializeObject<DefaultLeadEntity>(message);
-                LeadCollector.CollectLead(deserializedEntity);
-            });
-            _leadSubscriber.AddOnReceiveActionToChannel(_ => _leadsReceived++);
-            _leadSubscriber.AddOnReceiveActionToChannel(_ => _keepProcessing = _leadsReceived < 5);
+            //_leadSubscriber = new Subscriber<string>(new RedisNotificationChannel("LMS", "Redis", "LMS"), true);
+            //_leadSubscriber.AddOnReceiveActionToChannel(message =>
+            //{
+            //    var deserializedEntity = JsonConvert.DeserializeObject<DefaultLeadEntity>(message);
+            //    LeadCollector.CollectLead(deserializedEntity);
+            //});
+            //_leadSubscriber.AddOnReceiveActionToChannel(_ => _leadsReceived++);
+            //_leadSubscriber.AddOnReceiveActionToChannel(_ => _keepProcessing = _leadsReceived < 5);
 
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Redis connection established?: {_leadSubscriber.ChannelStatus}");
-            Console.WriteLine("Waiting for a lead...\n");
+            //Console.ForegroundColor = ConsoleColor.White;
+            //Console.WriteLine($"Redis connection established?: {_leadSubscriber.ChannelStatus}");
+            //Console.WriteLine("Waiting for a lead...\n");
 
-            while (_keepProcessing)
-            {
-                Thread.Sleep(100); 
-            }
+            //while (_keepProcessing)
+            //{
+            //    Thread.Sleep(100); 
+            //}
         }
     }
 

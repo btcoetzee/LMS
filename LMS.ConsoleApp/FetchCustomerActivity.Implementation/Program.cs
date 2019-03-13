@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using Admiral.Components.Instrumentation.Contract;
+using Compare.Components.Notification.Abstractions;
 using Compare.Components.Notification.Channels.Redis;
-using Compare.Components.Notification.Contract;
 using Compare.Components.Notification.Publishers;
 using CompareNow.Components.Constants.US.Motor;
-using CompareNow.Schemas._20120701;
-using LMS.ClientObject.Implementation;
-using LMS.ClientObject.Interface;
-using LMS.ClientObject.Interface.Constants;
+using FetchCustomerActivity.Implementation.ClientObject;
 using Newtonsoft.Json;
 
-namespace LMS.CLI
+namespace FetchCustomerActivity.Implementation
 {
-    public class Program
+    class Program
     {
         const int RandomMaxCount = 50;  // Number of leads to send through when random is selected
         private const string DuplicateGuidStr = "BF526BAF-F860-4530-BAA5-A205E285881A";
+        private static IList<Guid> listOfGuids;  // This is the list of customerActvityGuids retrieved from the database
         public class CJDirectoryItem
         {
             public string CJLeadType { get; set; }
@@ -30,89 +26,104 @@ namespace LMS.CLI
         private static readonly ColorSet LogColors = new ColorSet(ConsoleColor.White, ConsoleColor.Black);
         private static readonly ColorSet ObjectLogColors = new ColorSet(ConsoleColor.White, ConsoleColor.Black);
         private static IPublisher<string> _leadPublisher;
-        
+
         public static void Main(string[] args)
         {
-            _leadPublisher =
-                new Publisher<string>(
-                    new INotificationChannel<string>[]
-                        {new RedisNotificationChannel("LMS", "Redis", "LMS")}, true);
-          //  { new RedisNotificationChannel("LMS", "Redis", "LMS", new MockLogger())}, true);
+            //_leadPublisher =
+            //    new Publisher<string>(
+            //        new INotificationChannel<string>[]
+            //            {new RedisNotificationChannel("LMS", "Redis", "LMS")}, true);
+            ////  { new RedisNotificationChannel("LMS", "Redis", "LMS", new MockLogger())}, true);
 
-            Console.WriteLine($"Redis channel status: {_leadPublisher.ChannelStatus.First()}");
+            //Console.WriteLine($"Redis channel status: {_leadPublisher.ChannelStatus.First()}");
+            
+            // Retrieve customerActivityGuids from the database
+            listOfGuids = GetCustomerActivitiesFromDb(RandomMaxCount);
+            int activityGuidIx = 0;
 
             var cjLeads = CreateCJLeads();
-            var cjLeadCount = cjLeads.Count;
+            var numberOfLeadScenariosSetUp = cjLeads.Count;
             var randomNbr = new Random();
             var randomRunningFlag = false;
             DefaultClientObject newLead; // Used for creating a new lead object when the array of possible leads have been created.
-        
+
             var randomCounter = 1;
             // Ask for user to select a lead to process
-            WriteToConsole($"{GetCJLeadDirectory()}Select a lead [1-{cjLeads.Count}] to process: ", LogColors);
-            int.TryParse(Console.ReadLine(), out var leadChoice);
+            WriteToConsole($"{GetCJLeadDirectory()}Select a lead [1-{numberOfLeadScenariosSetUp}] to process: ", LogColors);
+            int.TryParse(Console.ReadLine(), out var choiceSelectedFromMenu);
 
-            // Process the lead
-            while ((leadChoice >= 1 && leadChoice <= cjLeadCount) || (randomRunningFlag))
+            // Use the scenario selected - or continue if the randomRunningFlag is set
+            while ((choiceSelectedFromMenu >= 1 && choiceSelectedFromMenu <= numberOfLeadScenariosSetUp) || (randomRunningFlag))
             {
-                leadChoice--; //Since array indices start at 0
+                choiceSelectedFromMenu--; //Since array indices start at 0
 
-                // Run Leads through at Random
-                if ((leadChoice == (cjLeadCount - 1)) || (randomRunningFlag))
+                // Run Leads through at Random if selected - This is the last choice on the menu
+                if ((choiceSelectedFromMenu == (numberOfLeadScenariosSetUp - 1)) || (randomRunningFlag))
                 {
-                    leadChoice = 5;
-                    randomRunningFlag = true;
-
-                    // Now select a random Lead from List
-                    leadChoice = randomNbr.Next(0, (cjLeadCount - 1));
-                    _CJLeadDirectory[leadChoice].CJLeadCnt++;
-                    if (_CJLeadDirectory[leadChoice].guidList == null)
+                    // if first time through random
+                    if (randomRunningFlag == false)
                     {
-                        _CJLeadDirectory[leadChoice].guidList = new List<Guid>();
+                        randomRunningFlag = true;
+                        // Create the guidlist that keeps track of the guids within the scenarios
+                        for (int i = 0; i < numberOfLeadScenariosSetUp - 1; i++)
+                        {
+                            _CJLeadDirectory[i].guidList = new List<Guid>();
+                        }
                     }
-                    
+                    // Now do a random selection from the scerios instead 
+                    choiceSelectedFromMenu = randomNbr.Next(0, (numberOfLeadScenariosSetUp - 1));
+                    _CJLeadDirectory[choiceSelectedFromMenu].CJLeadCnt++;
+
+                    // Keep track of what other info is being sent for the Customer.
+                    _CJLeadDirectory[choiceSelectedFromMenu].guidList.Add(listOfGuids[activityGuidIx]);
+
+                    // Remove if previously added but then add the CustomerActivity Retrieved from the database
+                    cjLeads[choiceSelectedFromMenu].ClientObject.RemoveAll(item => item.Key == ClientObjectKeys.ActivityGuidKey);
+                    cjLeads[choiceSelectedFromMenu].ClientObject.Add(
+                        new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey,
+                            listOfGuids[activityGuidIx]));
+                    activityGuidIx++;
+
                     if (randomCounter == RandomMaxCount)
                     {
-                        randomRunningFlag = false;
+                        randomRunningFlag = false;  // STOP
                         randomCounter = 0;
                     }
                     else
                     {
                         randomCounter++;
                     }
-                    // Unless it is the duplicate Guid - Assign a new CustomerActivity
-                    if (!String.Equals(cjLeads[leadChoice].ClientObject
-                            .FirstOrDefault(item => item.Key == ClientObjectKeys.ActivityGuidKey).Value.ToString().ToUpper(),
-                            DuplicateGuidStr))
-                    {
-                        var newActivityGuid = Guid.NewGuid();
-                        _CJLeadDirectory[leadChoice].guidList.Add(newActivityGuid);
-
-                        // update the ActivityGuid
-                        cjLeads[leadChoice].ClientObject.RemoveAll(item => item.Key == ClientObjectKeys.ActivityGuidKey);
-                        cjLeads[leadChoice].ClientObject.Add(new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, newActivityGuid));
-                    }
-                    else
-                    {
-                        _CJLeadDirectory[leadChoice].guidList.Add(new Guid(DuplicateGuidStr));
-                    }
+                }
+                else
+                {
+                    // Remove if previously added but then add the CustomerActivity Retrieved from the database
+                    cjLeads[choiceSelectedFromMenu].ClientObject.RemoveAll(item => item.Key == ClientObjectKeys.ActivityGuidKey);
+                    cjLeads[choiceSelectedFromMenu].ClientObject.Add(
+                        new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey,
+                            listOfGuids[activityGuidIx]));
+                    activityGuidIx++;
+                }
+                newLead = new DefaultClientObject();
+                foreach (var valuePair in cjLeads[choiceSelectedFromMenu].ClientObject)
+                {
+                    newLead.ClientObject.Add(new KeyValuePair<string, object>(valuePair.Key, valuePair.Value));
                 }
 
-                newLead = CreateNewLead(cjLeads[leadChoice]);
+                //newLead = CreateNewLead(cjLeads[choiceSelectedFromMenu]);
 
                 //WriteToConsole($"Processing Activity ID {leadEntities[leadChoice].Context.First(ctx => ctx.Id == ContextKeys.ActivityGuidKey).Value}", LogColors);
                 //                var serializedEntity = JsonConvert.SerializeObject(cjLeads[leadChoice], Formatting.Indented);
-                var serializedEntity = JsonConvert.SerializeObject(newLead, Formatting.Indented);
+                //var serializedEntity = JsonConvert.SerializeObject(newLead, Formatting.Indented);
 
-                if (!randomRunningFlag)
-                {
-                    WriteToConsole("\n_______________________________________________________________________________________________________________________________\n\n", LogColors);
-                    WriteToConsole(serializedEntity, ObjectLogColors);
-                }
-                WriteToConsole($"Pulishing: {newLead.ClientObject.FirstOrDefault(item => item.Key == ClientObjectKeys.ActivityGuidKey).Value.ToString()}: {leadChoice+1}: {_CJLeadDirectory[leadChoice].CJLeadType}", LogColors);
+                //if (!randomRunningFlag)
+                //{
+                //    WriteToConsole("\n_______________________________________________________________________________________________________________________________\n\n", LogColors);
+                //    WriteToConsole(serializedEntity, ObjectLogColors);
+                //}
+                WriteToConsole($"Pulishing: {newLead.ClientObject.FirstOrDefault(item => item.Key == ClientObjectKeys.ActivityGuidKey).Value.ToString()}: {choiceSelectedFromMenu + 1}: {_CJLeadDirectory[choiceSelectedFromMenu].CJLeadType}", LogColors);
                 //WriteToConsole(_CJLeadDirectory[leadChoice], LogColors);
                 // Ok send it on
-                _leadPublisher.BroadcastMessage(serializedEntity);
+                //_leadPublisher.BroadcastMessage(serializedEntity);
 
                 // If running through leads - do not stop - else show menu of leads
                 if (!randomRunningFlag)
@@ -121,7 +132,7 @@ namespace LMS.CLI
                     if (randomCounter == 0)
                     {
                         var summaryStr = Environment.NewLine + ("").PadRight(180, '_') + Environment.NewLine +
-                                         $"SENT {RandomMaxCount} LEADS THROUGH...." +Environment.NewLine + "SUMMARY:" + Environment.NewLine;
+                                         $"SENT {RandomMaxCount} LEADS THROUGH...." + Environment.NewLine + "SUMMARY:" + Environment.NewLine;
                         var ix = 1;
                         foreach (var lead in _CJLeadDirectory)
                         {
@@ -140,7 +151,7 @@ namespace LMS.CLI
                     }
                     Console.ReadLine();
                     WriteToConsole($"{GetCJLeadDirectory()}Select a lead [1-{cjLeads.Count}] to process: ", LogColors);
-                    int.TryParse(Console.ReadLine(), out leadChoice);
+                    int.TryParse(Console.ReadLine(), out choiceSelectedFromMenu);
 
                 }
 
@@ -152,6 +163,21 @@ namespace LMS.CLI
             Console.ReadKey();
         }
 
+        public static IList<Guid> GetCustomerActivitiesFromDb(int count)
+        {
+            IList<Guid> customerActivityGuidList;
+
+            var fetchCustomerActivityFromDb = new FetchCustomerActivityFromDb();
+            customerActivityGuidList = fetchCustomerActivityFromDb.getCustomerActivity(count);
+            
+            foreach (var customerActivityGuid in customerActivityGuidList)
+            {
+                Console.WriteLine(customerActivityGuid);
+            }
+
+            Console.ReadKey();
+            return customerActivityGuidList;
+        }
         public static void WriteToConsole(string stringToWrite, ColorSet colorSet)
         {
             Console.ForegroundColor = colorSet.ForegroundColor;
@@ -183,12 +209,12 @@ namespace LMS.CLI
 
             var destination = new DefaultClientObject();
 
-           
+
             foreach (var valuePair in source.ClientObject)
             {
-              destination.ClientObject.Add(new KeyValuePair<string, object>(valuePair.Key, valuePair.Value));   
+                destination.ClientObject.Add(new KeyValuePair<string, object>(valuePair.Key, valuePair.Value));
             }
-            
+
             return destination;
 
         }
@@ -200,15 +226,14 @@ namespace LMS.CLI
             int? brandId2 = 58;
             int? brandId3 = 181;
             int? brandId4 = 218;
-            int[] displayedBrands = new int[] { (int) brandId1, (int) brandId2, (int) brandId3, (int) brandId4 };
-            
+            int[] displayedBrands = new int[] { (int)brandId1, (int)brandId2, (int)brandId3, (int)brandId4 };
+
 
             var customerLeads = new List<IClientObject>();
 
-            _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - All Values", CJLeadCnt = 0 });  
+            _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - All Values", CJLeadCnt = 0 });
             customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
             {
-                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                 new KeyValuePair<string, object>(ClientObjectKeys.QuotedProductKey, quotedProduct.ToString()),
                 new KeyValuePair<string, object>(ClientObjectKeys.BuyTypeKey, BuyClickType.BuyOnPhone),
                 new KeyValuePair<string, object>(ClientObjectKeys.DisplayedBrandsKey, displayedBrands),
@@ -219,7 +244,6 @@ namespace LMS.CLI
             _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - No BrandId - Failure LeadCollector Validator Tests", CJLeadCnt = 0 });
             customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
             {
-                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                 new KeyValuePair<string, object>(ClientObjectKeys.QuotedProductKey, quotedProduct.ToString()),
                 new KeyValuePair<string, object>(ClientObjectKeys.BuyTypeKey, BuyClickType.BuyOnPhone),
                 new KeyValuePair<string, object>(ClientObjectKeys.DisplayedBrandsKey, displayedBrands),
@@ -228,7 +252,6 @@ namespace LMS.CLI
             _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - No Quoted Product - Failure in Campaign Manager Validator Tests", CJLeadCnt = 0 });
             customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
             {
-                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                 new KeyValuePair<string, object>(ClientObjectKeys.BuyTypeKey, BuyClickType.BuyOnLine),
                 new KeyValuePair<string, object>(ClientObjectKeys.BrandIdKey, brandId2),
                 new KeyValuePair<string, object>(ClientObjectKeys.DisplayedBrandsKey, displayedBrands),
@@ -237,7 +260,6 @@ namespace LMS.CLI
             _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - No BuyType - Failure in Campaign Validator Tests", CJLeadCnt = 0 });
             customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
             {
-                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                 new KeyValuePair<string, object>(ClientObjectKeys.QuotedProductKey, quotedProduct.ToString()),
                 new KeyValuePair<string, object>(ClientObjectKeys.DisplayedBrandsKey, displayedBrands),
                 new KeyValuePair<string, object>(ClientObjectKeys.BrandIdKey, brandId4),
@@ -247,31 +269,19 @@ namespace LMS.CLI
             _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - Less than 2 Brands Displayed - Failure in Campaign Rule Tests", CJLeadCnt = 0 });
             customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
             {
-                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
                 new KeyValuePair<string, object>(ClientObjectKeys.QuotedProductKey, quotedProduct.ToString()),
                 new KeyValuePair<string, object>(ClientObjectKeys.BuyTypeKey, BuyClickType.BuyOnLine),
                 new KeyValuePair<string, object>(ClientObjectKeys.BrandIdKey, brandId1),
                 new KeyValuePair<string, object>(ClientObjectKeys.ClickTimeKey, DateTime.UtcNow)
             }));
-            _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = "Lead - Duplicate Activity ID - Failure in Campaign Filter Tests", CJLeadCnt = 0 });
-            customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
-            {
-                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, new Guid(DuplicateGuidStr).ToString()),
-                new KeyValuePair<string, object>(ClientObjectKeys.QuotedProductKey, quotedProduct.ToString()),
-                new KeyValuePair<string, object>(ClientObjectKeys.BuyTypeKey, BuyClickType.BuyOnLine),
-                new KeyValuePair<string, object>(ClientObjectKeys.BrandIdKey, brandId2),
-                new KeyValuePair<string, object>(ClientObjectKeys.DisplayedBrandsKey, displayedBrands),
-                new KeyValuePair<string, object>(ClientObjectKeys.ClickTimeKey, DateTime.UtcNow)
-            }));
             _CJLeadDirectory.Add(new CJDirectoryItem() { CJLeadType = $"Lead - Run {RandomMaxCount} Leads through Randomly", CJLeadCnt = 0 });
             customerLeads.Add(new DefaultClientObject(new List<KeyValuePair<string, object>>
             {
-                new KeyValuePair<string, object>(ClientObjectKeys.ActivityGuidKey, Guid.NewGuid().ToString()),
             }));
 
             return customerLeads;
         }
-        
+
     }
     #endregion
 
@@ -291,6 +301,4 @@ namespace LMS.CLI
             this.BackgroundColor = bg;
         }
     }
-
-   
 }
