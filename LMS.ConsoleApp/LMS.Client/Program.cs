@@ -17,8 +17,6 @@ namespace LMS.Client
     using Compare.Components.Notification.Contract;
     using Compare.Components.Notification.Publishers;
 
-    using Newtonsoft.Json;
-
     public class Program
     {
         public static List<string> CustomerLeadDirectory = new List<string>();

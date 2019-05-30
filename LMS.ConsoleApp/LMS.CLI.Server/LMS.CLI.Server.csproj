@@ -20,7 +20,6 @@
     <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Implementation" Version="1.0.0" />
     <PackageReference Include="Compare.Services.LMS.Modules.Preamble.Interface" Version="1.0.0" />
     <PackageReference Include="Compare.ServicesLMS.Modules.LeadEntity.Components" Version="1.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="4.5.11" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 

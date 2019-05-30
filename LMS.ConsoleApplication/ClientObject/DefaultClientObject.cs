@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FetchCustomerActivity.Implementation.ClientObject
+namespace LMS.ConsoleApplication.ClientObject
 {
     public class DefaultClientObject : IClientObject
     {

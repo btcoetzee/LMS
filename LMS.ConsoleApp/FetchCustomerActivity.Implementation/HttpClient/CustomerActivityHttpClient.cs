@@ -4,7 +4,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-namespace CustomerActivityFetcher.HttpClient
+
+namespace FetchCustomerActivity.Implementation.HttpClient
 {
     public class CustomerActivityHttpClient :System.Net.Http.HttpClient,  ICustomerActivityHttpClient
     {
@@ -74,9 +75,6 @@ namespace CustomerActivityFetcher.HttpClient
                 {
                     var responseString = await response.Content.ReadAsStringAsync();
                     customerActivity = HttpUtility.HtmlDecode(responseString);
-                    //Console.WriteLine($"CustomerActivity for Guid: {customerActivity}");
-                    //Console.WriteLine("The End.  Press any key to continue...");
-                    //Console.ReadKey();
                 }
                 else
                 {
@@ -93,9 +91,3 @@ namespace CustomerActivityFetcher.HttpClient
         }
     }
 }
-//string soap = $@"<?xml version=""1.0"" encoding=""utf-8""?>
-//        <soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ns=""http://comparenow/schemas/Services/MotorActivity/20120701"">
-//            <soapenv:Body>
-//                <ns:GetActivity><ns:customerActivityId>{customerActivityGuid}</ns:customerActivityId></ns:GetActivity>
-//            </soapenv:Body>
-//        </soapenv:Envelope>";

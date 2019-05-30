@@ -6,9 +6,6 @@ using System.Reflection;
 using System.Text;
 using Compare.Services.LMS.Modules.LeadDispatcher.Interface;
 using LMS.ConsoleApp.Constants;
-using Newtonsoft.Json;
-
-
 
 namespace LMS.ConsoleApp
 {

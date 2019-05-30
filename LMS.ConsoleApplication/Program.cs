@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Compare.Components.Notification.Abstractions;
 using Compare.Components.Notification.Channels.Redis;
 using Compare.Components.Notification.Publishers;
 using CompareNow.Components.Constants.US.Motor;
-using FetchCustomerActivity.Implementation.ClientObject;
-using FetchCustomerActivity.Implementation.HttpClient;
+using LMS.ConsoleApplication.ClientObject;
+using LMS.ConsoleApplication.HttpClient;
 using Newtonsoft.Json;
 
-namespace FetchCustomerActivity.Implementation
+namespace LMS.ConsoleApplication
 {
-   
     class Program
     {
         private static ICustomerActivityHttpClient _customerActivityHttpClient;
@@ -36,20 +33,20 @@ namespace FetchCustomerActivity.Implementation
 
         public static void Main(string[] args)
         {
-             var createOutputLogSuccess = SetupOutputFiles();
+            var createOutputLogSuccess = SetupOutputFiles();
             if (!createOutputLogSuccess)
             {
                 Console.WriteLine("Could not create output... Press any key to continue.");
                 Console.ReadKey();
             }
             // Create the HttpClient
-            _customerActivityHttpClient = new CustomerActivityHttpClient();
+            _customerActivityHttpClient = new CustomerActivityHttpClient(new System.Net.Http.HttpClient());
 
             _leadPublisher =
                 new Publisher<string>(
                     new INotificationChannel<string>[]
                         {new RedisNotificationChannel("LMS", "localhost, allowAdmin=true", "LMS")}, true);
-           
+
 
             Console.WriteLine($"Redis channel status: {_leadPublisher.ChannelStatus.First()}");
 
@@ -60,10 +57,11 @@ namespace FetchCustomerActivity.Implementation
             var cjLeads = CreateCJLeads();
             var numberOfLeadScenariosSetUp = cjLeads.Count;
             var randomNbr = new Random();
+            var randomCounter = 1;
             var randomRunningFlag = false;
             Guid customerActivityGuid;
 
-            var randomCounter = 1;
+       
             // Ask for user to select a lead to process
             WriteToConsole($"{GetCJLeadDirectory()}Select a lead [1-{numberOfLeadScenariosSetUp}] to process: ", LogColors);
             int.TryParse(Console.ReadLine(), out var choiceSelectedFromMenu);
@@ -74,6 +72,7 @@ namespace FetchCustomerActivity.Implementation
                 choiceSelectedFromMenu--; //Since array indices start at 0
                 customerActivityGuid = listOfGuids[activityGuidIx];
                 activityGuidIx++;
+                randomCounter++;
                 // Run Leads through at Random if selected - This is the last choice on the menu
                 if ((choiceSelectedFromMenu == (numberOfLeadScenariosSetUp - 1)) || (randomRunningFlag))
                 {
@@ -104,10 +103,11 @@ namespace FetchCustomerActivity.Implementation
                     {
                         randomRunningFlag = false;  // STOP
                         randomCounter = 0;
+                        activityGuidIx = 0;
                     }
                     else
                     {
-                        randomCounter++;
+                       
                     }
                 }
                 else
@@ -122,19 +122,19 @@ namespace FetchCustomerActivity.Implementation
                 var newLead =
                     new DefaultClientObject(
                         new List<KeyValuePair<string, object>>(cjLeads[choiceSelectedFromMenu].ClientObject));
-              
 
-                // Instead of Publishing the lead - get customerActivity using HttpClient
-                //var customerActivityTask = _customerActivityHttpClient.GetCustomerActivity(customerActivityGuid);
-                //if (customerActivityTask.Result != String.Empty)
-                //{
-                //    WriteToLogFile(customerActivityTask.Result);
 
-                //}
-                //else
-                //{
-                //    WriteToLogFile($"No CustomerActivity For {customerActivityGuid}.");
-                //}
+               // Instead of Publishing the lead - get customerActivity using HttpClient
+               var customerActivityTask = _customerActivityHttpClient.GetCustomerActivity(customerActivityGuid);
+                if (customerActivityTask.Result != String.Empty)
+                {
+                    WriteToLogFile(customerActivityTask.Result);
+
+                }
+                else
+                {
+                    WriteToLogFile($"No CustomerActivity For {customerActivityGuid}.");
+                }
 
                 //var newLead = CreateNewLead(cjLeads[choiceSelectedFromMenu]);
 
@@ -192,9 +192,21 @@ namespace FetchCustomerActivity.Implementation
             Console.ReadKey();
         }
 
-        public static bool SetupOutputFiles()
+
+        public string GetCustomerActivity()
         {
-            
+             string customerActivity = String.Empty;
+             var requestStr = @"<s:Envelope xmlns:s=""http://schemas.xmlsoap.org/soap/envelope/""><s:Body xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""><GetActivityResponse xmlns=""http://comparenow/schemas/Services/MotorActivity/20120701""><GetActivityResult><?xml version=""1.0""?>
+<CustomerActivity xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://comparenow/schemas/20120701"">
+  <ActivityId>0</ActivityId>
+  <ActivityGuid>94b87707-e7ef-45e3-aaff-b4ed9c263e8b</ActivityGuid></CustomerActivity></GetActivityResult></GetActivityResponse></s:Body></s:Envelope>";
+
+            return customerActivity;
+        }
+
+    public static bool SetupOutputFiles()
+        {
+
             if (!Directory.Exists(_directory))
             {
                 try
@@ -207,7 +219,7 @@ namespace FetchCustomerActivity.Implementation
                     return false;
                 }
             }
- 
+
             // Verifiy that the file can be created
             try
             {
@@ -239,8 +251,8 @@ namespace FetchCustomerActivity.Implementation
             IList<Guid> customerActivityGuidList;
 
             var fetchCustomerActivityFromDb = new FetchCustomerActivityFromDb();
-            customerActivityGuidList = fetchCustomerActivityFromDb.getCustomerActivity(count);
-            
+            customerActivityGuidList = fetchCustomerActivityFromDb.GetCustomerActivity(count);
+
             foreach (var customerActivityGuid in customerActivityGuidList)
             {
                 Console.WriteLine(customerActivityGuid);
@@ -372,4 +384,5 @@ namespace FetchCustomerActivity.Implementation
             this.BackgroundColor = bg;
         }
     }
+
 }

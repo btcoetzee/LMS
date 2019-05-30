@@ -4,10 +4,13 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-namespace CustomerActivityFetcher.HttpClient
+
+namespace LMS.ConsoleApplication.HttpClient
 {
-    public class CustomerActivityHttpClient :System.Net.Http.HttpClient,  ICustomerActivityHttpClient
+    public class CustomerActivityHttpClient : ICustomerActivityHttpClient
     {
+
+        private System.Net.Http.HttpClient _httpClient;
         private string _url;
         private Uri _uri;
         private string _action;
@@ -23,6 +26,11 @@ namespace CustomerActivityFetcher.HttpClient
 
         private string _soapRequestString;
 
+        private System.Net.Http.HttpClient HttpClientMember
+        {
+            get => _httpClient;
+            set => _httpClient = value;
+        }
         private string Url
         {
             get => _url; 
@@ -45,14 +53,17 @@ namespace CustomerActivityFetcher.HttpClient
             get => _mediaType;
             set => _mediaType = value;
         }
-        public CustomerActivityHttpClient()
+        public CustomerActivityHttpClient(System.Net.Http.HttpClient httpClient)
         {
+
             // TODO Set & Get from API Config - UserStory #91689
             Url = "http://utsvc.inspopusa.lan:57006/Comparenow_MAS_v1.0/MotorActivityService.svc";
             RequestUri = new Uri(Url);
             Action = "\"http://comparenow/schemas/Services/MotorActivity/20120701/IMotorActivity/GetActivity\"";
-            DefaultRequestHeaders.Add("SOAPAction", Action);
+            //DefaultRequestHeaders.Add("SOAPAction", Action);
             MediaType = "text/xml";
+            HttpClientMember = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            HttpClientMember.DefaultRequestHeaders.Add("SOAPAction", Action);
         }
 
         public StringContent RequestContent(Guid customerActivityGuid)
@@ -68,15 +79,12 @@ namespace CustomerActivityFetcher.HttpClient
             {
                 HttpResponseMessage response = null;
                 HttpStatusCode returnCode = HttpStatusCode.OK;
-                response = await base.PostAsync(RequestUri, RequestContent(customerActivityGuid));
+                response = await HttpClientMember.PostAsync(RequestUri, RequestContent(customerActivityGuid));
                 returnCode = response.StatusCode;
                 if (returnCode == HttpStatusCode.OK)
                 {
                     var responseString = await response.Content.ReadAsStringAsync();
                     customerActivity = HttpUtility.HtmlDecode(responseString);
-                    //Console.WriteLine($"CustomerActivity for Guid: {customerActivity}");
-                    //Console.WriteLine("The End.  Press any key to continue...");
-                    //Console.ReadKey();
                 }
                 else
                 {
@@ -93,9 +101,3 @@ namespace CustomerActivityFetcher.HttpClient
         }
     }
 }
-//string soap = $@"<?xml version=""1.0"" encoding=""utf-8""?>
-//        <soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ns=""http://comparenow/schemas/Services/MotorActivity/20120701"">
-//            <soapenv:Body>
-//                <ns:GetActivity><ns:customerActivityId>{customerActivityGuid}</ns:customerActivityId></ns:GetActivity>
-//            </soapenv:Body>
-//        </soapenv:Envelope>";

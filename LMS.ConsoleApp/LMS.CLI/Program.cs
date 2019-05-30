@@ -12,7 +12,6 @@ using CompareNow.Schemas._20120701;
 using LMS.ClientObject.Implementation;
 using LMS.ClientObject.Interface;
 using LMS.ClientObject.Interface.Constants;
-using Newtonsoft.Json;
 
 namespace LMS.CLI
 {

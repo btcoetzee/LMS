@@ -14,8 +14,6 @@ namespace LMS.CLI.Server
     using Compare.Components.Notification.Channels.Redis;
     using Compare.Components.Notification.Subscribers;
 
-    using Newtonsoft.Json;
-
     public class Program
     {
         private static readonly MockedLeadCollector LeadCollector = new MockedLeadCollector();
